@@ -11,6 +11,7 @@ Package.onUse(function(api) {
   ], both);
 
   api.use([
+    'fourseven:scss',
     'mrt:normalize.css',
   ], 'client');
 
@@ -19,7 +20,7 @@ Package.onUse(function(api) {
     './both/handler.jsx',
   ], both);
 
-  api.addAssets([
+  api.addFiles([
     './client/style.sass',
   ], 'client');
 

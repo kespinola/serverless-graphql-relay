@@ -15,7 +15,6 @@ Package.onUse(function(api){
     'ecmascript',
     'react',
     'grid',
-    'fourseven:scss',
     'izzilab:material-ui',
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
