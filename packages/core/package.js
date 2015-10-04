@@ -14,7 +14,6 @@ Package.onUse(function(api){
     'react',
     'grid',
     'form',
-    'dataflows:immutable',
     'aldeed:simple-schema',
     'aldeed:collection2',
     'izzilab:material-ui',

@@ -22,7 +22,6 @@ chuangbo:cookie@1.1.0
 coffeescript@1.0.10
 core@0.0.0
 cosmos:browserify@0.8.0
-dataflows:immutable@3.6.2
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.1

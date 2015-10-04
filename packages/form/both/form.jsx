@@ -6,7 +6,15 @@ AutoForm.Form = React.createClass({
   getDefaultProps(){
     return {
       errorLabelProp: "errorText",
-      schema: null,
+      schema: new SimpleSchema({}),
+    }
+  },
+
+  getInitialState(){
+    const schemaContext = this.props.schema.namedContext("formContext");
+    return {
+      schemaContext,
+      form: {}
     }
   },
 
@@ -18,14 +26,30 @@ AutoForm.Form = React.createClass({
           const {
             props,
             } = child;
-          const onChange = props.onChange ? this._handleFieldChange.bind(null, props.name) : null;
-          return React.cloneElement(child, {... props, onChange});
+
+          const {
+            form,
+          } = this.state;
+
+          const name = props.name;
+          const onChange = this._handleFieldChange.bind(null, name);
+          const value = form[name];
+          return React.cloneElement(child, {... props, value, onChange});
         })}
       </form>
     )
   },
 
   _handleFieldChange(name, e){
+    const {
+      schemaContext,
+      form: oldForm,
+      } = this.state;
+
+    const update = {[name]:e.target.value};
+    const isValid = schemaContext.validateOne(update, name);
+    const form = {... oldForm, ... update};
+    this.setState({form})
   },
 
   _handleSubmit(e){

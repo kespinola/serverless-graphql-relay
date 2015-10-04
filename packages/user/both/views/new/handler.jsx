@@ -42,7 +42,7 @@ User.Handlers.New = React.createClass({
             })}
             <span>or</span>
             <Form schema={User.Schema}>
-              <Field name='email' component={TextField} floatingLabelText='email' fullWidth />
+              <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
               <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
               <TextField fullWidth type='submit' />
             </Form>
