@@ -23,8 +23,8 @@ User.Handlers.New = React.createClass({
       accounts,
       } = this.props;
     return (
-      <Row>
-        <Col>
+      <Row centerXs>
+        <Col xs={10} sm={6}>
           <Card>
             {accounts.map(account => {
               return (

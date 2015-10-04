@@ -32,16 +32,33 @@ Flexgrid.Row = React.createClass({
     return {
       className: '',
       componentClass: 'div',
+      centerXs: null,
+      centerSm: null,
+      centerMd: null,
+      centerLg: null,
     }
   },
 
   render(){
     const {
       className: propsClassName,
+      centerXs,
+      centerSm,
+      centerMd,
+      centerLg,
       } = this.props;
 
     const ComponentClass = this.props.componentClass;
-    const className = classNames('row', propsClassName);
+    const className = classNames(
+      'row',
+      propsClassName,
+      {
+        'center-xs': centerXs,
+        'center-sm': centerSm,
+        'center-md': centerMd,
+        'center-lg': centerLg,
+      }
+    );
 
     return (
       <ComponentClass className={className}>
@@ -56,10 +73,10 @@ Flexgrid.Col = React.createClass({
 
   getDefaultProps(){
     return {
-      xs: 12,
-      sm: 12,
-      md: 12,
-      lg: 12,
+      xs: null,
+      sm: null,
+      md: null,
+      lg: null,
       xsOffset: null,
       smOffset: null,
       mdOffset: null,
@@ -86,7 +103,10 @@ Flexgrid.Col = React.createClass({
     const className = classNames(
       propClassName,
       {
-        [`col-xs-${xs} col-sm-${sm} col-md-${md} col-lg-${lg}`]: true,
+        [`col-xs-${xs}`]: xs,
+        [`col-sm-${sm}`]: sm,
+        [`col-md-${md}`]: md,
+        [`col-lg-${lg}`]: lg,
         [`col-xs-offset-${xsOffset}`]: xsOffset,
         [`col-sm-offset-${smOffset}`]: smOffset,
         [`col-md-offset-${mdOffset}`]: mdOffset,
