@@ -8,13 +8,15 @@ Package.onUse(function(api){
 	var both = ['server', 'client'];
 
   api.imply([
-    'meteor-base',
+    'check',
     'mongo',
-    'session',
-    'tracker',
     'ecmascript',
     'react',
     'grid',
+    'form',
+    'dataflows:immutable',
+    'aldeed:simple-schema',
+    'aldeed:collection2',
     'izzilab:material-ui',
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',

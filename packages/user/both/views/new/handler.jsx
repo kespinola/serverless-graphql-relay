@@ -9,6 +9,11 @@ const {
   Col,
   } = Flexgrid;
 
+const {
+  Form,
+  Field,
+  } = AutoForm;
+
 User.Handlers.New = React.createClass({
   getDefaultProps(){
     return {
@@ -36,11 +41,11 @@ User.Handlers.New = React.createClass({
               )
             })}
             <span>or</span>
-            <form>
-              <TextField fullWidth floatingLabelText='Email' type='email'/>
-              <TextField fullWidth floatingLabelText='Password' type='password'/>
-              <TextField fullWidth type='submit'/>
-            </form>
+            <Form schema={User.Schema}>
+              <Field name='email' component={TextField} floatingLabelText='email' fullWidth />
+              <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
+              <TextField fullWidth type='submit' />
+            </Form>
           </Card>
         </Col>
       </Row>

@@ -25,6 +25,9 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.imply([
+    'reactrouter:react-router',
+    'reactrouter:react-router-ssr',
+    'react',
     'home',
     'post',
     'user',
