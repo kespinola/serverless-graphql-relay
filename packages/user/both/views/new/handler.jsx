@@ -1,13 +1,20 @@
 const {
   Card,
   RaisedButton,
+  TextField,
   } = MUI;
+
+const {
+  Row,
+  Col,
+  } = Flexgrid;
 
 User.Handlers.New = React.createClass({
   getDefaultProps(){
     return {
-      accounts:[
+      accounts: [
         'Facebook',
+        'Google',
       ]
     }
   },
@@ -16,17 +23,27 @@ User.Handlers.New = React.createClass({
       accounts,
       } = this.props;
     return (
-      <span>
-        {accounts.map(account => {
-          return (
-            <RaisedButton
-              key={account}
-              label={account}
-              onClick={() => Meteor[`loginWith${account}`]({}, (err) => { throw new Meteor.Error('Login failed', err)})}
-              />
-          )
-        })}
-      </span>
+      <Row>
+        <Col>
+          <Card>
+            {accounts.map(account => {
+              return (
+                <RaisedButton
+                  key={account}
+                  label={account}
+                  onClick={() => !Meteor.userId() && Meteor[`loginWith${account}`]({}, (err) => { throw new Meteor.Error('Login failed', err)})}
+                  />
+              )
+            })}
+            <span>or</span>
+            <form>
+              <TextField fullWidth floatingLabelText='Email' type='email'/>
+              <TextField fullWidth floatingLabelText='Password' type='password'/>
+              <TextField fullWidth type='submit'/>
+            </form>
+          </Card>
+        </Col>
+      </Row>
     )
   },
 

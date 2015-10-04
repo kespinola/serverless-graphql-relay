@@ -1,6 +1,6 @@
 Package.describe({
 	name:'core',
-	description:'core description',
+	description:'core dependency manifest for application.',
 });
 
 Package.onUse(function(api){
@@ -8,14 +8,18 @@ Package.onUse(function(api){
 	var both = ['server', 'client'];
 
   api.imply([
+    'meteor-base',
     'mongo',
     'session',
     'tracker',
     'ecmascript',
     'react',
+    'grid',
     'fourseven:scss',
     'izzilab:material-ui',
+    'reactrouter:react-router',
     'reactrouter:react-router-ssr',
+    'maxharris9:classnames',
   ], both);
 
   api.imply([

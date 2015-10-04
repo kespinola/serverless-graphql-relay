@@ -8,8 +8,8 @@ AppRoutes = (
       <Route path='/post/:id' component={Post.Handlers.Show}/>
     </Route>
     <Route component={User.Handlers.Index}>
-      <IndexRoute component={User.Handlers.Show}/>
-      <Route path='/sign-up' component={User.Handlers.New}/>
+      <Route path='account' component={User.Handlers.Show}/>
+      <Route path='sign-up' component={User.Handlers.New}/>
     </Route>
   </Route>
 );

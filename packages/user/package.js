@@ -9,8 +9,10 @@ Package.onUse(function(api){
 
 	api.use([
     'core',
+		'accounts-password',
+		'accounts-google',
 		'accounts-facebook',
-		'service-configuration',
+		'service-configuration'
 	], both);
 
   var views = ['index', 'list', 'show', 'new'];
@@ -25,7 +27,6 @@ Package.onUse(function(api){
 
 	api.addFiles([
 		'./server/configure.js',
-		'./server/methods.js',
 	], 'server');
 
 	api.export([
@@ -33,3 +34,4 @@ Package.onUse(function(api){
 	], both);
 
 });
+
