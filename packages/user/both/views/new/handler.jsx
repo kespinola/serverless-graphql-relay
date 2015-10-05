@@ -36,12 +36,13 @@ User.Handlers.New = React.createClass({
                 <RaisedButton
                   key={account}
                   label={account}
+                  fullWidth
                   onClick={() => !Meteor.userId() && Meteor[`loginWith${account}`]({}, (err) => { throw new Meteor.Error('Login failed', err)})}
                   />
               )
             })}
             <span>or</span>
-            <Form schema={User.Schema}>
+            <Form schema={User.Schema} onSubmit={this._handleSubmit}>
               <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
               <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
               <TextField fullWidth type='submit' />
@@ -51,5 +52,13 @@ User.Handlers.New = React.createClass({
       </Row>
     )
   },
+
+  _handleSubmit(user){
+    debugger;
+    Accounts.createUser(user, (err) => {
+      if(err) throw new Meteor.Error(err);
+      this.history.pushState(null, '/account')
+    })
+  }
 
 });

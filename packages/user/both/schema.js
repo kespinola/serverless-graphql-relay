@@ -1,26 +1,21 @@
 User.Schema = new SimpleSchema({
 
+  username: {
+    type: String,
+    optional: true,
+  },
+
   email: {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
+    label: 'Email',
+    optional: true,
   },
 
   password: {
     type: String,
-    label: "Enter a password",
-    min: 8
+    label: "Password",
   },
-
-  confirmPassword: {
-    type: String,
-    label: "Enter the password again",
-    min: 8,
-    custom: function () {
-      if (this.value !== this.field('password').value) {
-        return "passwordMismatch";
-      }
-    }
-  }
 
 });
 

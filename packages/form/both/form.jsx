@@ -7,13 +7,12 @@ AutoForm.Form = React.createClass({
     return {
       errorLabelProp: "errorText",
       schema: new SimpleSchema({}),
+      onSubmit: null,
     }
   },
 
   getInitialState(){
-    const schemaContext = this.props.schema.namedContext("formContext");
     return {
-      schemaContext,
       form: {}
     }
   },
@@ -24,6 +23,10 @@ AutoForm.Form = React.createClass({
         {React.Children.map(this.props.children, child => {
 
           const {
+            errorLabelProp,
+            } = this.props;
+
+          const {
             props,
             } = child;
 
@@ -32,31 +35,76 @@ AutoForm.Form = React.createClass({
           } = this.state;
 
           const name = props.name;
-          const onChange = this._handleFieldChange.bind(null, name);
+          const onChange = this._handleChange.bind(null, name);
+          const onBlur = this._handleBlur.bind(null, name);
           const value = form[name];
-          return React.cloneElement(child, {... props, value, onChange});
+          const error = {[errorLabelProp]: this.state[`error_${name}`]};
+          return React.cloneElement(child, {... props, ... error, value, onChange, onBlur});
         })}
       </form>
     )
   },
 
-  _handleFieldChange(name, e){
+  _handleChange(name, e){
+
     const {
-      schemaContext,
-      form: oldForm,
+      form,
       } = this.state;
 
     const update = {[name]:e.target.value};
-    const isValid = schemaContext.validateOne(update, name);
-    const form = {... oldForm, ... update};
-    this.setState({form})
+    this.setState({form: {... form, ... update}})
+  },
+
+  _handleBlur(name, e){
+    const {
+      schema,
+      } = this.props;
+    const {
+      form,
+      } = this.state;
+    const value = form[name];
+
+    const errKey = `error_${name}`;
+
+    const ek = schema.namedContext(errKey);
+    ek.validateOne({[name]: value}, name);
+
+    this.setState({[errKey]: ek.keyErrorMessage(name)});
   },
 
   _handleSubmit(e){
+
+    e.preventDefault();
+
     const {
       schema,
-      } = props;
-    e.preventDefault();
+      onSubmit,
+      } = this.props;
+
+    const {
+      form,
+      } = this.state;
+
+    const ck = schema.namedContext('complete_check');
+
+    const isValid = ck.validate(form);
+
+    if(isValid){
+
+      onSubmit && onSubmit(form);
+
+    }else{
+
+      let errors = {};
+
+      ck.invalidKeys().forEach(({name}) => {
+        const entry = {[`error_${name}`]: ck.keyErrorMessage(name)};
+        errors = {... errors, ... entry}
+      });
+
+      this.setState(errors);
+    }
+
   },
 
 });

@@ -8,7 +8,9 @@ Package.onUse(function(api){
 	var both = ['server', 'client'];
 
 	api.use([
+		'check',
     'react',
+		'jaywon:meteor-node-uuid',
     'aldeed:simple-schema',
     'aldeed:collection2',
 	], both);
