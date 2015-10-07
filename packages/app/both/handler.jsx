@@ -20,10 +20,20 @@ const barStyle = {
   left: 0,
 };
 
-const menuItems = [
-  { route: '/sign-up', text: 'Sign Up' },
+let menuItems = [
   { route: '/blog', text: 'Blog' },
 ];
+
+if(Meteor.isClient && Meteor.user()) {
+  menuItems = menuItems.concat([  
+    { route: '/sign-up', text: 'Sign Up' },
+    { route:'/login', text: 'Login' }
+  ]);
+} else {
+  menuItems = menuItems.concat([
+    { route: '/account', text: 'Account' }
+  ]);
+}
 
 App.Handler = React.createClass({
 

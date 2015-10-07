@@ -1,5 +1,6 @@
 const {
   Card,
+  CardHeader,
   RaisedButton,
   TextField,
 } = MUI;
@@ -51,33 +52,29 @@ User.Handlers.New = React.createClass({
       <Row centerXs>
         <Col xs={10} sm={6}>
           <Card>
+            <h1>Welcome</h1>
+            <h2>Sign up using favorite social network or directly.</h2>
             {accounts.map(account => {
               return (
                 <RaisedButton
                   key={account}
                   label={account}
                   fullWidth
-                  onClick={() => !Meteor.userId() && Meteor[`loginWith${account}`]({}, (err) => { throw new Meteor.Error('Login failed', err)})}
+                  onClick={this._handleAccountClick.bind(null, account)}
                   />
               )
             })}
             <span>or</span>
-            <Form schema={newUserSchema} onSubmit={this._handleSubmit}>
-              <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
-              <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
-              <TextField fullWidth type='submit' />
-            </Form>
+            <UserSessionForm onSubmit={this._handleSubmit} />
           </Card>
         </Col>
       </Row>
     )
   },
-
+  
   _handleSubmit(user){
-    debugger;
     Accounts.createUser(user, (err) => {
-      if(err) throw new Meteor.Error(err);
-      debugger;
+      if(err) throw Meteor.Error(err);
       this.history.pushState(null, '/account')
     })
   }
