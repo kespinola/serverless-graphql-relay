@@ -1,0 +1,11 @@
+{
+  "public": {
+    "environment": "development"
+  },
+  "private" : {
+    "facebookAppId": "",
+    "facebookSecret": "",
+    "googleId": "",
+    "googleSecret": ""
+  }
+}

@@ -54,7 +54,6 @@ User.Handlers.New = React.createClass({
   },
 
   _handleSubmit(user){
-    debugger;
     Accounts.createUser(user, (err) => {
       if(err) throw new Meteor.Error(err);
       this.history.pushState(null, '/account')

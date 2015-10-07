@@ -58,10 +58,10 @@ AutoForm.Form = React.createClass({
   _handleBlur(name, e){
     const {
       schema,
-      } = this.props;
+    } = this.props;
     const {
       form,
-      } = this.state;
+    } = this.state;
     const value = form[name];
 
     const errKey = `error_${name}`;
@@ -79,11 +79,11 @@ AutoForm.Form = React.createClass({
     const {
       schema,
       onSubmit,
-      } = this.props;
+    } = this.props;
 
     const {
       form,
-      } = this.state;
+    } = this.state;
 
     const ck = schema.namedContext('complete_check');
 
