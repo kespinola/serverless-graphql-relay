@@ -46,12 +46,16 @@ AutoForm.Form = React.createClass({
   },
 
   _handleChange(name, e){
-
+    
+    const {
+      schema,
+    } = this.props;
+    
     const {
       form,
-      } = this.state;
+    } = this.state;
 
-    const update = {[name]:e.target.value};
+    const update = {[name]: e.target.value};
     this.setState({form: {... form, ... update}})
   },
 
@@ -68,7 +72,7 @@ AutoForm.Form = React.createClass({
 
     const ek = schema.namedContext(errKey);
     ek.validateOne({[name]: value}, name);
-
+    
     this.setState({[errKey]: ek.keyErrorMessage(name)});
   },
 
@@ -88,7 +92,7 @@ AutoForm.Form = React.createClass({
     const ck = schema.namedContext('complete_check');
 
     const isValid = ck.validate(form);
-
+    
     if(isValid){
 
       onSubmit && onSubmit(form);

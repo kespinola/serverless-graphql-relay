@@ -42,7 +42,7 @@ App.Handler = React.createClass({
   render() {
     return (
       <AppCanvas>
-        <AppBar style={barStyle} onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() } title={<Link to='/'>App Starter</Link>}/>
+        <AppBar style={barStyle} onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() } title={<Link to='/'>App Start</Link>}/>
         <LeftNav ref="leftNav" docked={false} menuItems={menuItems} onChange={(e, i, {route}) => this.history.pushState(null, route)} />
         <Container fluid={true} className='app-container'>
           {this.props.children}

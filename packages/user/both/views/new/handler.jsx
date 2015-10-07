@@ -2,19 +2,39 @@ const {
   Card,
   RaisedButton,
   TextField,
-  } = MUI;
+} = MUI;
 
 const {
   Row,
   Col,
-  } = Flexgrid;
+} = Flexgrid;
 
 const {
   Form,
   Field,
-  } = AutoForm;
+} = AutoForm;
+
+const {
+  History,
+} = ReactRouter;
+
+const newUserSchema = new SimpleSchema({
+  
+  email : {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email
+  },
+  
+  password: {
+    type: String,
+  }
+  
+});
 
 User.Handlers.New = React.createClass({
+  
+  mixins: [History],
+  
   getDefaultProps(){
     return {
       accounts: [
@@ -42,7 +62,7 @@ User.Handlers.New = React.createClass({
               )
             })}
             <span>or</span>
-            <Form schema={User.Schema} onSubmit={this._handleSubmit}>
+            <Form schema={newUserSchema} onSubmit={this._handleSubmit}>
               <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
               <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
               <TextField fullWidth type='submit' />
@@ -54,8 +74,10 @@ User.Handlers.New = React.createClass({
   },
 
   _handleSubmit(user){
+    debugger;
     Accounts.createUser(user, (err) => {
       if(err) throw new Meteor.Error(err);
+      debugger;
       this.history.pushState(null, '/account')
     })
   }

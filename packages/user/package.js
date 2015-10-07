@@ -23,11 +23,11 @@ Package.onUse(function(api){
 
 	api.addFiles([
 		'namespace.js',
-		'both/schema.js'
 	].concat(views), both);
 
 	api.addFiles([
-		'./server/configure.js',
+    'server/publish.js',
+		'server/configure.js',
 	], 'server');
 
 	api.export([
