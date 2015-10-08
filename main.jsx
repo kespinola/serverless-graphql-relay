@@ -1,6 +1,6 @@
 const { IndexRoute, Route } = ReactRouter;
 
-function _onEnterSignUp(state, newState){
+function onEnterSignUp(state, newState){
   if(!Meteor.user()) return true;
   newState(null, '/account');
 }
@@ -14,8 +14,8 @@ AppRoutes = (
     </Route>
     <Route component={User.Handlers.Index}>
       <Route path='account' component={User.Handlers.Show}/>
+      <Route path='sign-up' onEnter={onEnterSignUp} component={User.Handlers.New}/>
       <Route path='login' component={User.Handlers.Session}/>
-      <Route path='sign-up' onEnter={_onEnterSignUp} component={User.Handlers.New}/>
     </Route>
   </Route>
 );

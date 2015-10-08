@@ -3,6 +3,7 @@ const {
   CardHeader,
   RaisedButton,
   TextField,
+  Avatar,
 } = MUI;
 
 const {
@@ -47,26 +48,16 @@ User.Handlers.New = React.createClass({
   render(){
     const {
       accounts,
-      } = this.props;
+    } = this.props;
     return (
       <Row centerXs>
         <Col xs={10} sm={6}>
-          <Card>
-            <h1>Welcome</h1>
-            <h2>Sign up using favorite social network or directly.</h2>
-            {accounts.map(account => {
-              return (
-                <RaisedButton
-                  key={account}
-                  label={account}
-                  fullWidth
-                  onClick={this._handleAccountClick.bind(null, account)}
-                  />
-              )
-            })}
-            <span>or</span>
-            <UserSessionForm onSubmit={this._handleSubmit} />
-          </Card>
+          <UserSessionForm
+            title='Welcome' 
+            subtitle='Sign up using your favorite social network or directly.'
+            avatar={<Avatar><i class="material-icons">person_add</i></Avatar>}
+            onSubmit={this._handleSubmit} 
+            />
         </Col>
       </Row>
     )

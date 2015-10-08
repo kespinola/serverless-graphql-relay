@@ -5,9 +5,14 @@ const { History, Link, } = ReactRouter;
 const {
   AppCanvas,
   AppBar,
+  Avatar,
   Styles,
   RaisedButton,
   DatePicker,
+  IconMenu,
+  IconButton,
+  MenuItem,
+  Menu,
   LeftNav,
   } = MUI;
 
@@ -21,19 +26,8 @@ const barStyle = {
 };
 
 let menuItems = [
-  { route: '/blog', text: 'Blog' },
+  {route: '/blog', text: 'Blog'},
 ];
-
-if(Meteor.isClient && Meteor.user()) {
-  menuItems = menuItems.concat([  
-    { route: '/sign-up', text: 'Sign Up' },
-    { route:'/login', text: 'Login' }
-  ]);
-} else {
-  menuItems = menuItems.concat([
-    { route: '/account', text: 'Account' }
-  ]);
-}
 
 App.Handler = React.createClass({
 
@@ -52,8 +46,20 @@ App.Handler = React.createClass({
   render() {
     return (
       <AppCanvas>
-        <AppBar style={barStyle} onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() } title={<Link to='/'>App Start</Link>}/>
-        <LeftNav ref="leftNav" docked={false} menuItems={menuItems} onChange={(e, i, {route}) => this.history.pushState(null, route)} />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+        <AppBar
+          style={barStyle}
+          onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
+          title={<Link to='/'>App Starter Pack</Link>}
+          iconElementRight={
+            <IconMenu iconButtonElement={<IconButton><i className='material-icons'>more_vert</i></IconButton>}>
+              <MenuItem index={0}><Link to='/account'><Avatar size={35}>KE</Avatar></Link></MenuItem>
+              <MenuItem index={1}>Logout</MenuItem>
+            </IconMenu>
+          }
+          />
+        <LeftNav ref="leftNav" docked={false} menuItems={menuItems}
+                 onChange={(e, i, {route}) => this.history.pushState(null, route)}/>
         <Container fluid={true} className='app-container'>
           {this.props.children}
         </Container>

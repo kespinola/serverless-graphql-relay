@@ -48,10 +48,6 @@ AutoForm.Form = React.createClass({
   _handleChange(name, e){
     
     const {
-      schema,
-    } = this.props;
-    
-    const {
       form,
     } = this.state;
 

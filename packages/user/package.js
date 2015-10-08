@@ -23,6 +23,7 @@ Package.onUse(function(api){
 
 	api.addFiles([
 		'namespace.js',
+    'both/components/userSessionForm.jsx'
 	].concat(views), both);
 
 	api.addFiles([
