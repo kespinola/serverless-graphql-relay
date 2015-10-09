@@ -15,7 +15,7 @@ Package.onUse(function(api){
 		'service-configuration'
 	], both);
 
-  var views = ['index', 'list', 'show', 'new'];
+  var views = ['index', 'list', 'show', 'new', 'session'];
 
   views = views.map(function(view){
     return './both/views/' + view + '/handler.jsx'
@@ -23,11 +23,12 @@ Package.onUse(function(api){
 
 	api.addFiles([
 		'namespace.js',
-		'both/schema.js'
+    'both/components/userSessionForm.jsx'
 	].concat(views), both);
 
 	api.addFiles([
-		'./server/configure.js',
+    'server/publish.js',
+		'server/configure.js',
 	], 'server');
 
 	api.export([

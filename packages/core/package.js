@@ -25,5 +25,5 @@ Package.onUse(function(api){
   api.imply([
     'es5-shim',
   ], 'client');
-
+  
 });

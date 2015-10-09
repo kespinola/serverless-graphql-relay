@@ -17,6 +17,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'namespace.js',
+    'index.js',
     './both/handler.jsx',
   ], both);
 
