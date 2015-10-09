@@ -8,37 +8,50 @@ AutoForm.Form = React.createClass({
       errorLabelProp: "errorText",
       schema: new SimpleSchema({}),
       onSubmit: null,
+      value: {},
+      onChange: null,
     }
   },
 
   getInitialState(){
+    const {
+      value,
+    } = this.props;
     return {
-      form: {}
+      value,
     }
+  },
+  
+  componentWillReceiveProps(props){
+    const {
+      value,
+    } = props;
+    value && this.setState({value});
   },
 
   render(){
+    const {
+      value: form,
+    } = this.state;
+    
     return (
-      <form onSubmit={this._handleSubmit}>
+      <form novalidate onSubmit={this._handleSubmit}>
         {React.Children.map(this.props.children, child => {
 
           const {
             errorLabelProp,
-            } = this.props;
+          } = this.props;
 
           const {
             props,
-            } = child;
-
-          const {
-            form,
-          } = this.state;
-
+          } = child;
+          
           const name = props.name;
           const onChange = this._handleChange.bind(null, name);
           const onBlur = this._handleBlur.bind(null, name);
           const value = form[name];
           const error = {[errorLabelProp]: this.state[`error_${name}`]};
+          
           return React.cloneElement(child, {... props, ... error, value, onChange, onBlur});
         })}
       </form>
@@ -46,28 +59,39 @@ AutoForm.Form = React.createClass({
   },
 
   _handleChange(name, e){
+    const {
+      onChange,  
+    } = this.props;
     
     const {
-      form,
+      value: form,
     } = this.state;
 
     const update = {[name]: e.target.value};
-    this.setState({form: {... form, ... update}})
+    const value = {... form, ... update};
+    
+    if(onChange){
+      onChange(value); 
+    }else {
+      this.setState({value});
+    }
   },
 
   _handleBlur(name, e){
+    
     const {
       schema,
     } = this.props;
+    
     const {
-      form,
+      value,
     } = this.state;
-    const value = form[name];
-
+    
+    const field = value[name];
     const errKey = `error_${name}`;
-
     const ek = schema.namedContext(errKey);
-    ek.validateOne({[name]: value}, name);
+    
+    ek.validateOne({[name]: field}, name);
     
     this.setState({[errKey]: ek.keyErrorMessage(name)});
   },
@@ -81,17 +105,18 @@ AutoForm.Form = React.createClass({
       onSubmit,
     } = this.props;
 
-    const {
-      form,
-    } = this.state;
+    
+    let value = _.cloneDeep(this.state.value);
 
     const ck = schema.namedContext('complete_check');
-
-    const isValid = ck.validate(form);
+    
+    schema.clean(value);
+    
+    const isValid = ck.validate(value);
     
     if(isValid){
 
-      onSubmit && onSubmit(form);
+      onSubmit && onSubmit(value);
 
     }else{
 

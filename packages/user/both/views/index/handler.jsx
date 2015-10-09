@@ -14,11 +14,6 @@ User.Handlers.Index = React.createClass({
       user,
       users,
     } = this.data;
-    {React.Children.map(this.props.children, child => {
-      const {
-        props,
-        } = child;
-      return React.cloneElement(child, {... props, user, users})
-    })}
+    return React.cloneElement(this.props.children, {user, users})
   }
 });

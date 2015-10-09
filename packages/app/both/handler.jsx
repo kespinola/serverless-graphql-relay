@@ -52,8 +52,8 @@ App.Handler = React.createClass({
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
           title={<Link to='/'>App Starter Pack</Link>}
           iconElementRight={
-            <IconMenu iconButtonElement={<IconButton><i className='material-icons'>more_vert</i></IconButton>}>
-              <MenuItem index={0}><Link to='/account'><Avatar size={35}>KE</Avatar></Link></MenuItem>
+            <IconMenu iconButtonElement={<IconButton><Avatar>KE</Avatar></IconButton>}>
+              <MenuItem index={0}><Link to='/account'>Account</Link></MenuItem>
               <MenuItem index={1}>Logout</MenuItem>
             </IconMenu>
           }
