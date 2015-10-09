@@ -60,9 +60,22 @@ User.Handlers.Show = React.createClass({
       profile = {},  
     } = this.state;
     
+    const {
+      first_name = '',
+      last_name,
+    } = profile;
+    
     return (
       <Card>
-        <Form value={profile} onChange={profile => this.setState({profile})} schema={profileSchema} onSubmit={this._handleSubmit}>
+        <CardHeader
+          title={`${first_name}${last_name ? ` ${last_name}` : ''}`}
+          avatar={<Avatar>{first_name.charAt(0).toUpperCase()}</Avatar>}
+          />
+        <Form 
+          value={profile} 
+          onChange={profile => this.setState({ profile })} 
+          schema={profileSchema} 
+          onSubmit={this._handleSubmit}>
           <Field name='first_name' component={TextField} floatingLabelText='First Name' fullWidth />
           <Field name='last_name' component={TextField} floatingLabelText='Last Name' fullWidth />
           <TextField fullWidth type='submit' />
@@ -74,4 +87,5 @@ User.Handlers.Show = React.createClass({
   _handleSubmit(profile){
     Meteor.users.update(Meteor.userId(), { $set: { profile } })
   }
+  
 });

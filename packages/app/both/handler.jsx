@@ -14,7 +14,8 @@ const {
   MenuItem,
   Menu,
   LeftNav,
-  } = MUI;
+  FlatButton,
+} = MUI;
 
 const { ThemeManager, DarkRawTheme } = Styles;
 
@@ -31,32 +32,62 @@ let menuItems = [
 
 App.Handler = React.createClass({
 
-  mixins: [History],
+  mixins: [History, ReactMeteorData],
 
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
-
+  
   getChildContext() {
     return {
       muiTheme: ThemeManager.getMuiTheme(DarkRawTheme)
     };
   },
 
+  getMeteorData() {
+    return {
+      user: Meteor.user() || {},
+    };
+  },
+  
   render() {
+    const {
+      user,
+    } = this.data;
+    
+    const {
+      profile = {},
+    } = user;
+    
+    const {
+      first_name = '',
+    } = profile;
+    
+    let iconSet;
+    
+    if(Meteor.userId()){
+      iconSet = (
+        <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}>
+          <MenuItem index={0} to='/account'>Account</MenuItem>
+          <FlatButton index={1} logout={true} primary={true} label='Logout' />
+        </IconMenu>
+      );
+    }else{
+      iconSet = (
+        <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<FlatButton>Register</FlatButton>}>
+          <MenuItem index={0} to='/sign-up'>Sign Up</MenuItem>
+          <FlatButton index={1} label='Log in' to='/login' />
+        </IconMenu>
+      );
+    }
+    
     return (
       <AppCanvas>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <AppBar
           style={barStyle}
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
           title={<Link to='/'>App Starter Pack</Link>}
-          iconElementRight={
-            <IconMenu iconButtonElement={<IconButton><Avatar>KE</Avatar></IconButton>}>
-              <MenuItem index={0}><Link to='/account'>Account</Link></MenuItem>
-              <MenuItem index={1}>Logout</MenuItem>
-            </IconMenu>
-          }
+          iconElementRight={iconSet}
           />
         <LeftNav ref="leftNav" docked={false} menuItems={menuItems}
                  onChange={(e, i, {route}) => this.history.pushState(null, route)}/>
@@ -65,6 +96,31 @@ App.Handler = React.createClass({
         </Container>
       </AppCanvas>
     );
+  },
+  
+  componentDidMount(){
+    var ss = document.createElement("link");
+    ss.type = "text/css";
+    ss.rel = "stylesheet";
+    ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
+    document.getElementsByTagName("head")[0].appendChild(ss);
+  },
+  
+  _handleTap(e, {props}){
+    
+    const {
+      logout,
+      to,
+    } = props;
+    
+    if(logout){
+      Meteor.logout(()=> {
+        this.history.pushState(null, '/login');
+      }); 
+    }else if(to){
+      this.history.pushState(null, to);
+    }
+    
   },
 
 });

@@ -8,6 +8,8 @@ const {
   TextField,
   Card,
   CardHeader,
+  CardText,
+  CardTitle,
   } = MUI;
 
 const sessionUserSchema = new SimpleSchema({
@@ -29,6 +31,9 @@ UserSessionForm = React.createClass({
     return {
       onSubmit: null,
       schema: sessionUserSchema,
+      title: null,
+      subtitle: null,
+      avatar: null,
       accounts: [
         'Facebook',
         'Google'
@@ -48,27 +53,26 @@ UserSessionForm = React.createClass({
     
     return (
       <Card>
-        <CardHeader
-          title={title}
-          subtitle={subtitle}
-          avatar={avatar}
-          />
-        {accounts.map(account => {
-          return (
-            <RaisedButton
-              key={account}
-              label={account}
-              fullWidth
-              onClick={this._handleAccountClick.bind(null, account)}
-              />
-          )
-        })}
-        <span>or</span>
-        <Form schema={schema} onSubmit={this._handleSubmit}>
-          <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
-          <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
-          <TextField fullWidth type='submit' />
-        </Form>
+        {avatar ? <CardHeader avatar={avatar}/> : null}
+        <CardTitle title={title} subtitle={subtitle}/>
+        <CardText>
+          {accounts.map(account => {
+            return (
+              <RaisedButton
+                key={account}
+                label={account}
+                fullWidth
+                onClick={this._handleAccountClick.bind(null, account)}
+                />
+            )
+          })}
+          <span>or</span>
+          <Form schema={schema} onSubmit={this._handleSubmit}>
+            <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
+            <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>
+            <TextField fullWidth type='submit' />
+          </Form>
+        </CardText>
       </Card>
     );
   },

@@ -35,7 +35,7 @@ AutoForm.Form = React.createClass({
     } = this.state;
     
     return (
-      <form novalidate onSubmit={this._handleSubmit}>
+      <form novalidate onSubmit={this._handleSubmit} autoComplete={'off'}>
         {React.Children.map(this.props.children, child => {
 
           const {

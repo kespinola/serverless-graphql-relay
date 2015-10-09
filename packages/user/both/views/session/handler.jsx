@@ -26,7 +26,10 @@ User.Handlers.Session = React.createClass({
     return (
       <Row centerXs>
         <Col xs={10} sm={6}>
-          <UserSessionForm title='Login' onSubmit={this._handleSubmit}/>
+          <UserSessionForm 
+            title='Login'
+            onSubmit={this._handleSubmit}
+            />
         </Col>
       </Row>
     )

@@ -55,7 +55,7 @@ User.Handlers.New = React.createClass({
           <UserSessionForm
             title='Welcome' 
             subtitle='Sign up using your favorite social network or directly.'
-            avatar={<Avatar><i class="material-icons">person_add</i></Avatar>}
+            avatar={<Avatar><i className="material-icons">person_add</i></Avatar>}
             onSubmit={this._handleSubmit} 
             />
         </Col>
