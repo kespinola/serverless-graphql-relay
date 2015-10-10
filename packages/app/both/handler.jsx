@@ -28,6 +28,7 @@ const barStyle = {
 
 let menuItems = [
   {route: '/blog', text: 'Blog'},
+  {route: '/roles', text: 'Roles'},
 ];
 
 App.Handler = React.createClass({
@@ -86,7 +87,7 @@ App.Handler = React.createClass({
         <AppBar
           style={barStyle}
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
-          title={<Link to='/'>App Starter Pack</Link>}
+          title={<Link to='/'><h2>App Starter</h2></Link>}
           iconElementRight={iconSet}
           />
         <LeftNav ref="leftNav" docked={false} menuItems={menuItems}

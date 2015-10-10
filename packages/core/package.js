@@ -14,6 +14,7 @@ Package.onUse(function(api){
     'react',
     'grid',
     'form',
+    'ramda:ramda',
     'aldeed:simple-schema',
     'aldeed:collection2',
     'izzilab:material-ui',

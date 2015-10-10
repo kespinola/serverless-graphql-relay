@@ -1,4 +1,10 @@
 AutoForm.Field = React.createClass({
+  getDefaultProps(){
+    return {
+      component: 'input',
+      type: 'text',
+    }
+  },
   render(){
     const {
       value,

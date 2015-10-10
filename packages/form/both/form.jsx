@@ -57,7 +57,7 @@ AutoForm.Form = React.createClass({
       </form>
     )
   },
-
+  
   _handleChange(name, e){
     const {
       onChange,  
@@ -133,3 +133,4 @@ AutoForm.Form = React.createClass({
   },
 
 });
+
