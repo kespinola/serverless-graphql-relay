@@ -18,11 +18,11 @@ Package.onUse(function(api) {
   api.addFiles([
     'namespace.js',
     'index.js',
-    './both/handler.jsx',
+    'both/handler.jsx',
   ], both);
 
   api.addFiles([
-    './client/style.sass',
+    'client/style.sass',
   ], 'client');
 
   api.imply([
@@ -32,6 +32,7 @@ Package.onUse(function(api) {
     'home',
     'post',
     'user',
+    'role',
   ], both);
 
   api.export([

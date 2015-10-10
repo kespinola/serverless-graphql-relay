@@ -14,6 +14,5 @@ Meteor.users.allow({
 
 });
 
-Meteor.publish('users', () => {
-  return Meteor.users.find();
-});
+Meteor.publish('users', () => Meteor.users.find({}) );
+

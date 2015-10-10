@@ -12,7 +12,7 @@ Package.onUse(function(api){
 		'accounts-password',
 		'accounts-google',
 		'accounts-facebook',
-		'service-configuration'
+		'service-configuration',
 	], both);
 
   var views = ['index', 'list', 'show', 'new', 'session'];
