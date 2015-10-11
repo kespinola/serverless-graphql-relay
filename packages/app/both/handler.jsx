@@ -14,6 +14,7 @@ const {
   MenuItem,
   Menu,
   LeftNav,
+  FontIcon,
   FlatButton,
 } = MUI;
 
@@ -26,15 +27,10 @@ const barStyle = {
   left: 0,
 };
 
-let menuItems = [
-  {route: '/blog', text: 'Blog'},
-  {route: '/roles', text: 'Roles'},
-];
-
 App.Handler = React.createClass({
 
   mixins: [History, ReactMeteorData],
-
+  
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
@@ -52,6 +48,7 @@ App.Handler = React.createClass({
   },
   
   render() {
+    
     const {
       user,
     } = this.data;
@@ -65,10 +62,42 @@ App.Handler = React.createClass({
     } = profile;
     
     let iconSet;
+
+    let menuItems = [
+      {
+        leftIcon: (<FontIcon className='material-icons'>smartphone</FontIcon>),
+        route: '/blog',
+        text: 'Blog'
+      },
+    ];
     
-    if(Meteor.userId()){
+    const userId = Meteor.userId();
+
+    if(Roles.userIsInRole(userId, 'webmaster')){
+      menuItems = menuItems.concat({
+        leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
+        type: MenuItem.Types.NESTED,
+        text: 'Manage',
+        items: [
+          {
+            leftIcon: (<FontIcon className='material-icons'>people</FontIcon>),
+            route: '/roles',
+            text: 'Role'
+          },
+          {
+            route: '/users',
+            text: 'Users'
+          }
+        ]
+      });
+    }
+    
+    if(userId){
       iconSet = (
-        <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}>
+        <IconMenu 
+          onItemTouchTap={this._handleTap} 
+          iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}
+          >
           <MenuItem index={0} to='/account'>Account</MenuItem>
           <FlatButton index={1} logout={true} primary={true} label='Logout' />
         </IconMenu>
@@ -87,11 +116,15 @@ App.Handler = React.createClass({
         <AppBar
           style={barStyle}
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
-          title={<Link to='/'><h2>App Starter</h2></Link>}
           iconElementRight={iconSet}
           />
-        <LeftNav ref="leftNav" docked={false} menuItems={menuItems}
-                 onChange={(e, i, {route}) => this.history.pushState(null, route)}/>
+        <LeftNav 
+          ref="leftNav"
+          header={<Link to='/'><h1>App Starter</h1></Link>}
+          docked={false} 
+          menuItems={menuItems}
+          onChange={(e, i, {route}) => this.history.pushState(null, route)}
+          />
         <Container fluid={true} className='app-container'>
           {this.props.children}
         </Container>
@@ -100,7 +133,7 @@ App.Handler = React.createClass({
   },
   
   componentDidMount(){
-    var ss = document.createElement("link");
+    let ss = document.createElement("link");
     ss.type = "text/css";
     ss.rel = "stylesheet";
     ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";

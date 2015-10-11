@@ -16,6 +16,7 @@ AppRoutes = (
       <Route path='account' component={User.Handlers.Show}/>
       <Route path='sign-up' onEnter={onEnterSignUp} component={User.Handlers.New}/>
       <Route path='login' component={User.Handlers.Session}/>
+      <Route path='users' component={User.Handlers.List}/>
     </Route>
     <Route path='roles' component={Role.Handlers.List}/>
   </Route>
