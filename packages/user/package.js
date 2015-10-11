@@ -9,6 +9,7 @@ Package.onUse(function(api){
 
 	api.use([
     'core',
+    'role',
 		'accounts-password',
 		'accounts-google',
 		'accounts-facebook',
@@ -18,7 +19,7 @@ Package.onUse(function(api){
   var views = ['index', 'list', 'show', 'new', 'session'];
 
   views = views.map(function(view){
-    return './both/views/' + view + '/handler.jsx'
+    return 'both/views/' + view + '/handler.jsx'
   });
 
 	api.addFiles([

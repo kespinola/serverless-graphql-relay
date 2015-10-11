@@ -8,8 +8,15 @@ Package.onUse(function(api){
   var both = ['server', 'client'];
   
   api.use([
-    'core',
+    'react',
+    'mongo',
+    'ecmascript',
+    'ramda:ramda',
+    'izzilab:material-ui',
     'alanning:roles',
+    'aldeed:simple-schema',
+    'form',
+    'grid',
   ], both);
   
   api.imply([

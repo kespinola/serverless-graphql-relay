@@ -14,6 +14,7 @@ const {
   MenuItem,
   Menu,
   LeftNav,
+  FontIcon,
   FlatButton,
 } = MUI;
 
@@ -26,9 +27,28 @@ const barStyle = {
   left: 0,
 };
 
-let menuItems = [
-  {route: '/blog', text: 'Blog'},
-  {route: '/roles', text: 'Roles'},
+const menuItems = [
+  {
+    leftIcon: (<FontIcon className='material-icons'>smartphone</FontIcon>),
+    route: '/blog', 
+    text: 'Blog'
+  },
+  {
+    leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
+    type: MenuItem.Types.NESTED, 
+    text: 'Manage', 
+    items: [
+      { 
+        leftIcon: (<FontIcon className='material-icons'>people</FontIcon>),
+        route: '/roles', 
+        text: 'Role' 
+      },
+      { 
+        route: '/users', 
+        text: 'Users' 
+      }
+    ] 
+  },
 ];
 
 App.Handler = React.createClass({
@@ -87,11 +107,15 @@ App.Handler = React.createClass({
         <AppBar
           style={barStyle}
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
-          title={<Link to='/'><h2>App Starter</h2></Link>}
           iconElementRight={iconSet}
           />
-        <LeftNav ref="leftNav" docked={false} menuItems={menuItems}
-                 onChange={(e, i, {route}) => this.history.pushState(null, route)}/>
+        <LeftNav 
+          ref="leftNav"
+          header={<Link to='/'><h1>App Starter</h1></Link>}
+          docked={false} 
+          menuItems={menuItems}
+          onChange={(e, i, {route}) => this.history.pushState(null, route)}
+          />
         <Container fluid={true} className='app-container'>
           {this.props.children}
         </Container>
@@ -100,7 +124,7 @@ App.Handler = React.createClass({
   },
   
   componentDidMount(){
-    var ss = document.createElement("link");
+    let ss = document.createElement("link");
     ss.type = "text/css";
     ss.rel = "stylesheet";
     ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
