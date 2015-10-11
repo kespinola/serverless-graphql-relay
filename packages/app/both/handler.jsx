@@ -27,34 +27,10 @@ const barStyle = {
   left: 0,
 };
 
-const menuItems = [
-  {
-    leftIcon: (<FontIcon className='material-icons'>smartphone</FontIcon>),
-    route: '/blog', 
-    text: 'Blog'
-  },
-  {
-    leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
-    type: MenuItem.Types.NESTED, 
-    text: 'Manage', 
-    items: [
-      { 
-        leftIcon: (<FontIcon className='material-icons'>people</FontIcon>),
-        route: '/roles', 
-        text: 'Role' 
-      },
-      { 
-        route: '/users', 
-        text: 'Users' 
-      }
-    ] 
-  },
-];
-
 App.Handler = React.createClass({
 
   mixins: [History, ReactMeteorData],
-
+  
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
@@ -72,6 +48,7 @@ App.Handler = React.createClass({
   },
   
   render() {
+    
     const {
       user,
     } = this.data;
@@ -85,8 +62,37 @@ App.Handler = React.createClass({
     } = profile;
     
     let iconSet;
+
+    let menuItems = [
+      {
+        leftIcon: (<FontIcon className='material-icons'>smartphone</FontIcon>),
+        route: '/blog',
+        text: 'Blog'
+      },
+    ];
     
-    if(Meteor.userId()){
+    const userId = Meteor.userId();
+
+    if(Roles.userIsInRole(userId, 'webmaster')){
+      menuItems = menuItems.concat({
+        leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
+        type: MenuItem.Types.NESTED,
+        text: 'Manage',
+        items: [
+          {
+            leftIcon: (<FontIcon className='material-icons'>people</FontIcon>),
+            route: '/roles',
+            text: 'Role'
+          },
+          {
+            route: '/users',
+            text: 'Users'
+          }
+        ]
+      });
+    }
+    
+    if(userId){
       iconSet = (
         <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}>
           <MenuItem index={0} to='/account'>Account</MenuItem>

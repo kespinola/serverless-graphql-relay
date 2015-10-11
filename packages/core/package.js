@@ -10,10 +10,8 @@ Package.onUse(function(api){
   api.imply([
     'check',
     'mongo',
-    'ecmascript',
     'react',
-    'grid',
-    'form',
+    'ecmascript',
     'ramda:ramda',
     'aldeed:simple-schema',
     'aldeed:collection2',
@@ -21,6 +19,9 @@ Package.onUse(function(api){
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
     'maxharris9:classnames',
+    'grid',
+    'form',
+    'role',
   ], both);
 
   api.imply([

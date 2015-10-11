@@ -13,6 +13,7 @@ const {
 
 const {
   find,
+  is,
 } = R;
 
 
@@ -28,7 +29,7 @@ User.Handlers.List = React.createClass({
     const handler = Meteor.subscribe('roles');
     
     return {
-      roles: Meteor.roles.find({}).fetch() || [],
+      roles: Meteor.roles.find({}).fetch(),
     }
   },
   
@@ -60,7 +61,7 @@ User.Handlers.List = React.createClass({
                     {appRoles.map( ({name}) => {
                       return (
                         <Toggle
-                          defaultToggled={find((role)=> role === name, roles)}
+                          defaultToggled={is(Object, find((role)=> role === name, roles))}
                           onToggle={this._handleToggle.bind(null, _id, name)}
                           label={name}
                           />
