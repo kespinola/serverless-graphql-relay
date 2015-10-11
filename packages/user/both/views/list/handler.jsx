@@ -61,7 +61,8 @@ User.Handlers.List = React.createClass({
                     {appRoles.map( ({name}) => {
                       return (
                         <Toggle
-                          defaultToggled={is(Object, find((role)=> role === name, roles))}
+                          key={name}
+                          defaultToggled={is(String, find(role => role === name, roles))}
                           onToggle={this._handleToggle.bind(null, _id, name)}
                           label={name}
                           />

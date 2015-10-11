@@ -94,7 +94,10 @@ App.Handler = React.createClass({
     
     if(userId){
       iconSet = (
-        <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}>
+        <IconMenu 
+          onItemTouchTap={this._handleTap} 
+          iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}
+          >
           <MenuItem index={0} to='/account'>Account</MenuItem>
           <FlatButton index={1} logout={true} primary={true} label='Logout' />
         </IconMenu>
