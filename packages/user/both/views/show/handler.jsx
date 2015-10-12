@@ -11,7 +11,7 @@ const {
   Field,
 } = AutoForm;
 
-const profileSchema = new SimpleSchema({
+const ProfileSchema = new SimpleSchema({
   'first_name': {
     type: String,
     optional: true,
@@ -74,7 +74,7 @@ User.Handlers.Show = React.createClass({
         <Form 
           value={profile} 
           onChange={profile => this.setState({ profile })} 
-          schema={profileSchema} 
+          schema={ProfileSchema} 
           onSubmit={this._handleSubmit}>
           <Field name='first_name' component={TextField} floatingLabelText='First Name' fullWidth />
           <Field name='last_name' component={TextField} floatingLabelText='Last Name' fullWidth />

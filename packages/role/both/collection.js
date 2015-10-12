@@ -1,4 +1,4 @@
-Role.schema = new SimpleSchema({
+Role.Schema = new SimpleSchema({
   name: {
     type: String,
     label: 'Name',

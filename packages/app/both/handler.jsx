@@ -16,6 +16,7 @@ const {
   LeftNav,
   FontIcon,
   FlatButton,
+  Dialog,
 } = MUI;
 
 const { ThemeManager, DarkRawTheme } = Styles;
@@ -28,6 +29,11 @@ const barStyle = {
 };
 
 App.Handler = React.createClass({
+  
+  previous: {
+    children: null,
+    path: null,
+  },
 
   mixins: [History, ReactMeteorData],
   
@@ -46,8 +52,23 @@ App.Handler = React.createClass({
       user: Meteor.user() || {},
     };
   },
+
+  componentWillReceiveProps({location}) {
+    
+    if(location.key !== this.props.location.key){
+      this.previous = {
+        children: this.props.children, 
+        path: this.props.location.pathname,
+      }
+    } 
+    
+  },
   
   render() {
+    
+    const {
+      location = {},  
+    } = this.props;
     
     const {
       user,
@@ -61,6 +82,13 @@ App.Handler = React.createClass({
       first_name = '',
     } = profile;
     
+    const modal = location.state && location.state.modal;
+    let title;
+    
+    if(modal) title = location.state.title;
+    
+    const userId = Meteor.userId();
+    
     let iconSet;
 
     let menuItems = [
@@ -70,10 +98,19 @@ App.Handler = React.createClass({
         text: 'Blog'
       },
     ];
-    
-    const userId = Meteor.userId();
 
-    if(Roles.userIsInRole(userId, 'webmaster')){
+    if(Roles.userIsInRole(userId, Role.OWNER)){
+      menuItems = menuItems.concat({
+        route: '/site-configure',
+        location: {
+          modal: true,
+          text: 'Configure Site Settings'
+        },
+        text: 'Site Configure'
+      });
+    }
+    
+    if(Roles.userIsInRole(userId, Role.WEBMASTER)){
       menuItems = menuItems.concat({
         leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
         type: MenuItem.Types.NESTED,
@@ -123,10 +160,16 @@ App.Handler = React.createClass({
           header={<Link to='/'><h1>App Starter</h1></Link>}
           docked={false} 
           menuItems={menuItems}
-          onChange={(e, i, {route}) => this.history.pushState(null, route)}
+          onChange={this._handleNavChange}
           />
         <Container fluid={true} className='app-container'>
-          {this.props.children}
+          {modal ? this.previous.children : this.props.children}
+          <Dialog
+            title={title}
+            onDismiss={this._handleDismiss}
+            ref='dialog'>
+            {modal ? this.props.children : null}
+          </Dialog>
         </Container>
       </AppCanvas>
     );
@@ -138,6 +181,26 @@ App.Handler = React.createClass({
     ss.rel = "stylesheet";
     ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
     document.getElementsByTagName("head")[0].appendChild(ss);
+  },
+  
+  componentDidUpdate(){
+    const {
+      location = {},
+    } = this.props;
+    
+    const {
+      dialog,  
+    } = this.refs;
+    
+    if(location.state && location.state.modal && !dialog.isOpen()) dialog.show();
+  },
+  
+  _handleNavChange(e, i, {route, location = null}){
+    this.history.pushState(location, route)
+  },
+  
+  _handleDismiss(){
+    this.history.pushState(null, this.previous.path)
   },
   
   _handleTap(e, {props}){

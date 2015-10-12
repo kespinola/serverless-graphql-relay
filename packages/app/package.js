@@ -33,6 +33,7 @@ Package.onUse(function(api) {
     'post',
     'user',
     'role',
+    'site',
   ], both);
 
   api.export([

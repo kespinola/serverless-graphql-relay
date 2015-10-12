@@ -12,7 +12,7 @@ const {
   CardTitle,
   } = MUI;
 
-const sessionUserSchema = new SimpleSchema({
+const SessionUserSchema = new SimpleSchema({
 
   email : {
     type: String,
@@ -30,7 +30,7 @@ UserSessionForm = React.createClass({
   getDefaultProps(){
     return {
       onSubmit: null,
-      schema: sessionUserSchema,
+      schema: SessionUserSchema,
       title: null,
       subtitle: null,
       avatar: null,
