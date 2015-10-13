@@ -104,7 +104,7 @@ App.Handler = React.createClass({
         route: '/site-configure',
         location: {
           modal: true,
-          text: 'Configure Site Settings'
+          title: 'Configure Site Settings'
         },
         text: 'Site Configure'
       });

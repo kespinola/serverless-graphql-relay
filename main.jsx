@@ -19,7 +19,9 @@ AppRoutes = (
       <Route path='users' component={User.Handlers.List}/>
     </Route>
     <Route path='roles' component={Role.Handlers.List}/>
-    <Route path='site-configure' component={Site.Handlers.List}/>
+    <Route component={Site.Handlers.Index}>
+      <Route path='site-configure' component={Site.Handlers.Settings} />
+    </Route>
   </Route>
 );
 

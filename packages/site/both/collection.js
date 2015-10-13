@@ -44,3 +44,17 @@ Site.Schema = new SimpleSchema({
   },
   
 });
+
+Site.Collection.attachSchema(Site.Schema);
+
+Site.Collection.allow({
+  insert(){
+    return true;
+  },
+  update(){
+    return true;
+  },
+  remove(){
+    return true;
+  }
+});

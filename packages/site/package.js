@@ -10,13 +10,17 @@ Package.onUse(function(api){
   api.use([
     'core'
   ], both);
+
+  var views = ['index', 'list', 'settings'];
+
+  views = views.map(function(view){
+    return 'both/views/' + view + '/handler.jsx'
+  });
   
   api.addFiles([
     'namespace.js',
     'both/collection.js',
-    'both/views/list/handler.jsx',
-    
-  ], both);
+  ].concat(views), both);
   
   api.addFiles([
     'server/publish.js',
