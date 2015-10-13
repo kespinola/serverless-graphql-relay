@@ -101,7 +101,7 @@ App.Handler = React.createClass({
 
     if(Roles.userIsInRole(userId, Role.OWNER)){
       menuItems = menuItems.concat({
-        route: '/site-configure',
+        route: '/configure',
         location: {
           modal: true,
           title: 'Configure Site Settings'
@@ -124,6 +124,10 @@ App.Handler = React.createClass({
           {
             route: '/users',
             text: 'Users'
+          },
+          {
+            route: '/sites',
+            text: 'Sites',
           }
         ]
       });

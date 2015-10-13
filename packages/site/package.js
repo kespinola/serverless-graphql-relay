@@ -11,7 +11,7 @@ Package.onUse(function(api){
     'core'
   ], both);
 
-  var views = ['index', 'list', 'settings'];
+  var views = ['list', 'settings'];
 
   views = views.map(function(view){
     return 'both/views/' + view + '/handler.jsx'
@@ -24,7 +24,7 @@ Package.onUse(function(api){
   
   api.addFiles([
     'server/publish.js',
-  ], both);
+  ], 'server');
   
   api.export([
     'Site'

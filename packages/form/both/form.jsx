@@ -47,10 +47,16 @@ AutoForm.Form = React.createClass({
           } = child;
           
           const name = props.name;
-          const onChange = this._handleChange.bind(null, name);
-          const onBlur = this._handleBlur.bind(null, name);
-          const value = form[name];
-          const error = {[errorLabelProp]: this.state[`error_${name}`]};
+          
+          let onChange, onBlur, value;
+          let error = {};
+          
+          if(name){
+            onChange = this._handleChange.bind(null, name);
+            onBlur = this._handleBlur.bind(null, name);
+            value = form[name];
+            error = {[errorLabelProp]: this.state[`error_${name}`]}; 
+          }
           
           return React.cloneElement(child, {... props, ... error, value, onChange, onBlur});
         })}

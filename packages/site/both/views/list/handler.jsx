@@ -6,6 +6,7 @@ const {
   TableBody,
   TableFooter,
   Dialog,
+  DropDownMenu,
   TextField,
   IconButton,
   FlatButton,
@@ -42,7 +43,7 @@ const CreateSiteSchema = new SimpleSchema({
   
 });
 
-Role.Handlers.List = React.createClass({
+Site.Handlers.List = React.createClass({
 
   mixins: [ReactMeteorData],
 
@@ -54,9 +55,21 @@ Role.Handlers.List = React.createClass({
 
   getMeteorData(){
 
-    const handler = Meteor.subscribe('sites');
+    const siteHandler = Meteor.subscribe('sites');
+    const usersHadler = Meteor.subscribe('users');
+    
+    const users = Meteor.users.find({}).map(doc => {
+      const {
+        profile,
+        } = doc;
 
+      if(profile) doc.full_name = `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : null}`;
+
+      return doc;
+    });
+    
     return {
+      users,
       sites: Site.Collection.find({}).fetch(),
     }
 
@@ -66,6 +79,7 @@ Role.Handlers.List = React.createClass({
 
     const {
       sites,
+      users,
       } = this.data;
 
     const {
@@ -114,6 +128,7 @@ Role.Handlers.List = React.createClass({
           <Dialog ref='dialog' title='Create a new site'>
             <Form value={site} onChange={site => this.setState({site})} schema={CreateSiteSchema} onSubmit={this._handleSubmit}>
               <Field name='domain' component={TextField} floatingLabelText='Name' fullWidth />
+              <Field nmae='owners' component={DropDownMenu} menuItems={users} valueMember='_id' displayMember='full_name' fullWidth/>
               <TextField type='submit' fullWidth/>
             </Form>
           </Dialog>
