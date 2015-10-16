@@ -56,6 +56,7 @@ launch-screen@1.0.4
 livedata@1.0.15
 localstorage@1.0.5
 logging@1.0.8
+matb33:collection-hooks@0.8.1
 maxharris9:classnames@0.0.1
 meteor@1.1.9
 meteor-base@1.0.1
@@ -88,7 +89,7 @@ react-runtime-prod@0.13.3_6
 reactive-dict@1.1.2
 reactive-var@1.0.6
 reactrouter:react-router@0.1.9
-reactrouter:react-router-ssr@0.2.6
+reactrouter:react-router-ssr@0.2.7
 reload@1.1.4
 retry@1.0.4
 role@0.0.0

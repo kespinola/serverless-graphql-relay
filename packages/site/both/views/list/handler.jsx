@@ -37,8 +37,8 @@ const CreateSiteSchema = new SimpleSchema({
     type: String,
   },
   
-  owners: {
-    type: [String],
+  owner: {
+    type: String,
   },
   
 });
@@ -59,17 +59,12 @@ Site.Handlers.List = React.createClass({
     const usersHadler = Meteor.subscribe('users');
     
     const users = Meteor.users.find({}).map(doc => {
-      const {
-        profile,
-        } = doc;
-
-      if(profile) doc.full_name = `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : null}`;
 
       return doc;
     });
     
     return {
-      users,
+      users: Meteor.users.find().fetch(),
       sites: Site.Collection.find({}).fetch(),
     }
 
@@ -97,6 +92,7 @@ Site.Handlers.List = React.createClass({
               <TableRow>
                 <TableHeaderColumn tooltip='The ID'>ID</TableHeaderColumn>
                 <TableHeaderColumn tooltip='Site Domain'>Domain</TableHeaderColumn>
+                <TableHeaderColumn tooltip='Owner'>owner</TableHeaderColumn>
                 <TableHeaderColumn tooltip='Create a new site'>
                   <RaisedButton
                     label='Create'
@@ -106,7 +102,8 @@ Site.Handlers.List = React.createClass({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sites.map(({domain, _id}) => {
+              {sites.map(({domain, _id, owner}) => {
+                debugger;
                 return (
                   <TableRow key={_id}>
                     <TableRowColumn>{_id}</TableRowColumn>
@@ -120,6 +117,7 @@ Site.Handlers.List = React.createClass({
                         <FontIcon className="material-icons">clear</FontIcon>
                       </IconButton>
                     </TableRowColumn>
+                    <TableRowColumn></TableRowColumn>
                   </TableRow>
                 )
               })}
@@ -127,8 +125,8 @@ Site.Handlers.List = React.createClass({
           </Table>
           <Dialog ref='dialog' title='Create a new site'>
             <Form value={site} onChange={site => this.setState({site})} schema={CreateSiteSchema} onSubmit={this._handleSubmit}>
-              <Field name='domain' component={TextField} floatingLabelText='Name' fullWidth />
-              <Field nmae='owners' component={DropDownMenu} menuItems={users} valueMember='_id' displayMember='full_name' fullWidth/>
+              <Field name='domain' component={TextField} floatingLabelText='Domain Name' fullWidth />
+              <Field name='owner' component={DropDownMenu} menuItems={users} valueMember='_id' displayMember='full_name' fullWidth/>
               <TextField type='submit' fullWidth/>
             </Form>
           </Dialog>

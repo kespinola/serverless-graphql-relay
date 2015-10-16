@@ -1,4 +1,23 @@
+const {
+  compose,
+  } = R;
+
 Site.Collection = new Mongo.Collection('sites');
+
+function generateFullName(doc){
+  
+  const {
+    profile,
+    } = doc;
+
+  if(profile) doc.full_name = `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : null}`;
+  
+  return doc;
+}
+
+function joinOwner(doc){
+  return doc;
+}
 
 const LoginServiceSchema = new SimpleSchema({
   
@@ -27,10 +46,9 @@ Site.Schema = new SimpleSchema({
     unique: true,
   },
   
-  owners: {
-    type: [String],
-    optional: true,
-    defaultValue: [],
+  owner: {
+    type: String,
+    defaultValue: null,
   },
   
   facebook: {
@@ -46,6 +64,22 @@ Site.Schema = new SimpleSchema({
 });
 
 Site.Collection.attachSchema(Site.Schema);
+
+Site.Collection.after.findOne((userId, selector, options, doc)=> {
+  return compose(
+    generateFullName,
+    joinOwner
+  )(doc);
+});
+
+Site.Collection.after.find((userId, selector, options, cursor) => {
+  cursor.map(doc => {
+    return compose(
+      generateFullName,
+      joinOwner
+    )(doc);
+  });
+});
 
 Site.Collection.allow({
   insert(){
