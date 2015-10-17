@@ -1,11 +1,8 @@
-const {
-  Collection,  
-} = Site;
-
-Meteor.publish('site', () => {
-  return Collection.findOne({owners: {$in: [this.userId]}});
+Meteor.publish('siteByOwner', id => {
+  console.log(id,'id from site', Site.Collection.findOne({owner: id}));
+  return Site.Collection.findOne({owner: id});
 });
 
 Meteor.publish('sites', () => {
-  return Collection.find();
+  return Site.Collection.find();
 });

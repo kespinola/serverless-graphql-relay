@@ -16,6 +16,7 @@ function generateFullName(doc){
 }
 
 function joinOwner(doc){
+  doc.owner = Meteor.users.findOne({_id: doc.owner});
   return doc;
 }
 
@@ -66,14 +67,14 @@ Site.Schema = new SimpleSchema({
 Site.Collection.attachSchema(Site.Schema);
 
 Site.Collection.after.findOne((userId, selector, options, doc)=> {
-  return compose(
+  compose(
     generateFullName,
     joinOwner
   )(doc);
 });
 
 Site.Collection.after.find((userId, selector, options, cursor) => {
-  cursor.map(doc => {
+  return cursor.map(doc => {
     return compose(
       generateFullName,
       joinOwner

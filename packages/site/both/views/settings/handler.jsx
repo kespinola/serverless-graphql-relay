@@ -8,6 +8,7 @@ const {
   Field,
 } = AutoForm;
 
+
 Site.Handlers.Settings = React.createClass({
   
   mixins:[ReactMeteorData],
@@ -19,10 +20,11 @@ Site.Handlers.Settings = React.createClass({
 	},
   
   getMeteorData(){
-    const handler = Meteor.subscribe('site');
+    const id = Meteor.userId();
+    const handler = Meteor.subscribe('siteByOwner', id);
     
     return {
-      site: Site.Collection.findOne({owners: {$in:[Meteor.userId()]}})
+      site: Site.Collection.findOne({owner: id})
     }
   },
   

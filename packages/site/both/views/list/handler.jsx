@@ -80,7 +80,7 @@ Site.Handlers.List = React.createClass({
     const {
       site,
       } = this.state;
-
+    
     return (
       <Row>
         <Col xs={12}>
@@ -103,21 +103,20 @@ Site.Handlers.List = React.createClass({
             </TableHeader>
             <TableBody>
               {sites.map(({domain, _id, owner}) => {
-                debugger;
                 return (
                   <TableRow key={_id}>
                     <TableRowColumn>{_id}</TableRowColumn>
                     <TableRowColumn>{domain}</TableRowColumn>
+                    <TableRowColumn>{owner}</TableRowColumn>
                     <TableRowColumn>
                       <IconButton
                         tooltip="Delete site"
                         tooltipPosition='bottom-right'
                         touch={false}
-                        onTouchTap={this._handleEditTap.bind(null, name)}>
+                        onTouchTap={this._handleEditTap.bind(null, _id)}>
                         <FontIcon className="material-icons">clear</FontIcon>
                       </IconButton>
                     </TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
                   </TableRow>
                 )
               })}
@@ -135,8 +134,8 @@ Site.Handlers.List = React.createClass({
     )
   },
 
-  _handleEditTap(name){
-    Roles.deleteRole(name);
+  _handleEditTap(_id){
+    
   },
 
   _handleButtonTap(){
