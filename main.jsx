@@ -13,7 +13,7 @@ AppRoutes = (
       <Route path='/post/:id' component={Post.Handlers.Show}/>
     </Route>
     <Route component={User.Handlers.Index}>
-      <Route path='account' component={User.Handlers.Show}/>
+      <Route path='account' component={User.Handlers.Edit}/>
       <Route path='sign-up' onEnter={onEnterSignUp} component={User.Handlers.New}/>
       <Route path='login' component={User.Handlers.Session}/>
       <Route path='users' component={User.Handlers.List}/>

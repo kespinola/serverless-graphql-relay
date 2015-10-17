@@ -10,7 +10,7 @@ const {
   CardHeader,
   CardText,
   CardTitle,
-  } = MUI;
+} = MUI;
 
 const SessionUserSchema = new SimpleSchema({
 

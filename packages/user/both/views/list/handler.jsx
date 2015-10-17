@@ -50,15 +50,15 @@ User.Handlers.List = React.createClass({
     const {
       roles: appRoles,  
     } = this.data;
-    
     return (
       <Row>
         <Col xs={12}>
-          {users.map( ({_id, profile, full_name, roles = []}) => {
+          {users.map( ({_id, profile = {}, roles = []}) => {
             const {
-              first_name = '',
-              last_name = '',
+              full_name = '',
+              first_name = ''
             } = profile;
+            
             const deleteActions = [
               { text: 'Cancel', onTapTouch: this.setState.bind(null, {show: false}) },
               { text: 'Confirm', onTouchTap: this._handleDelete.bind(null, _id), ref: 'submit' }
@@ -68,7 +68,7 @@ User.Handlers.List = React.createClass({
             return (
               <Card style={cardStyles}>
                 <CardHeader
-                  title={`${first_name} ${last_name}`}
+                  title={`${full_name}`}
                   avatar={<Avatar>{first_name.charAt(0).toUpperCase()}</Avatar>}
                   actAsExpander={true}
                   showExpandableButton={true}/>

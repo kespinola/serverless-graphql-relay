@@ -2,11 +2,8 @@ const {
   compose,
 } = R;
 
-function getFullName({first_name, last_name}){
-  if(!first_name) return '';
-  
+function getFullName({first_name = '', last_name = ''}){
   return `${first_name}${last_name ? ` ${last_name}` : ''}`;
-  
 }
 
 Schema = {};
@@ -24,12 +21,17 @@ Schema.UserCountry = new SimpleSchema({
 Schema.UserProfile = new SimpleSchema({
   full_name: {
     type: String,
-    autoValue: () => {
-      console.log(this.fields('profile'), 'autoValue full_name', getFullName(this.fields('profile')));
-      if (this.isInsert) {
-        return getFullName(this.field('profile'));
-      } else if (this.isUpsert) {
-        return {$setOnInsert: getFullName(this.field('profile'))};
+    autoValue: function() {
+      
+      const name = {
+        first_name: this.field('profile.first_name').value, 
+        last_name: this.field('profile.last_name').value
+      };
+      
+      if (this.isInsert || this.isUpdate) {
+        return getFullName(name);
+      } else {
+        this.unset();
       }
     },
     optional: true,
@@ -93,9 +95,8 @@ Schema.User = new SimpleSchema({
     blackbox: true
   },
   roles: {
-    type: Object,
+    type: [String],
     optional: true,
-    blackbox: true
   },
 });
 

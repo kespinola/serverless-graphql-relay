@@ -16,7 +16,7 @@ Package.onUse(function(api){
 		'service-configuration',
 	], both);
 
-  var views = ['index', 'list', 'show', 'new', 'session'];
+  var views = ['index', 'list', 'edit', 'new', 'session'];
 
   views = views.map(function(view){
     return 'both/views/' + view + '/handler.jsx'

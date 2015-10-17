@@ -11,6 +11,11 @@ const {
   Field,
 } = AutoForm;
 
+const {
+  reduce,
+  values,
+} = R;
+
 const ProfileSchema = new SimpleSchema({
   'first_name': {
     type: String,
@@ -26,7 +31,7 @@ const ProfileSchema = new SimpleSchema({
   },
 });
 
-User.Handlers.Show = React.createClass({
+User.Handlers.Edit = React.createClass({
   
   getInitialState(){
     const {
@@ -62,13 +67,13 @@ User.Handlers.Show = React.createClass({
     
     const {
       first_name = '',
-      last_name,
+      full_name = '',
     } = profile;
     
     return (
       <Card>
         <CardHeader
-          title={`${first_name}${last_name ? ` ${last_name}` : ''}`}
+          title={full_name}
           avatar={<Avatar>{first_name.charAt(0).toUpperCase()}</Avatar>}
           />
         <Form 
@@ -85,7 +90,17 @@ User.Handlers.Show = React.createClass({
   },
   
   _handleSubmit(profile){
-    Meteor.users.update(Meteor.userId(), { $set: { profile } })
+    const keys = Object.keys(profile);
+    const profileValues = values(profile);
+    let i = 0;
+    
+    const update = reduce((memo, value) => {
+      memo[`profile.${keys[i]}`] = value;
+      i++;
+      return memo;
+    },{}, profileValues);
+    
+    Meteor.users.update(Meteor.userId(), { $set: { ... update} })
   }
   
 });
