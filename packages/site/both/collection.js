@@ -4,19 +4,16 @@ const {
 
 Site.Collection = new Mongo.Collection('sites');
 
-function generateFullName(doc){
-  
-  const {
-    profile,
-    } = doc;
-
-  if(profile) doc.full_name = `${profile.first_name}${profile.last_name ? ` ${profile.last_name}` : null}`;
-  
-  return doc;
-}
-
 function joinOwner(doc){
-  doc.owner = Meteor.users.findOne({_id: doc.owner});
+  if(!doc) return doc;
+  
+  let {
+    owner,
+  } = doc;
+  
+  if(_.isString(owner)) doc.owner = Meteor.users.findOne({_id: owner});
+  console.log('site joined with owner', owner);
+  
   return doc;
 }
 
@@ -66,9 +63,8 @@ Site.Schema = new SimpleSchema({
 
 Site.Collection.attachSchema(Site.Schema);
 
-Site.Collection.after.findOne((userId, selector, options, doc)=> {
+Site.Collection.after.findOne((userId, selector, options, doc) => {
   compose(
-    generateFullName,
     joinOwner
   )(doc);
 });
@@ -76,7 +72,6 @@ Site.Collection.after.findOne((userId, selector, options, doc)=> {
 Site.Collection.after.find((userId, selector, options, cursor) => {
   return cursor.map(doc => {
     return compose(
-      generateFullName,
       joinOwner
     )(doc);
   });

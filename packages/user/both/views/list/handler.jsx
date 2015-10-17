@@ -2,6 +2,9 @@ const {
   Card,
   CardHeader,
   CardText,
+  CardActions,
+  FlatButton,
+  Dialog,
   Avatar,
   Toggle,
 } = MUI;
@@ -25,6 +28,12 @@ User.Handlers.List = React.createClass({
   
   mixins:[ReactMeteorData],
   
+  getInitialState(){
+    return {
+      show: false,
+    }
+  },
+  
   getMeteorData(){
     const handler = Meteor.subscribe('roles');
     
@@ -45,11 +54,17 @@ User.Handlers.List = React.createClass({
     return (
       <Row>
         <Col xs={12}>
-          {users.map( ({_id, profile, roles = []}) => {
+          {users.map( ({_id, profile, full_name, roles = []}) => {
             const {
               first_name = '',
               last_name = '',
             } = profile;
+            const deleteActions = [
+              { text: 'Cancel', onTapTouch: this.setState.bind(null, {show: false}) },
+              { text: 'Confirm', onTouchTap: this._handleDelete.bind(null, _id), ref: 'submit' }
+            ];
+            const dialog = `dialog_${_id}`;
+            
             return (
               <Card style={cardStyles}>
                 <CardHeader
@@ -69,12 +84,27 @@ User.Handlers.List = React.createClass({
                       )
                     })}
                   </CardText>
+                <CardActions>
+                  <FlatButton onClick={() => this.refs[dialog].show()} label="Delete"/>
+                </CardActions>
+                <Dialog
+                  title={`Confirm ${full_name} Delete`}
+                  actions={deleteActions}
+                  ref={dialog}
+                  actionFocus="submit"
+                  >
+                  Are you sure you want to delete user? There is no going back.
+                </Dialog>
               </Card>
             ) 
           })}      
         </Col>
       </Row>
     )
+  },
+  
+  _handleDelete(_id){
+    Meteor.users.remove({_id});
   },
   
   _handleToggle(_id, name, e, toggled){
