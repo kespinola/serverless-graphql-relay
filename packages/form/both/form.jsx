@@ -12,13 +12,9 @@ function isString(value){
   return is(String, value)
 }
 
-function getValue(name, map){
+function getValue(name, map, defaultValue = null){
   const keys = name.split('.');
-  if(keys.length){
-    return map.getIn(keys, null);
-  }else{
-    return map.get(name, null);
-  }
+  return map[keys.length ? 'getIn' : 'get'](keys, defaultValue);
 }
 
 AutoForm.Form = React.createClass({
@@ -88,7 +84,7 @@ AutoForm.Form = React.createClass({
     )
   },
   
-  _handleChange(name, e){
+  _handleChange(name, response){
     const {
       onChange,  
     } = this.props;
@@ -98,10 +94,8 @@ AutoForm.Form = React.createClass({
     } = this.state;
     
     const keys = name.split('.');
-    
-    const value = form[keys.length ? 'setIn' : 'set'](keys, e.target.value);
-    
-    debugger;
+    const change = response.target ? response.target.value : response;
+    const value = form[keys.length ? 'setIn' : 'set'](keys, change);
     
     if(onChange){
       onChange(value.toJS()); 
@@ -120,7 +114,6 @@ AutoForm.Form = React.createClass({
       value,
     } = this.state;
     
-    const field = getValue(name, value);
     const errKey = `error_${name}`;
     const ek = schema.namedContext(errKey);
     

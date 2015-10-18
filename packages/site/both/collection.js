@@ -82,12 +82,20 @@ const LoginServiceSchema = new SimpleSchema({
 
 Site.Schema = new SimpleSchema({
   
+  _id: {
+    type: String,
+  },
+  
   domain: {
     type: String,
     index: 1,
     unique: true,
   },
   
+  title: {
+    type: String,
+    unique: true,
+  },
   owner: {
     type: String,
     defaultValue: null,

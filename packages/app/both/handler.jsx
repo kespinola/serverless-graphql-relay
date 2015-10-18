@@ -14,6 +14,7 @@ const {
   MenuItem,
   Menu,
   LeftNav,
+  
   FontIcon,
   FlatButton,
   Dialog,
@@ -52,12 +53,12 @@ App.Handler = React.createClass({
   },
 
   getMeteorData() {
-    const userId = Meteor.userId();
-    const siteHandler = Meteor.subscribe('sites');
+    const domain = Meteor.settings.public.domain;
+    const siteHandler = Meteor.subscribe('siteByDomain', domain);
     
     return {
       user: Meteor.user() || {},
-      site: Site.Collection.findOne({domain: Meteor.settings.public.domain}) || {}
+      site: Site.Collection.findOne({domain}) || {}
     };
   },
 
@@ -183,9 +184,10 @@ App.Handler = React.createClass({
         <Container fluid={true} className='app-container'>
           {modal ? this.previous.children : this.props.children}
           <Dialog
+            ref='dialog'
             title={title}
             onDismiss={this._handleDismiss}
-            ref='dialog'>
+            >
             {modal ? this.props.children : null}
           </Dialog>
         </Container>

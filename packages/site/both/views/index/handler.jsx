@@ -7,11 +7,10 @@ Site.Handlers.Index = React.createClass({
   mixins:[ReactMeteorData],
 
   getMeteorData() {
-    const handler = Meteor.subscribe('sites');
-
+    const domain = Meteor.settings.public.domain;
+    const handler = Meteor.subscribe('siteByDomain', domain);
     return {
-      sites: Collection.find({}).fetch(),
-      site: Collection.findOne({domain: Meteor.settings.public.domain}) || {},
+      site: Collection.findOne({domain}) || {},
     };
   },
 

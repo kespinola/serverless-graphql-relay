@@ -1,6 +1,7 @@
 const {
   Tabs,
   Tab,
+  TextField,
 } = MUI;
 
 const {
@@ -9,13 +10,24 @@ const {
   Toggle,
 } = AutoForm;
 
-SettingSchema = new SimpleSchema({
+const {
+  Collection,
+  Schema,
+} = Site;
+const SettingSchema = new SimpleSchema({
+  
+  title:{
+    type: String,
+  },
+  
   'facebook.active': {
     type: Boolean
   },
+  
   'google.active': {
     type: Boolean,
   }
+  
 });
 
 Site.Handlers.Settings = React.createClass({
@@ -48,11 +60,13 @@ Site.Handlers.Settings = React.createClass({
           <Form 
             value={site}
             onChange={site => this.setState({site})}
-            schema={SettingSchema}
+            schema={Site.Schema}
             onSubmit={this._handleSubmit}
             >
-            <Field name='facebook.active' label='Facebook Login' component={Toggle} />
-            <Field name='google.active' label='Google Login' component={Toggle} />
+            <Field name='title' floatingLabelText='Site Title' component={TextField} fullWidth/>
+            <Field name='facebook.active' label='Facebook Login' component={Toggle}/>
+            <Field name='google.active' label='Google Login' component={Toggle}/>
+            <TextField type='submit' fullWidth/>
           </Form> 
         </Tab>
         <Tab label="Theme" >
@@ -63,7 +77,11 @@ Site.Handlers.Settings = React.createClass({
 	},
   
   _handleSubmit(site){
-    Site.Collection.update(site._id, {$set:{... site}})
+    const {
+      _id
+    }= site;
+    delete site._id;
+    Collection.update(_id, {$set:{... site}})
   },
   
 });
