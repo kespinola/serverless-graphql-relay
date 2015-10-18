@@ -23,6 +23,7 @@ chuangbo:cookie@1.1.0
 coffeescript@1.0.10
 core@0.0.0
 cosmos:browserify@0.8.1
+dataflows:immutable@3.6.2
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.1
@@ -88,7 +89,7 @@ react-runtime-prod@0.13.3_6
 reactive-dict@1.1.2
 reactive-var@1.0.6
 reactrouter:react-router@0.1.10
-reactrouter:react-router-ssr@0.2.9
+reactrouter:react-router-ssr@0.2.10
 reload@1.1.4
 retry@1.0.4
 role@0.0.0
@@ -104,6 +105,7 @@ srp@1.0.4
 standard-minifiers@1.0.1
 templating@1.1.4
 templating-tools@1.0.0
+theme@0.0.0
 tracker@1.0.9
 ui@1.0.8
 underscore@1.0.4

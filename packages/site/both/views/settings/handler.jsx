@@ -6,43 +6,53 @@ const {
 const {
   Form,
   Field,
+  Toggle,
 } = AutoForm;
 
+SettingSchema = new SimpleSchema({
+  'facebook.active': {
+    type: Boolean
+  },
+  'google.active': {
+    type: Boolean,
+  }
+});
 
 Site.Handlers.Settings = React.createClass({
   
-  mixins:[ReactMeteorData],
-  
 	propTypes: {},
-	
-	getDefaultProps(){
-		return {}
-	},
   
-  getMeteorData(){
-    const id = Meteor.userId();
+  getInitialState(){
+    const {
+      site,  
+    } = this.props;
+    
     return {
-      site: Site.Collection.findOne({owner: id})
+      site,
     }
   },
   
-  getInitialState(){
-    return {
-      settings: {},
-      theme: {},
-    }
+  componentWillReceiveProps({site}){
+    site && this.setState({site});
   },
 	
 	render(){
+    
     const {
-      settings,
-      theme,
+      site,
     } = this.state;
+    
 		return (
       <Tabs>
         <Tab label="Settings" >
           <Form 
-            value={settings}>
+            value={site}
+            onChange={site => this.setState({site})}
+            schema={SettingSchema}
+            onSubmit={this._handleSubmit}
+            >
+            <Field name='facebook.active' label='Facebook Login' component={Toggle} />
+            <Field name='google.active' label='Google Login' component={Toggle} />
           </Form> 
         </Tab>
         <Tab label="Theme" >
@@ -51,5 +61,9 @@ Site.Handlers.Settings = React.createClass({
       </Tabs>
     )
 	},
+  
+  _handleSubmit(site){
+    Site.Collection.update(site._id, {$set:{... site}})
+  },
   
 });

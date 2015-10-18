@@ -20,7 +20,9 @@ AppRoutes = (
     </Route>
     <Route path='roles' component={Role.Handlers.List}/>
     <Route path='configure' component={Site.Handlers.Settings} />
-    <Route path='sites' component={Site.Handlers.List}/>
+    <Route component={Site.Handlers.Index}>
+      <Route path='sites' component={Site.Handlers.List}/>
+    </Route>
   </Route>
 );
 

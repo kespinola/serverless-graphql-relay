@@ -2,20 +2,64 @@ const {
   compose,
   } = R;
 
+const {
+  Colors,  
+} = Theme;
+
 Site.Collection = new Mongo.Collection('sites');
 
-function joinOwner(doc){
-  if(!doc) return doc;
-  
-  let {
-    owner,
-  } = doc;
-  
-  if(_.isString(owner)) doc.owner = Meteor.users.findOne({_id: owner});
-  console.log('site joined with owner', owner);
-  
-  return doc;
-}
+const PaletteSchema = new SimpleSchema({
+  primary1Color: {
+    type: String,
+    defaultValue: Colors.cyan700
+  },
+  primary2Color: {
+    type: String,
+    defaultValue: Colors.cyan500, 
+  },
+  primary3Color: {
+    type: String,
+    defaultValue: Colors.lightBlack 
+  },
+  accent1Color: {
+    type: String,
+    defaultValue: Colors.pinkA200,
+  },
+  accent2Color: {
+    type: String,
+    defaultValue: Colors.grey100,
+  },
+  accent3Color: {
+    type: String,
+    defaultValue: Colors.grey500,
+  },
+  textColor: {
+    type: String,
+    defaultValue: Colors.darkBlack,
+  },
+  alternateTextColor: {
+    type: String,
+    defaultValue: Colors.white
+  },
+  canvasColor: {
+    type: String,
+    defaultValue: Colors.white,
+  },
+  borderColor: {
+    type: String,
+    defaultValue: Colors.grey300,
+  }
+});
+
+const ThemeSchema = new SimpleSchema({
+  fontFamily: {
+    type: String,
+    defaultValue: 'Roboto, sans-serif', 
+  },
+  palette: {
+    type: PaletteSchema,
+  },
+});
 
 const LoginServiceSchema = new SimpleSchema({
   
@@ -47,6 +91,10 @@ Site.Schema = new SimpleSchema({
   owner: {
     type: String,
     defaultValue: null,
+  },
+  
+  theme: {
+    type: ThemeSchema,
   },
   
   facebook: {

@@ -1,3 +1,26 @@
+const {
+  reduce,
+  valuesIn,
+  is,
+} = R;
+
+const {
+  fromJS,  
+} = Immutable;
+
+function isString(value){
+  return is(String, value)
+}
+
+function getValue(name, map){
+  const keys = name.split('.');
+  if(keys.length){
+    return map.getIn(keys, null);
+  }else{
+    return map.get(name, null);
+  }
+}
+
 AutoForm.Form = React.createClass({
   propTypes:{
     schema: React.PropTypes.object,
@@ -18,7 +41,7 @@ AutoForm.Form = React.createClass({
       value,
     } = this.props;
     return {
-      value,
+      value: fromJS(value),
     }
   },
   
@@ -26,7 +49,8 @@ AutoForm.Form = React.createClass({
     const {
       value,
     } = props;
-    value && this.setState({value});
+    
+    value && this.setState({value: this.state.value.merge(fromJS(value))});
   },
 
   render(){
@@ -54,7 +78,7 @@ AutoForm.Form = React.createClass({
           if(name){
             onChange = this._handleChange.bind(null, name);
             onBlur = this._handleBlur.bind(null, name);
-            value = form[name];
+            value = getValue(name, form);
             error = {[errorLabelProp]: this.state[`error_${name}`]}; 
           }
           
@@ -72,12 +96,15 @@ AutoForm.Form = React.createClass({
     const {
       value: form,
     } = this.state;
-
-    const update = {[name]: e.target.value};
-    const value = {... form, ... update};
+    
+    const keys = name.split('.');
+    
+    const value = form[keys.length ? 'setIn' : 'set'](keys, e.target.value);
+    
+    debugger;
     
     if(onChange){
-      onChange(value); 
+      onChange(value.toJS()); 
     }else {
       this.setState({value});
     }
@@ -93,11 +120,11 @@ AutoForm.Form = React.createClass({
       value,
     } = this.state;
     
-    const field = value[name];
+    const field = getValue(name, value);
     const errKey = `error_${name}`;
     const ek = schema.namedContext(errKey);
     
-    ek.validateOne({[name]: field}, name);
+    ek.validateOne(value.toJS(), name);
     
     this.setState({[errKey]: ek.keyErrorMessage(name)});
   },
@@ -112,7 +139,7 @@ AutoForm.Form = React.createClass({
     } = this.props;
 
     
-    let value = _.cloneDeep(this.state.value);
+    let value = this.state.value.toJS();
 
     const ck = schema.namedContext('complete_check');
     

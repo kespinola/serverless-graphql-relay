@@ -15,11 +15,12 @@ Package.onUse(function(api){
     'izzilab:material-ui',
     'aldeed:simple-schema',
     'aldeed:collection2',
+    'theme',
     'form',
     'grid',
   ], both);
 
-  var views = ['list', 'settings'];
+  var views = ['index', 'list', 'settings'];
 
   views = views.map(function(view){
     return 'both/views/' + view + '/handler.jsx'

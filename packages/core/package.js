@@ -19,6 +19,7 @@ Package.onUse(function(api){
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
     'maxharris9:classnames',
+    'theme',
     'grid',
     'form',
     'role',
