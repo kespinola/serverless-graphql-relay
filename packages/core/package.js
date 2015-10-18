@@ -15,7 +15,6 @@ Package.onUse(function(api){
     'ramda:ramda',
     'aldeed:simple-schema',
     'aldeed:collection2',
-    'matb33:collection-hooks',
     'izzilab:material-ui',
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
@@ -23,6 +22,7 @@ Package.onUse(function(api){
     'grid',
     'form',
     'role',
+    'site',
   ], both);
 
   api.imply([

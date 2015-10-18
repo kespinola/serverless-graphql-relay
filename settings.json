@@ -1,6 +1,7 @@
 {
   "public": {
-    "environment": "development"
+    "environment": "development",
+    "domain": "espiwebdev"
   },
   "private" : {
     "facebookAppId": "",

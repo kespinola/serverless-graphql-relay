@@ -21,8 +21,6 @@ Site.Handlers.Settings = React.createClass({
   
   getMeteorData(){
     const id = Meteor.userId();
-    const handler = Meteor.subscribe('siteByOwner', id);
-    
     return {
       site: Site.Collection.findOne({owner: id})
     }

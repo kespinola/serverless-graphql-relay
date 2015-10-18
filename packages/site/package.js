@@ -8,7 +8,15 @@ Package.onUse(function(api){
   var both = ['server', 'client'];
   
   api.use([
-    'core'
+    'react',
+    'mongo',
+    'ecmascript',
+    'ramda:ramda',
+    'izzilab:material-ui',
+    'aldeed:simple-schema',
+    'aldeed:collection2',
+    'form',
+    'grid',
   ], both);
 
   var views = ['list', 'settings'];

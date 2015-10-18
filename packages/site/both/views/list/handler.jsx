@@ -54,13 +54,16 @@ Site.Handlers.List = React.createClass({
   },
 
   getMeteorData(){
-
-    const siteHandler = Meteor.subscribe('sites');
+    
     const usersHandler = Meteor.subscribe('users');
     
+    const users = Meteor.users.find({}).map(doc => {
+      doc.full_name = doc.profile.full_name;
+      return doc;
+    });
     return {
       sites: Site.Collection.find({}).fetch(),
-      users: Meteor.users.find({}),
+      users,
     }
 
   },

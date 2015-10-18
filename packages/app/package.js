@@ -8,6 +8,7 @@ Package.onUse(function(api) {
 
   api.use([
     'core',
+    'site',
   ], both);
 
   api.use([

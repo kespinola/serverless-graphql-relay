@@ -63,20 +63,6 @@ Site.Schema = new SimpleSchema({
 
 Site.Collection.attachSchema(Site.Schema);
 
-Site.Collection.after.findOne((userId, selector, options, doc) => {
-  compose(
-    joinOwner
-  )(doc);
-});
-
-Site.Collection.after.find((userId, selector, options, cursor) => {
-  return cursor.map(doc => {
-    return compose(
-      joinOwner
-    )(doc);
-  });
-});
-
 Site.Collection.allow({
   insert(){
     return true;

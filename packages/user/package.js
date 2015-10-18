@@ -9,7 +9,6 @@ Package.onUse(function(api){
 
 	api.use([
     'core',
-    'role',
 		'accounts-password',
 		'accounts-google',
 		'accounts-facebook',

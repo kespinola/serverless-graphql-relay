@@ -12,8 +12,12 @@ const {
   CardTitle,
 } = MUI;
 
-const SessionUserSchema = new SimpleSchema({
+const {
+  reduce,  
+} = R;
 
+const SessionUserSchema = new SimpleSchema({
+  
   email : {
     type: String,
     regEx: SimpleSchema.RegEx.Email
@@ -26,6 +30,8 @@ const SessionUserSchema = new SimpleSchema({
 });
 
 UserSessionForm = React.createClass({
+
+  mixins: [ReactMeteorData],
   
   getDefaultProps(){
     return {
@@ -41,15 +47,30 @@ UserSessionForm = React.createClass({
     }
   },
   
+  getMeteorData(){
+    return {
+      site: Site.Collection.findOne({domain: Meteor.settings.public.domain}) || {}
+    }
+  },
+  
   render() {
     
+    const{
+      site,  
+    } = this.data;
+    
     const {
-      accounts,
       schema,
       title,
       subtitle,
       avatar,
     } = this.props;
+    
+    const accounts = reduce((memo, account) => {
+      if(!site[account.toLowerCase()].active) return memo;
+      memo = memo.concat(account);
+      return memo;
+    }, [], this.props.accounts);
     
     return (
       <Card>
@@ -66,7 +87,7 @@ UserSessionForm = React.createClass({
                 />
             )
           })}
-          <span>or</span>
+          {accounts.length ? <span>or</span> : null}
           <Form schema={schema} onSubmit={this._handleSubmit}>
             <Field name='email' component={TextField} floatingLabelText='Email' fullWidth />
             <Field name='password' component={TextField} floatingLabelText='Password' type='password' fullWidth/>

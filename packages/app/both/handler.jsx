@@ -23,6 +23,10 @@ const { ThemeManager, DarkRawTheme } = Styles;
 
 const { Container, Row, Col } = Flexgrid;
 
+const {
+  isEmpty,  
+} = R;
+
 const barStyle = {
   top: 0,
   left: 0,
@@ -48,8 +52,12 @@ App.Handler = React.createClass({
   },
 
   getMeteorData() {
+    const userId = Meteor.userId();
+    const siteHandler = Meteor.subscribe('sites');
+    
     return {
       user: Meteor.user() || {},
+      site: Site.Collection.findOne({domain: Meteor.settings.public.domain}) || {}
     };
   },
 
@@ -72,7 +80,13 @@ App.Handler = React.createClass({
     
     const {
       user,
+      site,
     } = this.data;
+    
+    const {
+      domain,
+      owner,
+    } = site;
     
     const {
       profile = {},
@@ -99,12 +113,12 @@ App.Handler = React.createClass({
       },
     ];
 
-    if(Roles.userIsInRole(userId, Role.OWNER)){
+    if(owner == userId){
       menuItems = menuItems.concat({
         route: '/configure',
         location: {
           modal: true,
-          title: 'Configure Site Settings'
+          title: `Configure ${domain} Settings`
         },
         text: 'Site Configure'
       });
