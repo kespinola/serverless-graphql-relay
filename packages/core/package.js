@@ -22,6 +22,7 @@ Package.onUse(function(api){
     'grid',
     'form',
     'role',
+    'site',
   ], both);
 
   api.imply([

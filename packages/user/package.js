@@ -9,14 +9,13 @@ Package.onUse(function(api){
 
 	api.use([
     'core',
-    'role',
 		'accounts-password',
 		'accounts-google',
 		'accounts-facebook',
 		'service-configuration',
 	], both);
 
-  var views = ['index', 'list', 'show', 'new', 'session'];
+  var views = ['index', 'list', 'edit', 'new', 'session'];
 
   views = views.map(function(view){
     return 'both/views/' + view + '/handler.jsx'
@@ -24,6 +23,7 @@ Package.onUse(function(api){
 
 	api.addFiles([
 		'namespace.js',
+    'both/collection.js',
     'both/components/userSessionForm.jsx'
 	].concat(views), both);
 

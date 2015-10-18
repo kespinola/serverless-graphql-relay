@@ -8,6 +8,7 @@ Package.onUse(function(api) {
 
   api.use([
     'core',
+    'site',
   ], both);
 
   api.use([
@@ -33,6 +34,7 @@ Package.onUse(function(api) {
     'post',
     'user',
     'role',
+    'site',
   ], both);
 
   api.export([

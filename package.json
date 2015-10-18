@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ksespinola/meteor-app-starter#readme",
   "scripts": {
-    "development": "meteor --settings settings.json",
+    "dev": "meteor --settings settings.json",
     "production": "meteor --settings settings-production.json"
   }
 }

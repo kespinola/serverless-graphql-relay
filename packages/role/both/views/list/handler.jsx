@@ -13,12 +13,12 @@ const {
   TableRowColumn,
   TableHeaderColumn,
   FontIcon,
-  } = MUI;
+} = MUI;
 
 const {
   Form,
   Field,
-  } = AutoForm;
+} = AutoForm;
 
 const {
   Row,
@@ -54,8 +54,7 @@ Role.Handlers.List = React.createClass({
     
     const {
       roles,
-      isLoading,
-      } = this.data;
+    } = this.data;
     
     const {
       role,
@@ -101,7 +100,7 @@ Role.Handlers.List = React.createClass({
             </TableBody>
           </Table>
           <Dialog ref='dialog' title='Create a new role'>
-            <Form value={role} onChange={role => this.setState({role})} schema={Role.schema} onSubmit={this._handleSubmit}>
+            <Form value={role} onChange={role => this.setState({role})} schema={Role.Schema} onSubmit={this._handleSubmit}>
               <Field name='name' component={TextField} floatingLabelText='Name' fullWidth />
               <TextField type='submit' fullWidth/>
             </Form>
