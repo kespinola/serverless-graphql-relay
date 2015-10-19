@@ -18,7 +18,7 @@ Flexgrid.Container = React.createClass({
     const className = classNames(propClassName, `container${fluid ? '-fluid' : ''}`);
 
     return (
-      <ComponentClass className={className}>
+      <ComponentClass {... this.props} className={className}>
         {this.props.children}
       </ComponentClass>
     )
@@ -61,7 +61,7 @@ Flexgrid.Row = React.createClass({
     );
 
     return (
-      <ComponentClass className={className}>
+      <ComponentClass {... this.props} className={className}>
         {this.props.children}
       </ComponentClass>
     )
@@ -115,7 +115,7 @@ Flexgrid.Col = React.createClass({
     );
 
     return (
-      <ComponentClass className={className}>
+      <ComponentClass {... this.props} className={className}>
         {this.props.children}
       </ComponentClass>
     )

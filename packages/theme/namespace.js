@@ -1,1 +1,5 @@
-Theme = {};
+Theme = {
+  Colors: null,
+  Spacing: null,
+  Components: {},
+};

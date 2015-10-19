@@ -87,6 +87,7 @@ App.Handler = React.createClass({
     const {
       domain,
       owner,
+      title: siteTitle,
     } = site;
     
     const {
@@ -176,7 +177,7 @@ App.Handler = React.createClass({
           />
         <LeftNav 
           ref="leftNav"
-          header={<Link to='/'><h1>App Starter</h1></Link>}
+          header={<Link to='/'><h1>{siteTitle}</h1></Link>}
           docked={false} 
           menuItems={menuItems}
           onChange={this._handleNavChange}

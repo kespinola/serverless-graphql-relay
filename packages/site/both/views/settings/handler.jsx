@@ -14,6 +14,16 @@ const {
   Collection,
   Schema,
 } = Site;
+
+const {
+  Components: ThemeComponents,
+  Colors,
+} = Theme;
+
+const {
+  PaletteManager,
+} = ThemeComponents;
+
 const SettingSchema = new SimpleSchema({
   
   title:{
@@ -54,6 +64,8 @@ Site.Handlers.Settings = React.createClass({
       site,
     } = this.state;
     
+    if(!site) return null;
+    
 		return (
       <Tabs>
         <Tab label="Settings" >
@@ -69,12 +81,19 @@ Site.Handlers.Settings = React.createClass({
             <TextField type='submit' fullWidth/>
           </Form> 
         </Tab>
-        <Tab label="Theme" >
-          (Theme content...)
+        <Tab label="Colors" >
+          <PaletteManager schema={Site.PaletteSchema} colors={site.theme.palette} onChange={this._handlePaletteChange} />
         </Tab>
       </Tabs>
     )
 	},
+  
+  _handlePaletteChange(palette){
+    const {
+      site,
+    } = this.props;
+    Collection.update(site._id, {$set:{'theme.palette': palette}})
+  },
   
   _handleSubmit(site){
     const {

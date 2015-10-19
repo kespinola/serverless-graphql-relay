@@ -8,56 +8,68 @@ const {
 
 Site.Collection = new Mongo.Collection('sites');
 
-const PaletteSchema = new SimpleSchema({
+Site.PaletteSchema = new SimpleSchema({
   primary1Color: {
     type: String,
-    defaultValue: Colors.cyan700
+    defaultValue: Colors.cyan700,
+    label: 'Primary Color',
   },
   primary2Color: {
     type: String,
-    defaultValue: Colors.cyan500, 
+    defaultValue: Colors.cyan500,
+    label: 'Secondary Color',
   },
   primary3Color: {
     type: String,
-    defaultValue: Colors.lightBlack 
+    defaultValue: Colors.lightBlack,
+    label: 'Tertiary Color',
   },
   accent1Color: {
     type: String,
     defaultValue: Colors.pinkA200,
+    label: 'Primary Accent Color',
   },
   accent2Color: {
     type: String,
     defaultValue: Colors.grey100,
+    label: 'Secondary Accent Color'
   },
   accent3Color: {
     type: String,
     defaultValue: Colors.grey500,
+    label: 'Tertiary Accent Color',
   },
   textColor: {
     type: String,
     defaultValue: Colors.darkBlack,
+    label: 'Text Color',
   },
   alternateTextColor: {
     type: String,
-    defaultValue: Colors.white
+    defaultValue: Colors.white,
+    label: 'Alternate Text Color',
   },
   canvasColor: {
     type: String,
     defaultValue: Colors.white,
+    label: 'Canvas Color',
   },
   borderColor: {
     type: String,
     defaultValue: Colors.grey300,
+    label: 'Border Color'
   }
 });
 
 const ThemeSchema = new SimpleSchema({
   fontFamily: {
     type: String,
-    defaultValue: 'Roboto, sans-serif', 
+    defaultValue: 'Roboto, sans-serif',
+    label: 'Font Family'
   },
   palette: {
-    type: PaletteSchema,
+    type: Site.PaletteSchema,
+    label: 'Site Color Palette'
   },
 });
 

@@ -1,5 +1,6 @@
 Site = {
   Handlers: {},
-Collection: null,
+  Collection: null,
   Schema: null,
+  Components: {}
 };
