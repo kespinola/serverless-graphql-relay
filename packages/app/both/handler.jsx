@@ -35,20 +35,35 @@ const barStyle = {
 
 App.Handler = React.createClass({
   
+  mixins: [History, ReactMeteorData],
+  
   previous: {
     children: null,
     path: null,
   },
-
-  mixins: [History, ReactMeteorData],
   
   childContextTypes: {
     muiTheme: React.PropTypes.object
   },
   
-  getChildContext() {
+  getInitialState(){
     return {
-      muiTheme: ThemeManager.getMuiTheme(DarkRawTheme)
+      muiTheme: DarkRawTheme,
+    }
+  },
+  
+  getChildContext() {
+    
+    const {
+      site = {},  
+    } = this.data;
+    
+    const {
+      theme,
+    } = site;
+    
+    return {
+      muiTheme: ThemeManager.getMuiTheme(theme || DarkRawTheme)
     };
   },
 
@@ -67,9 +82,9 @@ App.Handler = React.createClass({
     if(location.key !== this.props.location.key){
       this.previous = {
         children: this.props.children, 
-        path: this.props.location.pathname,
+        path: this.props.location.paΩhname,
       }
-    } 
+    }
     
   },
   
@@ -99,6 +114,7 @@ App.Handler = React.createClass({
     } = profile;
     
     const modal = location.state && location.state.modal;
+    
     let title;
     
     if(modal) title = location.state.title;
@@ -232,7 +248,7 @@ App.Handler = React.createClass({
     } = props;
     
     if(logout){
-      Meteor.logout(()=> {
+      Meteor.logout(() => {
         this.history.pushState(null, '/login');
       }); 
     }else if(to){

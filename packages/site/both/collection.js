@@ -3,10 +3,69 @@ const {
   } = R;
 
 const {
-  Colors,  
+  Colors,
+  Spacing,
 } = Theme;
 
 Site.Collection = new Mongo.Collection('sites');
+
+const SpacingSchema = new SimpleSchema({
+  iconSize: {
+    type: Number,
+    defaultValue: 24,
+    label: 'Icon Size'
+  },
+  desktopGutter: {
+    type: Number,
+    defaultValue: 24,
+    label: 'Desktop Gutter'
+  },
+  desktopGutterMore: {
+    type: Number,
+    defaultValue: 32,
+    label: 'Desktop GUtter More'
+  },
+  desktopGutterLess: {
+    type: Number,
+    defaultValue: 16,
+    label: 'Desktop Gutter Less'
+  },
+  desktopGutterMini: {
+    type: Number,
+    defaultValue: 8,
+    label: 'Desktop Gutter Mini'
+  },
+  desktopKeylineIncrement: {
+    type: Number,
+    defaultValue: 64,
+    label: 'Desktop Keyline Increment'
+  },
+  desktopDropDownMenuItemHeight: {
+    type: Number,
+    defaultValue: 32,
+    label: 'Desktop DropDown Menu Item Height'
+  },
+  desktopDropDownMenuFontSize: {
+    type: Number,
+    defaultValue: 15,
+    label: 'Desktop DropDown Menu Font Size'
+  },
+  desktopLeftNavMenuItemHeight: {
+    type: Number,
+    defaultValue: 48,
+    label: 'Desktop Left Nav Menu Item Height'
+  },
+  desktopSubheaderHeight: {
+    type: Number,
+    defaultValue: 48,
+    label: 'Desktop Subheader Height'
+  },
+  desktopToolbarHeight: {
+    type: Number,
+    defaultValue: 48,
+    label: 'Desktop Toolbar Height'
+  },
+});
 
 Site.PaletteSchema = new SimpleSchema({
   primary1Color: {
@@ -62,15 +121,23 @@ Site.PaletteSchema = new SimpleSchema({
 });
 
 const ThemeSchema = new SimpleSchema({
+  
   fontFamily: {
     type: String,
     defaultValue: 'Roboto, sans-serif',
     label: 'Font Family'
   },
+  
+  spacing: {
+    type: SpacingSchema,
+    label: 'Spacing Settings'
+  },
+  
   palette: {
     type: Site.PaletteSchema,
     label: 'Site Color Palette'
   },
+  
 });
 
 const LoginServiceSchema = new SimpleSchema({

@@ -81,8 +81,8 @@ Site.Handlers.Settings = React.createClass({
             <TextField type='submit' fullWidth/>
           </Form> 
         </Tab>
-        <Tab label="Colors" >
-          <PaletteManager schema={Site.PaletteSchema} colors={site.theme.palette} onChange={this._handlePaletteChange} />
+        <Tab label="Colors">
+          <PaletteManager schema={Site.PaletteSchema} colors={site.theme.palette} options={Colors} onChange={this._handlePaletteChange} />
         </Tab>
       </Tabs>
     )
@@ -92,6 +92,7 @@ Site.Handlers.Settings = React.createClass({
     const {
       site,
     } = this.props;
+    
     Collection.update(site._id, {$set:{'theme.palette': palette}})
   },
   

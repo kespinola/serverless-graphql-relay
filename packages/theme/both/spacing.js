@@ -1,7 +1,5 @@
-
 Theme.Spacing = {
   iconSize: 24,
-
   desktopGutter: 24,
   desktopGutterMore: 32,
   desktopGutterLess: 16,

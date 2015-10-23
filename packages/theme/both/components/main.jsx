@@ -9,13 +9,23 @@ const {
 const {
   Avatar,
   IconMenu,
-  MenuItem,
+  FontIcon,
+  Libs,
 } = MUI;
+
+const {
+  MenuItem,
+} = Libs;
 
 const {
   Col,
   Row,
   } = Flexgrid;
+
+const blockStyles = {
+  padding:'10px 15px',
+  cursor: 'pointer',
+};
 
 Theme.Components.PaletteManager = React.createClass({
   
@@ -38,16 +48,29 @@ Theme.Components.PaletteManager = React.createClass({
       options,
     } = this.props;
     
+    const optionKeys = Object.keys(options);
+    
     return {
+      optionKeys,
       colorKeys: Object.keys(colors),
-      optionKeys: Object.keys(options),
+      menuItems: optionKeys.map( option => {
+        return <MenuItem key={option} primaryText={option} leftIcon={<FontIcon className='material-icons' color={options[option]}>lens</FontIcon>}/>
+      }),
     }
   },
   
   componentWillReceiveProps({colors, options}){
     let update = {};
+    
     if(colors) update = {... update, colorKeys: Object.keys(colors)};
-    if(options) update = {... update, optionKeys: Object.keys(options)};
+    
+    if(options !== this.props.options){
+      const optionKeys = Object.keys(options);
+      const menuItems = optionKeys.map( option => {
+        return <MenuItem key={option} primaryText={option} leftIcon={<FontIcon className='material-icons' color={options[option]}>lens</FontIcon>}/>
+      });
+      update = {... update, optionKeys, menuItems};
+    } 
     
     this.setState(update);
   },
@@ -56,26 +79,27 @@ Theme.Components.PaletteManager = React.createClass({
     const {
       colors,
       schema,
-      options,
     } = this.props;
     const {
       colorKeys,
-      optionKeys,
+      menuItems,
     } = this.state;
+    
+    
     return (
       <Row>
         {colorKeys.map((key, i) => {
           return (
-            <Col xs={4} style={blockStyles}>
-              <IconMenu 
+            <Col key={key} xs={4} style={blockStyles}>
+              <IconMenu
+                maxHeight={140}
+                onItemTouchTap={this._handleColorChange.bind(null, key)}
                 iconButtonElement={
                 <span>
                   <Avatar size={25} backgroundColor={colors[key]} />{schema.label(key)}
                 </span>
                 }>
-                {optionKeys.map( option => {
-                  return <MenuItem key={option} primaryText={option} />
-                })}
+                {menuItems}
               </IconMenu>
             </Col>
           )
@@ -84,7 +108,18 @@ Theme.Components.PaletteManager = React.createClass({
     )
   },
   
-  _handleColorClick(key){
-    debugger;
+  _handleColorChange(lookup, e, {key}){
+    
+    const {
+      onChange,  
+    } = this.props;
+    
+    const {
+      colors,
+      options,
+    } = this.props;
+    
+    onChange && onChange({... colors, [lookup]: options[key]})
+    
   }
 });
