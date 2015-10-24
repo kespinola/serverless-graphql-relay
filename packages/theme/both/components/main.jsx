@@ -11,7 +11,13 @@ const {
   IconMenu,
   FontIcon,
   Libs,
+  IconButton,
+  Styles,
 } = MUI;
+
+const {
+  Colors,
+} = Styles;
 
 const {
   MenuItem,
@@ -20,11 +26,16 @@ const {
 const {
   Col,
   Row,
-  } = Flexgrid;
+} = Flexgrid;
 
 const blockStyles = {
-  padding:'10px 15px',
+  padding: '10px 15px',
   cursor: 'pointer',
+};
+
+const innerStyles = {
+  maxHeight: 275,
+  overflowY: 'auto',
 };
 
 Theme.Components.PaletteManager = React.createClass({
@@ -39,7 +50,7 @@ Theme.Components.PaletteManager = React.createClass({
     return {
       colors: {},
       options: {},
-      schema: new SimpleSchema({})
+      schema: new SimpleSchema({}),
     }
   },
   getInitialState(){
@@ -53,24 +64,14 @@ Theme.Components.PaletteManager = React.createClass({
     return {
       optionKeys,
       colorKeys: Object.keys(colors),
-      menuItems: optionKeys.map( option => {
-        return <MenuItem key={option} primaryText={option} leftIcon={<FontIcon className='material-icons' color={options[option]}>lens</FontIcon>}/>
-      }),
+      active: null,
     }
   },
   
-  componentWillReceiveProps({colors, options}){
+  componentWillReceiveProps({colors}){
     let update = {};
     
     if(colors) update = {... update, colorKeys: Object.keys(colors)};
-    
-    if(options !== this.props.options){
-      const optionKeys = Object.keys(options);
-      const menuItems = optionKeys.map( option => {
-        return <MenuItem key={option} primaryText={option} leftIcon={<FontIcon className='material-icons' color={options[option]}>lens</FontIcon>}/>
-      });
-      update = {... update, optionKeys, menuItems};
-    } 
     
     this.setState(update);
   },
@@ -79,47 +80,68 @@ Theme.Components.PaletteManager = React.createClass({
     const {
       colors,
       schema,
+      options,
     } = this.props;
     const {
+      active,
       colorKeys,
-      menuItems,
+      optionKeys,
     } = this.state;
     
-    
-    return (
-      <Row>
-        {colorKeys.map((key, i) => {
-          return (
-            <Col key={key} xs={4} style={blockStyles}>
-              <IconMenu
-                maxHeight={140}
-                onItemTouchTap={this._handleColorChange.bind(null, key)}
-                iconButtonElement={
-                <span>
-                  <Avatar size={25} backgroundColor={colors[key]} />{schema.label(key)}
-                </span>
-                }>
-                {menuItems}
-              </IconMenu>
-            </Col>
-          )
-        })}
-      </Row>
-    )
+    if(active){
+      return (
+        <Row style={innerStyles}>
+          <Col xs={12}>
+            <IconButton
+              onClick={() => this.setState({active: null})}
+              className='material-icons'
+              tooltip='Clear'
+              color={Colors.black}
+              >clear</IconButton>
+          </Col>
+          {optionKeys.map((key, i) => {
+            return (
+              <Col key={key} xs={4} onClick={this._handleColorChange.bind(null, key)} style={blockStyles}>
+              <span>
+                <Avatar size={25} backgroundColor={options[key]} />{key}
+              </span>
+              </Col>
+            )
+          })}
+        </Row>
+      )      
+    }else{
+      return (
+        <Row style={innerStyles}>
+          {colorKeys.map((key, i) => {
+            return (
+              <Col key={key} xs={4} onClick={() => this.setState({active: key})} style={blockStyles}>
+              <span>
+                <Avatar size={25} backgroundColor={colors[key]} />{schema.label(key)}
+              </span>
+              </Col>
+            )
+          })}
+        </Row>
+      ) 
+    }
   },
   
-  _handleColorChange(lookup, e, {key}){
-    
-    const {
-      onChange,  
-    } = this.props;
+  _handleColorChange(key){
     
     const {
       colors,
       options,
+      onChange,  
     } = this.props;
     
-    onChange && onChange({... colors, [lookup]: options[key]})
+    const {
+      active
+    } = this.state;
+    
+    this.setState({active: null}, () => {
+      onChange && onChange({... colors, [active]: options[key]})
+    });
     
   }
 });

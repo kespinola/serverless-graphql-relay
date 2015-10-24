@@ -63,7 +63,7 @@ App.Handler = React.createClass({
     } = site;
     
     return {
-      muiTheme: ThemeManager.getMuiTheme(theme || DarkRawTheme)
+      muiTheme: ThemeManager.getMuiTheme(theme)
     };
   },
 
