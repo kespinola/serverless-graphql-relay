@@ -6,9 +6,7 @@ function getFullName({first_name = '', last_name = ''}){
   return `${first_name}${last_name ? ` ${last_name}` : ''}`;
 }
 
-Schema = {};
-
-Schema.UserCountry = new SimpleSchema({
+const UserCountry = new SimpleSchema({
   name: {
     type: String
   },
@@ -18,16 +16,22 @@ Schema.UserCountry = new SimpleSchema({
   }
 });
 
-Schema.UserProfile = new SimpleSchema({
+User.Schema = new SimpleSchema({
+  _id : {
+    type: String,
+  },
+  parent_id: {
+    type: String,
+  },
   full_name: {
     type: String,
     autoValue: function() {
-      
+
       const name = {
-        first_name: this.field('profile.first_name').value, 
-        last_name: this.field('profile.last_name').value
+        first_name: this.field('first_name').value,
+        last_name: this.field('last_name').value
       };
-      
+
       if (this.isInsert || this.isUpdate) {
         return getFullName(name);
       } else {
@@ -58,47 +62,15 @@ Schema.UserProfile = new SimpleSchema({
     optional: true
   },
   country: {
-    type: Schema.UserCountry,
+    type: UserCountry,
     optional: true
   }
 });
 
-Schema.User = new SimpleSchema({
-  username: {
-    type: String,
-    optional: true
-  },
-  emails: {
-    type: Array,
-    optional: true
-  },
-  "emails.$": {
-    type: Object
-  },
-  "emails.$.address": {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email
-  },
-  "emails.$.verified": {
-    type: Boolean
-  },
-  createdAt: {
-    type: Date
-  },
-  profile: {
-    type: Schema.UserProfile,
-    optional: true
-  },
-  services: {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  roles: {
-    type: [String],
-    optional: true,
-  },
+User.Collection = new Meteor.Collection('profile');
+
+Meteor.users.after.insert((userId, { _id: parent_id }) => {
+  User.Collection.insert({parent_id });
 });
 
-Meteor.users.attachSchema(Schema.User);
-
+User.Collection.attachSchema(User.Schema);

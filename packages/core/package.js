@@ -13,17 +13,18 @@ Package.onUse(function(api){
     'react',
     'ecmascript',
     'ramda:ramda',
+    'immutable',
     'aldeed:simple-schema',
     'aldeed:collection2',
     'izzilab:material-ui',
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
     'maxharris9:classnames',
-    'immutable',
+		'matb33:collection-hooks'
   ], both);
 
   api.imply([
     'es5-shim',
   ], 'client');
-  
+
 });

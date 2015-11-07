@@ -1,3 +1,4 @@
 User = {
   Handlers:{},
+  Collection: null,
 };

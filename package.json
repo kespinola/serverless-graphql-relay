@@ -4,7 +4,8 @@
   "description": "App starter built using meteor.",
   "main": "main.jsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "meteor --settings settings.json",
+    "production": "meteor --settings settings-production.json"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,10 @@
     "url": "https://github.com/ksespinola/prism/issues"
   },
   "homepage": "https://github.com/ksespinola/meteor-app-starter#readme",
-  "scripts": {
-    "dev": "meteor --settings settings.json",
-    "production": "meteor --settings settings-production.json"
+  "devDependencies": {
+    "babel-eslint": "^4.1.4",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^0.1.0",
+    "eslint-plugin-react": "^3.8.0"
   }
 }

@@ -32,29 +32,29 @@ const ProfileSchema = new SimpleSchema({
 });
 
 User.Handlers.Edit = React.createClass({
-  
+
   getInitialState(){
     const {
       user: {
         profile = {}
-      } = {},  
+      } = {},
     } = this.props;
     return {
       profile,
-    }  
+    }
   },
-  
+
   componentWillReceiveProps({user = {}}) {
 
     const { profile } = user;
-    
+
     profile && this.setState({profile});
   },
-  
+
   render() {
     const {
       profile: {
-        full_name = '',        
+        full_name = '',
       } = {},
     } = this.state;
 
@@ -64,11 +64,11 @@ User.Handlers.Edit = React.createClass({
           title={full_name}
           avatar={<Avatar>{full_name.charAt(0).toUpperCase()}</Avatar>}
           />
-        <Form 
-          value={this.state.profile} 
-          onChange={profile => this.setState({ profile })} 
-          schema={ProfileSchema} 
-          onSubmit={this._handleSubmit}>
+        <Form
+          value={this.state.profile}
+          onChange={profile => this.setState({ profile })}
+          schema={ProfileSchema}
+          onSubmit={this._onSubmit}>
           <Field name='first_name' component={TextField} floatingLabelText='First Name' fullWidth />
           <Field name='last_name' component={TextField} floatingLabelText='Last Name' fullWidth />
           <TextField fullWidth type='submit' />
@@ -76,8 +76,8 @@ User.Handlers.Edit = React.createClass({
       </Card>
     )
   },
-  
-  _handleSubmit(profile){
+
+  _onSubmit(profile){
     const keys = Object.keys(profile);
     const profileValues = values(profile);
     let i = 0;
@@ -87,8 +87,8 @@ User.Handlers.Edit = React.createClass({
       i++;
       return memo;
     },{}, profileValues);
-    
+
     Meteor.users.update(Meteor.userId(), { $set: { ... update} })
   }
-  
+
 });
