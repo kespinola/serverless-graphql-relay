@@ -1,0 +1,27 @@
+{
+  "name": "prism",
+  "version": "0.0.0",
+  "description": "App starter built using meteor.",
+  "main": "main.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksespinola/prism.git"
+  },
+  "keywords": [
+    "meteor",
+    "react"
+  ],
+  "author": "Kyle Espinola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ksespinola/prism/issues"
+  },
+  "homepage": "https://github.com/ksespinola/meteor-app-starter#readme",
+  "scripts": {
+    "dev": "meteor --settings settings.json",
+    "production": "meteor --settings settings-production.json"
+  }
+}
