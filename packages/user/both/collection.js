@@ -1,8 +1,6 @@
-const {
-  compose,
-} = R;
+const { compose } = R;
 
-function getFullName({firstName = '', lastName = ''}) {
+function getFullName(firstName = '', lastName = '') {
   return `${firstName}${lastName ? ` ${lastName}` : ''}`;
 }
 
@@ -27,14 +25,9 @@ User.Schema = new SimpleSchema({
   },
   fullName: {
     type: String,
-    autoValue: function() {
-      const name = {
-        firstName: this.field('firstName').value,
-        lastName: this.field('lastName').value,
-      };
-
+    autoValue() {
       if (this.isInsert || this.isUpdate) {
-        return getFullName(name);
+        return getFullName(this.field('firstName').value, this.field('lastName'). field);
       } else {
         this.unset();
       }
@@ -71,6 +64,8 @@ User.Schema = new SimpleSchema({
 User.Collection = new Meteor.Collection('profiles');
 
 User.Collection.attachSchema(User.Schema);
+
+User.Collection.after.remove((userId, { parentId: _id }) => Meteor.users.remove({_id}));
 
 User.Collection.allow({
   insert() {

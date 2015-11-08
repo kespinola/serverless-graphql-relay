@@ -84,8 +84,8 @@ User.Handlers.List = React.createClass({
     )
   },
 
-  _handleDelete(_id){
-    Meteor.users.remove({_id});
+  _handleDelete(parentId) {
+    Meteor.call('deleteUser', parentId);
   },
 
   _onToggle(parentId, name, e, toggled) {

@@ -4,9 +4,13 @@ Accounts.onCreateUser((options, user) => {
 });
 
 Meteor.methods({
+
   insertUser: user => Accounts.createUser(user),
 
   updateUser: function(update) {
     return User.Collection.update({ parentId: this.userId}, { $set: { ... update} });
   },
+
+  deleteUser: parentId => User.Collection.remove({ parentId }),
+
 });
