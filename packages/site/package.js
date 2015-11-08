@@ -4,9 +4,9 @@ Package.describe({
 });
 
 Package.onUse(function(api){
-  
+
   var both = ['server', 'client'];
-  
+
   api.use([
     'core',
     'theme',
@@ -19,18 +19,19 @@ Package.onUse(function(api){
   views = views.map(function(view){
     return 'both/views/' + view + '/handler.jsx'
   });
-  
+
   api.addFiles([
     'namespace.js',
     'both/collection.js',
   ].concat(views), both);
-  
+
   api.addFiles([
     'server/publish.js',
+    'server/methods.js',
   ], 'server');
-  
+
   api.export([
     'Site'
   ], both);
-  
+
 });

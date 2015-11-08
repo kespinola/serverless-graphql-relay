@@ -3,8 +3,8 @@ const { IndexRoute, Route, Router } = ReactRouter;
 function onEnterSignUp(state, newState) {
   if(Meteor.userId()) newState(null, '/account');
 }
-function onEnterAccount({bypass}, newState) {
-  if(!Meteor.userId() && !bypass) newState(null, '/login');
+function onEnterAccount(state, newState) {
+  if (!Meteor.userId()) newState(null, '/login');
 }
 
 Meteor.startup(() => {
@@ -15,7 +15,7 @@ Meteor.startup(() => {
 
   React.render((
     <Router history={ReactRouter.history.createHistory()}>
-      <Route path="/" component={App.Handlers.Root}>
+      <Route path="/" component={App.Handlers.Index}>
         <Route path='blog' component={Post.Handlers.Index}>
           <IndexRoute component={Post.Handlers.List}/>
           <Route path='/post/:id' component={Post.Handlers.Show}/>
@@ -28,9 +28,10 @@ Meteor.startup(() => {
         </Route>
         <Route path='roles' component={Role.Handlers.List}/>
         <Route component={Site.Handlers.Index}>
-          <Route path='configure' component={Site.Handlers.Settings} />
+          <Route path='configure' component={Site.Handlers.Settings}/>
           <Route path='sites' component={Site.Handlers.List}/>
         </Route>
+        <Route path='*' component={Page.Handlers.Index}/>
         <IndexRoute component={Page.Handlers.Index}/>
       </Route>
     </Router>

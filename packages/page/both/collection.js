@@ -1,10 +1,19 @@
-Page.Collection = new Mongo.Collection('page');
+Page.Collection = new Mongo.Collection('pages');
 
 Page.Schema = new SimpleSchema({
-  route: {
+  _id: {
     type: String,
+    optional: true,
   },
   parentId: {
+    type: String,
+    autoValue() {
+      if (this.isInsert) {
+        return Meteor.call('currentSiteId');
+      }
+    },
+  },
+  pathname: {
     type: String,
   },
   title: {
@@ -14,7 +23,19 @@ Page.Schema = new SimpleSchema({
   blocks: {
     type: [String],
     defaultValue: [],
-  }
+  },
 });
 
 Page.Collection.attachSchema(Page.Schema);
+
+Page.Collection.allow({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});
