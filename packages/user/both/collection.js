@@ -2,32 +2,37 @@ const {
   compose,
 } = R;
 
-function getFullName({first_name = '', last_name = ''}){
-  return `${first_name}${last_name ? ` ${last_name}` : ''}`;
+function getFullName({firstName = '', lastName = ''}) {
+  return `${firstName}${lastName ? ` ${lastName}` : ''}`;
 }
 
-Schema = {};
-
-Schema.UserCountry = new SimpleSchema({
+const UserCountry = new SimpleSchema({
   name: {
     type: String
   },
   code: {
     type: String,
     regEx: /^[A-Z]{2}$/
-  }
+  },
 });
 
-Schema.UserProfile = new SimpleSchema({
-  full_name: {
+User.Schema = new SimpleSchema({
+  _id: {
+    type: String,
+    optional: true,
+  },
+  parentId: {
+    type: String,
+    optional: true,
+  },
+  fullName: {
     type: String,
     autoValue: function() {
-      
       const name = {
-        first_name: this.field('profile.first_name').value, 
-        last_name: this.field('profile.last_name').value
+        firstName: this.field('firstName').value,
+        lastName: this.field('lastName').value,
       };
-      
+
       if (this.isInsert || this.isUpdate) {
         return getFullName(name);
       } else {
@@ -36,17 +41,17 @@ Schema.UserProfile = new SimpleSchema({
     },
     optional: true,
   },
-  first_name: {
+  firstName: {
     type: String,
-    optional: true
+    defaultValue: '',
   },
-  last_name: {
+  lastName: {
     type: String,
-    optional: true
+    defaultValue: '',
   },
   birthday: {
     type: Date,
-    optional: true
+    optional: true,
   },
   website: {
     type: String,
@@ -55,50 +60,26 @@ Schema.UserProfile = new SimpleSchema({
   },
   bio: {
     type: String,
-    optional: true
+    optional: true,
   },
   country: {
-    type: Schema.UserCountry,
-    optional: true
-  }
-});
-
-Schema.User = new SimpleSchema({
-  username: {
-    type: String,
-    optional: true
-  },
-  emails: {
-    type: Array,
-    optional: true
-  },
-  "emails.$": {
-    type: Object
-  },
-  "emails.$.address": {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email
-  },
-  "emails.$.verified": {
-    type: Boolean
-  },
-  createdAt: {
-    type: Date
-  },
-  profile: {
-    type: Schema.UserProfile,
-    optional: true
-  },
-  services: {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  roles: {
-    type: [String],
+    type: UserCountry,
     optional: true,
   },
 });
 
-Meteor.users.attachSchema(Schema.User);
+User.Collection = new Meteor.Collection('profiles');
 
+User.Collection.attachSchema(User.Schema);
+
+User.Collection.allow({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});

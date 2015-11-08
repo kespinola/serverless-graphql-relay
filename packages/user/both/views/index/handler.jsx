@@ -1,21 +1,22 @@
 User.Handlers.Index = React.createClass({
-  
+
   mixins:[ReactMeteorData],
 
   getMeteorData() {
-    const handler = Meteor.subscribe('users');
+    const usersHandler = Meteor.subscribe('users');
+    const userHandler = Meteor.subscribe('user');
     
     return {
-      user: Meteor.user(),
-      users: Meteor.users.find().fetch(),
+      user: User.Collection.findOne({parentId: Meteor.userId()}),
+      users: User.Collection.find().fetch(),
     };
   },
-  
-  render(){
+
+  render() {
     const {
       user,
       users,
     } = this.data;
     return React.cloneElement(this.props.children, {user, users})
-  }
+  },
 });

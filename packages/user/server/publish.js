@@ -1,13 +1,13 @@
-Meteor.publish('profile', () => Meteor.users.find(this.userId));
-Meteor.publish('users', () => Meteor.users.find({}) );
+Meteor.publish('user', () => User.Collection.find(this.userId));
+Meteor.publish('users', () => User.Collection.find({}) );
 
 Meteor.users.allow({
 
-  insert(){
+  insert() {
     return true;
   },
 
-  update(){
+  update() {
     return true;
   },
 
@@ -16,4 +16,3 @@ Meteor.users.allow({
   },
 
 });
-
