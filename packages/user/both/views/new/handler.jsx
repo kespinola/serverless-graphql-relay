@@ -1,35 +1,21 @@
-const {
-  Card,
-  CardHeader,
-  RaisedButton,
-  TextField,
-  Avatar,
-} = MUI;
+const { Card, CardHeader, RaisedButton, TextField, Avatar } = MUI;
 
-const {
-  Row,
-  Col,
-} = Flexgrid;
+const { Row, Col } = Flexgrid;
 
-const {
-  Form,
-  Field,
-} = AutoForm;
+const { Form, Field } = AutoForm;
 
-const {
-  History,
-} = ReactRouter;
+const { History } = ReactRouter;
 
 const newUserSchema = new SimpleSchema({
 
-  email : {
+  email: {
     type: String,
-    regEx: SimpleSchema.RegEx.Email
+    regEx: SimpleSchema.RegEx.Email,
   },
 
   password: {
     type: String,
-  }
+  },
 
 });
 
@@ -37,18 +23,24 @@ User.Handlers.New = React.createClass({
 
   mixins: [History],
 
-  getDefaultProps(){
+  getDefaultProps() {
     return {
       accounts: [
         'Facebook',
         'Google',
-      ]
-    }
+      ],
+    };
   },
-  render(){
-    const {
-      accounts,
-    } = this.props;
+
+  _onSubmit(user) {
+    Meteor.call('insertUser', user, err => {
+      if(err) throw Meteor.Error(err);
+      this.history.pushState(null, '/account')
+    });
+  },
+
+  render() {
+    const { accounts } = this.props;
     return (
       <Row centerXs>
         <Col xs={10} sm={6}>
@@ -56,19 +48,11 @@ User.Handlers.New = React.createClass({
             title='Welcome'
             subtitle='Sign up using your favorite social network or directly.'
             avatar={<Avatar><i className="material-icons">person_add</i></Avatar>}
-            onSubmit={this._handleSubmit}
+            onSubmit={this._onSubmit}
             />
         </Col>
       </Row>
-    )
+    );
   },
-
-  _handleSubmit(user){
-    Accounts.createUser(user, (err) => {
-      debugger;
-      if(err) throw Meteor.Error(err);
-      this.history.pushState(null, '/account')
-    })
-  }
 
 });

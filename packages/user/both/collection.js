@@ -2,8 +2,8 @@ const {
   compose,
 } = R;
 
-function getFullName({first_name = '', last_name = ''}){
-  return `${first_name}${last_name ? ` ${last_name}` : ''}`;
+function getFullName({firstName = '', lastName = ''}) {
+  return `${firstName}${lastName ? ` ${lastName}` : ''}`;
 }
 
 const UserCountry = new SimpleSchema({
@@ -13,23 +13,24 @@ const UserCountry = new SimpleSchema({
   code: {
     type: String,
     regEx: /^[A-Z]{2}$/
-  }
+  },
 });
 
 User.Schema = new SimpleSchema({
-  _id : {
+  _id: {
     type: String,
+    optional: true,
   },
-  parent_id: {
+  parentId: {
     type: String,
+    optional: true,
   },
-  full_name: {
+  fullName: {
     type: String,
     autoValue: function() {
-
       const name = {
-        first_name: this.field('first_name').value,
-        last_name: this.field('last_name').value
+        firstName: this.field('firstName').value,
+        lastName: this.field('lastName').value,
       };
 
       if (this.isInsert || this.isUpdate) {
@@ -40,17 +41,17 @@ User.Schema = new SimpleSchema({
     },
     optional: true,
   },
-  first_name: {
+  firstName: {
     type: String,
-    optional: true
+    defaultValue: '',
   },
-  last_name: {
+  lastName: {
     type: String,
-    optional: true
+    defaultValue: '',
   },
   birthday: {
     type: Date,
-    optional: true
+    optional: true,
   },
   website: {
     type: String,
@@ -59,18 +60,26 @@ User.Schema = new SimpleSchema({
   },
   bio: {
     type: String,
-    optional: true
+    optional: true,
   },
   country: {
     type: UserCountry,
-    optional: true
-  }
+    optional: true,
+  },
 });
 
-User.Collection = new Meteor.Collection('profile');
-
-Meteor.users.after.insert((userId, { _id: parent_id }) => {
-  User.Collection.insert({parent_id });
-});
+User.Collection = new Meteor.Collection('profiles');
 
 User.Collection.attachSchema(User.Schema);
+
+User.Collection.allow({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});

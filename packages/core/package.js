@@ -3,7 +3,7 @@ Package.describe({
 	description:'core dependency manifest for application.',
 });
 
-Package.onUse(function(api){
+Package.onUse(function (api){
 
 	var both = ['server', 'client'];
 

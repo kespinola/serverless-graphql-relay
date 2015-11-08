@@ -3,11 +3,11 @@ Meteor.publish('users', () => User.Collection.find({}) );
 
 Meteor.users.allow({
 
-  insert(){
+  insert() {
     return true;
   },
 
-  update(){
+  update() {
     return true;
   },
 

@@ -72,10 +72,11 @@ App.Handlers.Root = React.createClass({
     const domain = Meteor.settings.public.domain;
     const siteHandler = Meteor.subscribe('siteByDomain', domain);
     const userHandler = Meteor.subscribe('user');
+    const roleHandler = Meteor.subscribe('roles');
 
     return {
       user: User.Collection.findOne(Meteor.userId()) || {},
-      site: Site.Collection.findOne({domain}) || {}
+      site: Site.Collection.findOne({ domain }) || {}
     };
   },
 
@@ -90,20 +91,59 @@ App.Handlers.Root = React.createClass({
 
   },
 
+  componentDidMount() {
+    let ss = document.createElement("link");
+    ss.type = "text/css";
+    ss.rel = "stylesheet";
+    ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
+    document.getElementsByTagName("head")[0].appendChild(ss);
+  },
+
+  componentDidUpdate(){
+    const {
+      location = {},
+    } = this.props;
+
+    const {
+      dialog,
+    } = this.refs;
+
+    if(location.state && location.state.modal && !dialog.isOpen()) dialog.show();
+  },
+
+  _onNavChange(e, i, {route, location = null}){
+    this.history.pushState(location, route)
+  },
+
+  onDismiss(){
+    this.history.pushState(null, this.previous.path)
+  },
+
+  _onTap(e, {props}){
+
+    const {
+      logout,
+      to,
+    } = props;
+
+    if(logout) {
+      Meteor.logout(() => {
+        this.history.pushState(null, '/login');
+      });
+    }else if(to) {
+      this.history.pushState(null, to);
+    }
+  },
+
   render() {
 
     const { location = {}, } = this.props;
-    const { user, site, } = this.data;
+    const {
+      user: { firstName = '' },
+      site,
+    } = this.data;
 
     const { domain, owner, title: siteTitle, } = site;
-
-    const {
-      profile = {},
-    } = user;
-
-    const {
-      first_name = '',
-    } = profile;
 
     const modal = location.state && location.state.modal;
 
@@ -123,19 +163,19 @@ App.Handlers.Root = React.createClass({
       },
     ];
 
-    if(owner == userId){
-      menuItems = menuItems.concat({
+    if(owner === userId){
+      menuItems.push({
         route: '/configure',
         location: {
           modal: true,
           title: `Configure ${domain} Settings`
         },
-        text: 'Site Configure'
+        text: 'Site Configure',
       });
     }
 
-    if(Roles.userIsInRole(userId, Role.WEBMASTER)){
-      menuItems = menuItems.concat({
+    if(Roles.userIsInRole(userId, Role.WEBMASTER)) {
+      menuItems.push({
         leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
         type: MenuItem.Types.NESTED,
         text: 'Manage',
@@ -157,11 +197,11 @@ App.Handlers.Root = React.createClass({
       });
     }
 
-    if(userId){
+    if(userId) {
       iconSet = (
         <IconMenu
-          onItemTouchTap={this._handleTap}
-          iconButtonElement={<IconButton><Avatar>{first_name.charAt(0).toUpperCase()}</Avatar></IconButton>}
+          onItemTouchTap={this._onTap}
+          iconButtonElement={<IconButton><Avatar>{firstName.charAt(0).toUpperCase()}</Avatar></IconButton>}
           >
           <MenuItem index={0} to='/account'>Account</MenuItem>
           <FlatButton index={1} logout={true} primary={true} label='Logout' />
@@ -169,7 +209,7 @@ App.Handlers.Root = React.createClass({
       );
     }else{
       iconSet = (
-        <IconMenu onItemTouchTap={this._handleTap} iconButtonElement={<FlatButton>Register</FlatButton>}>
+        <IconMenu onItemTouchTap={this._onTap} iconButtonElement={<FlatButton>Register</FlatButton>}>
           <MenuItem index={0} to='/sign-up'>Sign Up</MenuItem>
           <FlatButton index={1} label='Log in' to='/login' />
         </IconMenu>
@@ -188,65 +228,20 @@ App.Handlers.Root = React.createClass({
           header={<Link to='/'><h1>{siteTitle}</h1></Link>}
           docked={false}
           menuItems={menuItems}
-          onChange={this._handleNavChange}
+          onChange={this._onNavChange}
           />
         <Container fluid={true} className='app-container'>
           {modal ? this.previous.children : this.props.children}
           <Dialog
             ref='dialog'
             title={title}
-            onDismiss={this._handleDismiss}
+            onDismiss={this.onDismiss}
             >
             {modal ? this.props.children : null}
           </Dialog>
         </Container>
       </AppCanvas>
     );
-  },
-
-  componentDidMount(){
-    let ss = document.createElement("link");
-    ss.type = "text/css";
-    ss.rel = "stylesheet";
-    ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
-    document.getElementsByTagName("head")[0].appendChild(ss);
-  },
-
-  componentDidUpdate(){
-    const {
-      location = {},
-    } = this.props;
-
-    const {
-      dialog,
-    } = this.refs;
-
-    if(location.state && location.state.modal && !dialog.isOpen()) dialog.show();
-  },
-
-  _handleNavChange(e, i, {route, location = null}){
-    this.history.pushState(location, route)
-  },
-
-  _handleDismiss(){
-    this.history.pushState(null, this.previous.path)
-  },
-
-  _handleTap(e, {props}){
-
-    const {
-      logout,
-      to,
-    } = props;
-
-    if(logout){
-      Meteor.logout(() => {
-        this.history.pushState(null, '/login');
-      });
-    }else if(to){
-      this.history.pushState(null, to);
-    }
-
   },
 
 });
