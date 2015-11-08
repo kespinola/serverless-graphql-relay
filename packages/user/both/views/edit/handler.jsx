@@ -1,19 +1,6 @@
-const {
-  Card,
-  CardHeader,
-  TextField,
-  Avatar,
-} = MUI;
-
-const {
-  Form,
-  Field,
-} = AutoForm;
-
-const {
-  reduce,
-  values,
-} = R;
+const { Card, CardHeader, TextField, Avatar } = MUI;
+const { Form, Field } = AutoForm;
+const { reduce, values } = R;
 
 const UserSchema = new SimpleSchema({
   'firstName': {
@@ -71,13 +58,13 @@ User.Handlers.Edit = React.createClass({
           avatar={<Avatar>{fullName.charAt(0).toUpperCase()}</Avatar>}
           />
         <Form
+          autoSave
           value={this.state.user}
           onChange={user => this.setState({ user })}
           schema={UserSchema}
           onSubmit={this._onSubmit}>
           <Field name='firstName' component={TextField} floatingLabelText='First Name' fullWidth />
           <Field name='lastName' component={TextField} floatingLabelText='Last Name' fullWidth />
-          <TextField fullWidth type='submit' />
         </Form>
       </Card>
     );
