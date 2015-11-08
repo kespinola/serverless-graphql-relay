@@ -32,19 +32,19 @@ const {
   } = R;
 
 const CreateSiteSchema = new SimpleSchema({
-  
+
   domain: {
     type: String,
   },
-  
+
   owner: {
     type: String,
   },
-  
+
   title: {
     type: String,
   }
-  
+
 });
 
 Site.Handlers.List = React.createClass({
@@ -58,17 +58,13 @@ Site.Handlers.List = React.createClass({
   },
 
   getMeteorData(){
-    
+
     const usersHandler = Meteor.subscribe('users');
     const siteHandler = Meteor.subscribe('sites');
-    
-    const users = Meteor.users.find({}).map(doc => {
-      doc.full_name = doc.profile.full_name;
-      return doc;
-    });
+
     return {
       sites: Site.Collection.find({}).fetch(),
-      users,
+      users: User.Collection.find({}).fetch(),
     }
 
   },
@@ -83,7 +79,7 @@ Site.Handlers.List = React.createClass({
     const {
       site,
       } = this.state;
-    
+
     return (
       <Row>
         <Col xs={12}>
@@ -99,7 +95,7 @@ Site.Handlers.List = React.createClass({
                 <TableHeaderColumn tooltip='Create a new site'>
                   <RaisedButton
                     label='Create'
-                    onTouchTap={this._handleButtonTap}
+                    onTouchTap={this._onButtonTap}
                     />
                 </TableHeaderColumn>
               </TableRow>
@@ -116,7 +112,7 @@ Site.Handlers.List = React.createClass({
                         tooltip="Delete site"
                         tooltipPosition='bottom-right'
                         touch={false}
-                        onTouchTap={this._handleEditTap.bind(null, _id)}>
+                        onTouchTap={this._onEditTap.bind(null, _id)}>
                         <FontIcon className="material-icons">clear</FontIcon>
                       </IconButton>
                     </TableRowColumn>
@@ -126,10 +122,10 @@ Site.Handlers.List = React.createClass({
             </TableBody>
           </Table>
           <Dialog ref='dialog' title='Create a new site'>
-            <Form value={site} onChange={site => this.setState({site})} schema={CreateSiteSchema} onSubmit={this._handleSubmit}>
+            <Form value={site} onChange={site => this.setState({site})} schema={CreateSiteSchema} onSubmit={this._onSubmit}>
               <Field name='domain' component={TextField} floatingLabelText='Domain Name' fullWidth />
               <Field name='title' floatingLabelText='Site Title' component={TextField} fullWidth/>
-              <Field name='owner' component={DropDownMenu} menuItems={users} valueMember='_id' displayMember='full_name' fullWidth/>
+              <Field name='owner' component={DropDownMenu} menuItems={users} valueMember='parentId' displayMember='fullName' fullWidth/>
               <TextField type='submit' fullWidth/>
             </Form>
           </Dialog>
@@ -138,15 +134,15 @@ Site.Handlers.List = React.createClass({
     )
   },
 
-  _handleEditTap(_id){
-    
+  _onEditTap(_id){
+
   },
 
-  _handleButtonTap(){
+  _onButtonTap(){
     this.setState({site:{}}, this.refs.dialog.show);
   },
 
-  _handleSubmit(site){
+  _onSubmit(site){
     this.setState({site:{}}, () => {
       Site.Collection.insert(site);
       this.refs.dialog.dismiss();
