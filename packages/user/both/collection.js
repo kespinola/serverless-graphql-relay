@@ -6,11 +6,11 @@ function getFullName(firstName = '', lastName = '') {
 
 const UserCountry = new SimpleSchema({
   name: {
-    type: String
+    type: String,
   },
   code: {
     type: String,
-    regEx: /^[A-Z]{2}$/
+    regEx: /^[A-Z]{2}$/,
   },
 });
 
@@ -27,12 +27,12 @@ User.Schema = new SimpleSchema({
     type: String,
     autoValue() {
       if (this.isInsert || this.isUpdate) {
-        return getFullName(this.field('firstName').value, this.field('lastName'). field);
+        console.log(this.field('firstName').value, this.field('lastName').field);
+        return getFullName(this.field('firstName').value, this.field('lastName').field);
       } else {
         this.unset();
       }
     },
-    optional: true,
   },
   firstName: {
     type: String,

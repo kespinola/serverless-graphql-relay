@@ -50,7 +50,7 @@ User.Handlers.Edit = React.createClass({
     const {
       user: { fullName = '' },
     } = this.state;
-
+    
     return (
       <Card>
         <CardHeader

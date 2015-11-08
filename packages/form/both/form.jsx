@@ -30,7 +30,11 @@ AutoForm.Form = React.createClass({
   },
 
   getInitialState() {
-    return { value: fromJS(this.props.value) };
+    const { schema } = this.props;
+    let value = this.props.value;
+    const ck = schema.namedContext('init_state');
+    schema.clean(value);
+    return { value: fromJS(schema.clean(value)) };
   },
 
   componentWillReceiveProps(props) {
