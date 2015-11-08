@@ -8,7 +8,7 @@ Package.onUse(function(api){
 	var both = ['server', 'client'];
 
 	api.use([
-    'core',
+	  'core',
 		'grid',
 		'form',
 		'accounts-base',
@@ -33,6 +33,7 @@ Package.onUse(function(api){
 	api.addFiles([
     'server/publish.js',
 		'server/configure.js',
+		'server/methods.js',
 	], 'server');
 
 	api.export([
@@ -40,4 +41,3 @@ Package.onUse(function(api){
 	], both);
 
 });
-

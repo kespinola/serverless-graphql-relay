@@ -3,7 +3,6 @@ const {
   CardHeader,
   TextField,
   Avatar,
-  RaisedButton,
 } = MUI;
 
 const {
@@ -16,14 +15,14 @@ const {
   values,
 } = R;
 
-const ProfileSchema = new SimpleSchema({
-  'first_name': {
+const UserSchema = new SimpleSchema({
+  'firstName': {
     type: String,
     optional: true,
     label: 'First Name',
     defaultValue: ''
   },
-  'last_name': {
+  'lastName': {
     type: String,
     optional: true,
     label: 'Last Name',
@@ -32,63 +31,56 @@ const ProfileSchema = new SimpleSchema({
 });
 
 User.Handlers.Edit = React.createClass({
-  
-  getInitialState(){
+
+  getInitialState() {
     const {
-      user: {
-        profile = {}
-      } = {},  
+      user = {},
     } = this.props;
     return {
-      profile,
-    }  
+      user,
+    };
   },
-  
-  componentWillReceiveProps({user = {}}) {
 
-    const { profile } = user;
-    
-    profile && this.setState({profile});
+  componentWillReceiveProps({user = {}}) {
+    if (user) this.setState({ user });
   },
-  
+
+  _onSubmit(user) {
+    const keys = Object.keys(user);
+    const userValues = values(user);
+    let index = 0;
+
+    let update = reduce((memo, value) => {
+      memo[`${keys[index]}`] = value;
+      index++;
+      return memo;
+    }, {}, userValues);
+
+    Meteor.call('updateUser', update);
+  },
+
   render() {
     const {
-      profile: {
-        full_name = '',        
-      } = {},
+      user: { fullName = '' },
     } = this.state;
 
     return (
       <Card>
         <CardHeader
-          title={full_name}
-          avatar={<Avatar>{full_name.charAt(0).toUpperCase()}</Avatar>}
+          title={fullName}
+          avatar={<Avatar>{fullName.charAt(0).toUpperCase()}</Avatar>}
           />
-        <Form 
-          value={this.state.profile} 
-          onChange={profile => this.setState({ profile })} 
-          schema={ProfileSchema} 
-          onSubmit={this._handleSubmit}>
-          <Field name='first_name' component={TextField} floatingLabelText='First Name' fullWidth />
-          <Field name='last_name' component={TextField} floatingLabelText='Last Name' fullWidth />
+        <Form
+          value={this.state.user}
+          onChange={user => this.setState({ user })}
+          schema={UserSchema}
+          onSubmit={this._onSubmit}>
+          <Field name='firstName' component={TextField} floatingLabelText='First Name' fullWidth />
+          <Field name='lastName' component={TextField} floatingLabelText='Last Name' fullWidth />
           <TextField fullWidth type='submit' />
         </Form>
       </Card>
-    )
+    );
   },
-  
-  _handleSubmit(profile){
-    const keys = Object.keys(profile);
-    const profileValues = values(profile);
-    let i = 0;
-    
-    const update = reduce((memo, value) => {
-      memo[`profile.${keys[i]}`] = value;
-      i++;
-      return memo;
-    },{}, profileValues);
-    
-    Meteor.users.update(Meteor.userId(), { $set: { ... update} })
-  }
-  
+
 });
