@@ -20,7 +20,7 @@ Package.onUse(function (api){
     'reactrouter:react-router',
     'reactrouter:react-router-ssr',
     'maxharris9:classnames',
-		'matb33:collection-hooks'
+		'matb33:collection-hooks',
   ], both);
 
   api.imply([

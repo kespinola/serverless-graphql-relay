@@ -1,1 +1,1 @@
-if(Meteor.settings.public.environment === 'development') SimpleSchema.debug = true;
+if (Meteor.settings.public.environment === 'development') SimpleSchema.debug = true;

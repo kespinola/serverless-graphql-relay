@@ -8,7 +8,7 @@ Package.onUse(function (api) {
 
   api.use([
     'grid',
-    'core'
+    'core',
   ], both);
 
   api.use([
@@ -35,6 +35,7 @@ Package.onUse(function (api) {
     'site',
     'user',
     'post',
+    'page',
   ], both);
 
   api.export([

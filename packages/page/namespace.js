@@ -1,3 +1,4 @@
 Page = {
   Collection: null,
+  Handlers: {},
 };

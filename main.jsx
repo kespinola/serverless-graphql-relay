@@ -16,7 +16,6 @@ Meteor.startup(() => {
   React.render((
     <Router history={ReactRouter.history.createHistory()}>
       <Route path="/" component={App.Handlers.Root}>
-        <IndexRoute component={App.Handlers.Index}/>
         <Route path='blog' component={Post.Handlers.Index}>
           <IndexRoute component={Post.Handlers.List}/>
           <Route path='/post/:id' component={Post.Handlers.Show}/>
@@ -32,6 +31,7 @@ Meteor.startup(() => {
           <Route path='configure' component={Site.Handlers.Settings} />
           <Route path='sites' component={Site.Handlers.List}/>
         </Route>
+        <IndexRoute component={Page.Handlers.Index}/>
       </Route>
     </Router>
   ), document.body);

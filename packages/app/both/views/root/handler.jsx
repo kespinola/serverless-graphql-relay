@@ -230,16 +230,14 @@ App.Handlers.Root = React.createClass({
           menuItems={menuItems}
           onChange={this._onNavChange}
           />
-        <Container fluid={true} className='app-container'>
-          {modal ? this.previous.children : this.props.children}
-          <Dialog
-            ref='dialog'
-            title={title}
-            onDismiss={this.onDismiss}
-            >
-            {modal ? this.props.children : null}
-          </Dialog>
-        </Container>
+        {modal ? this.previous.children : this.props.children}
+        <Dialog
+          ref='dialog'
+          title={title}
+          onDismiss={this.onDismiss}
+          >
+          {modal ? this.props.children : null}
+        </Dialog>
       </AppCanvas>
     );
   },
