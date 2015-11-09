@@ -66,11 +66,15 @@ App.Handlers.Index = React.createClass({
     const domain = Meteor.settings.public.domain;
     const siteHandler = Meteor.subscribe('siteByDomain', domain);
     const userHandler = Meteor.subscribe('user');
-    const roleHandler = Meteor.subscribe('roles');
+    const rolesHandler = Meteor.subscribe('roles');
+    const navHandler = Meteor.subscribe('pageShowNav');
 
     return {
       user: User.Collection.findOne(Meteor.userId()) || {},
       site: Site.Collection.findOne({ domain }) || {},
+      nav: Page.Collection
+              .find({showInNav: true})
+              .map(({title: text, pathname: route}) => { return { text, route }; }),
     };
   },
 
@@ -121,8 +125,9 @@ App.Handlers.Index = React.createClass({
   render() {
     const { location = {} } = this.props;
     const {
-      user: { firstName = '' },
+      user: { fullName = '' },
       site,
+      nav,
     } = this.data;
 
     const { domain, owner, title: siteTitle } = site;
@@ -143,9 +148,10 @@ App.Handlers.Index = React.createClass({
         route: '/blog',
         text: 'Blog'
       },
+      ... nav,
     ];
 
-    if(owner === userId){
+    if (owner === userId) {
       menuItems.push({
         route: '/configure',
         location: {
@@ -179,11 +185,11 @@ App.Handlers.Index = React.createClass({
       });
     }
 
-    if(userId) {
+    if (userId) {
       iconSet = (
         <IconMenu
           onItemTouchTap={this._onTap}
-          iconButtonElement={<IconButton><Avatar>{firstName.charAt(0).toUpperCase()}</Avatar></IconButton>}
+          iconButtonElement={<IconButton><Avatar>{fullName.charAt(0).toUpperCase()}</Avatar></IconButton>}
           >
           <MenuItem index={0} to='/account'>Account</MenuItem>
           <FlatButton index={1} logout={true} primary={true} label='Logout' />
@@ -191,7 +197,10 @@ App.Handlers.Index = React.createClass({
       );
     }else{
       iconSet = (
-        <IconMenu onItemTouchTap={this._onTap} iconButtonElement={<FlatButton>Register</FlatButton>}>
+        <IconMenu
+          onItemTouchTap={this._onTap}
+          iconButtonElement={<FlatButton>Register</FlatButton>}
+        >
           <MenuItem index={0} to='/sign-up'>Sign Up</MenuItem>
           <FlatButton index={1} label='Log in' to='/login' />
         </IconMenu>
@@ -202,16 +211,16 @@ App.Handlers.Index = React.createClass({
       <AppCanvas>
         <AppBar
           style={barStyle}
+          title={siteTitle}
           onLeftIconButtonTouchTap={() => this.refs.leftNav.toggle() }
           iconElementRight={iconSet}
-          />
+        />
         <LeftNav
           ref="leftNav"
-          header={<Link to='/'><h1>{siteTitle}</h1></Link>}
           docked={false}
           menuItems={menuItems}
           onChange={this._onNavChange}
-          />
+        />
         {modal ? this.previous.children : this.props.children}
         <Dialog
           ref='dialog'

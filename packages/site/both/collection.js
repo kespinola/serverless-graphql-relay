@@ -158,7 +158,7 @@ Site.Schema = new SimpleSchema({
 
   _id: {
     type: String,
-    unique: true,
+    optional: true,
   },
 
   domain: {

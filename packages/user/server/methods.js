@@ -8,7 +8,6 @@ Meteor.methods({
   insertUser(user) { Accounts.createUser(user); },
 
   updateUser(update) {
-    console.log(update);
     return User.Collection.update({ parentId: this.userId}, { $set: update });
   },
 

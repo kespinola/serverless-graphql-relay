@@ -27,7 +27,6 @@ User.Schema = new SimpleSchema({
     type: String,
     autoValue() {
       if (this.isInsert || this.isUpdate) {
-        console.log(this.field('firstName').value, this.field('lastName').field);
         return getFullName(this.field('firstName').value, this.field('lastName').field);
       } else {
         this.unset();
