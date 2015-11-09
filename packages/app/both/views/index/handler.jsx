@@ -70,16 +70,16 @@ App.Handlers.Index = React.createClass({
 
     return {
       user: User.Collection.findOne(Meteor.userId()) || {},
-      site: Site.Collection.findOne({ domain }) || {}
+      site: Site.Collection.findOne({ domain }) || {},
     };
   },
 
   componentDidMount() {
-    let ss = document.createElement("link");
-    ss.type = "text/css";
-    ss.rel = "stylesheet";
-    ss.href = "https://fonts.googleapis.com/icon?family=Material+Icons";
-    document.getElementsByTagName("head")[0].appendChild(ss);
+    const ss = document.createElement('link');
+    ss.type = 'text/css';
+    ss.rel = 'stylesheet';
+    ss.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+    document.getElementsByTagName('head')[0].appendChild(ss);
   },
 
   componentWillReceiveProps({location}) {
@@ -107,17 +107,13 @@ App.Handlers.Index = React.createClass({
     this.history.pushState(null, this.previous.path)
   },
 
-  _onTap(e, {props}) {
-    const {
-      logout,
-      to,
-    } = props;
-
-    if(logout) {
+  _onTap(event, {props}) {
+    const { logout, to } = props;
+    if (logout) {
       Meteor.logout(() => {
         this.history.pushState(null, '/login');
       });
-    }else if(to) {
+    }else if (to) {
       this.history.pushState(null, to);
     }
   },
@@ -160,7 +156,7 @@ App.Handlers.Index = React.createClass({
       });
     }
 
-    if(Roles.userIsInRole(userId, Role.WEBMASTER)) {
+    if (Roles.userIsInRole(userId, Role.WEBMASTER)) {
       menuItems.push({
         leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
         type: MenuItem.Types.NESTED,

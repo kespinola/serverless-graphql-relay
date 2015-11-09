@@ -13,6 +13,10 @@ Page.Schema = new SimpleSchema({
       }
     },
   },
+  showInNav: {
+    type: Boolean,
+    defaultValue: false,
+  },
   pathname: {
     type: String,
   },
