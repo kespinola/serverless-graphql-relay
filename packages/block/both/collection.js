@@ -17,9 +17,21 @@ const GridSchema = new SimpleSchema({
     type: Number,
     defautValue: 12,
   },
-  xl: {
+  xsOffset: {
     type: Number,
-    defautValue: 12,
+    defautValue: null,
+  },
+  smOffset: {
+    type: Number,
+    defautValue: null,
+  },
+  mdOffset: {
+    type: Number,
+    defautValue: null,
+  },
+  lgOffset: {
+    type: Number,
+    defautValue: null,
   },
 });
 
@@ -33,7 +45,7 @@ Block.Schema = new SimpleSchema({
   },
   children: {
     type: [String],
-    defaultValue: {},
+    defaultValue: [],
   },
   grid: {
     type: GridSchema,
