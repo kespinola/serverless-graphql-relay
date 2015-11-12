@@ -1,17 +1,16 @@
+/* global Meteor, Page, React, R, MUI, ReactMeteorData */
+
 const {
-  Checkbox,
   TextField,
   Toolbar,
   ToolbarGroup,
   Toggle,
-  ToolbarSeparator,
   RaisedButton,
   FlatButton,
   IconButton,
   IconMenu,
   MenuItem,
 } = MUI;
-const { isEmpty } = R;
 
 Page.Handlers.Index = React.createClass({
 
@@ -25,10 +24,14 @@ Page.Handlers.Index = React.createClass({
     const {
       location: { pathname },
     } = this.props;
-    const pageHandler = Meteor.subscribe('pageByPathname', pathname);
+    const pageHandler = Meteor.subscribe('pageByPath', pathname);
+    const blockHandler = Meteor.subscribe('blocks');
     const page = Page.Collection.findOne({ pathname }) || {};
+
     return {
       page,
+      pageReady: pageHandler.ready(),
+      blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
     };
   },
@@ -52,7 +55,7 @@ Page.Handlers.Index = React.createClass({
 
   render() {
     const { page, hasPage } = this.data;
-    const { _id, title, showInNav } = page;
+    const { _id, title, showInNav, blocks = [] } = page;
     const {
       location: { pathname },
     } = this.props;
@@ -94,7 +97,7 @@ Page.Handlers.Index = React.createClass({
               <FlatButton
                 primary
                 label="Add Block"
-                onClick={Meteor.call.bind(null, 'addBlock', _id)}
+                onClick={Meteor.call.bind(null, 'addBlock', {parentId: _id})}
               />
             ) : (
               <RaisedButton
@@ -105,6 +108,9 @@ Page.Handlers.Index = React.createClass({
             )}
           </ToolbarGroup>
         </Toolbar>
+        {blocks.map(({_id: blockId}) => {
+          return <h1>{blockId}</h1>;
+        })}
       </div>
     );
   },

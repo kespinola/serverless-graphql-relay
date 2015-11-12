@@ -1,38 +1,7 @@
+/* global Block, Mongo, SimpleSchema */
 Block.Collection = new Mongo.Collection('blocks');
 
 const GridSchema = new SimpleSchema({
-  xs: {
-    type: Number,
-    defaultValue: 12,
-  },
-  sm: {
-    type: Number,
-    defautValue: 12,
-  },
-  md: {
-    type: Number,
-    defautValue: 12,
-  },
-  lg: {
-    type: Number,
-    defautValue: 12,
-  },
-  xsOffset: {
-    type: Number,
-    defautValue: null,
-  },
-  smOffset: {
-    type: Number,
-    defautValue: null,
-  },
-  mdOffset: {
-    type: Number,
-    defautValue: null,
-  },
-  lgOffset: {
-    type: Number,
-    defautValue: null,
-  },
 });
 
 Block.Schema = new SimpleSchema({
@@ -43,12 +12,22 @@ Block.Schema = new SimpleSchema({
   parentId: {
     type: String,
   },
-  children: {
-    type: [String],
-    defaultValue: [],
-  },
   grid: {
     type: GridSchema,
     optional: true,
   },
 });
+
+Block.Collection.allow({
+  insert() {
+    return true;
+  },
+  update() {
+    return true;
+  },
+  remove() {
+    return true;
+  },
+});
+
+Block.Collection.attachSchema(Block.Schema);

@@ -10,12 +10,13 @@ Package.onUse(function(api) {
 	api.use([
     'core',
     'site',
+    'block',
 	], both);
 
 	api.addFiles([
     'namespace.js',
     'both/collection.js',
-    'both/views/index/handler.jsx',
+    'both/handlers/IndexHandler.jsx',
 	], both);
 
   api.addFiles([

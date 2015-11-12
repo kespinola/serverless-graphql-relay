@@ -1,3 +1,5 @@
+/* global Meteor, Page, Block */
+
 Meteor.methods({
   insertPage(page) {
     return Page.Collection.insert(page);
@@ -7,5 +9,5 @@ Meteor.methods({
   },
   removePage(_id) {
     return Page.Collection.remove(_id);
-  }
+  },
 });

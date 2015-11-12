@@ -1,3 +1,11 @@
+/* global R, SimpleSchema, Mongo, Meteor, Page, Block */
+const { compose } = R;
+
+function joinBlocks(doc) {
+  doc.blocks = Block.Collection.find({ parentId: doc._id }).fetch();
+  return doc;
+}
+
 Page.Collection = new Mongo.Collection('pages');
 
 Page.Schema = new SimpleSchema({
@@ -24,13 +32,24 @@ Page.Schema = new SimpleSchema({
     type: String,
     defaultValue: '',
   },
-  blocks: {
-    type: [String],
-    defaultValue: [],
-  },
 });
 
 Page.Collection.attachSchema(Page.Schema);
+
+Page.Collection.after.find((userId, selector, options, cursor) => {
+  return cursor.map(doc => {
+    return compose(
+      joinBlocks
+    )(doc);
+  });
+});
+
+Page.Collection.after.findOne((userId, selector, options, doc) => {
+  if (!doc) return doc;
+  compose(
+    joinBlocks
+  )(doc);
+});
 
 Page.Collection.allow({
   insert() {

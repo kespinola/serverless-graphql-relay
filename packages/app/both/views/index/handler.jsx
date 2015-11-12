@@ -67,7 +67,7 @@ App.Handlers.Index = React.createClass({
     const siteHandler = Meteor.subscribe('siteByDomain', domain);
     const userHandler = Meteor.subscribe('user');
     const rolesHandler = Meteor.subscribe('roles');
-    const navHandler = Meteor.subscribe('pageShowNav');
+    const navHandler = Meteor.subscribe('navFromPages');
 
     return {
       user: User.Collection.findOne(Meteor.userId()) || {},
