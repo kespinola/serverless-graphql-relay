@@ -1,4 +1,4 @@
-/* global Meteor, Page, React, R, MUI, ReactMeteorData */
+/* global Meteor, Page, React, R, MUI, ReactMeteorData, Session */
 
 const {
   TextField,
@@ -20,6 +20,10 @@ Page.Handlers.Index = React.createClass({
 
   mixins: [ReactMeteorData],
 
+  componentDidMount() {
+    Session.set('isEditingPage', false);
+  },
+
   getMeteorData() {
     const {
       location: { pathname },
@@ -33,6 +37,7 @@ Page.Handlers.Index = React.createClass({
       pageReady: pageHandler.ready(),
       blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
+      isEditing: Session.get('isEditingPage'),
     };
   },
 
@@ -54,7 +59,7 @@ Page.Handlers.Index = React.createClass({
   },
 
   render() {
-    const { page, hasPage } = this.data;
+    const { page, hasPage, isEditing } = this.data;
     const { _id, title, showInNav, blocks = [] } = page;
     const {
       location: { pathname },
@@ -78,10 +83,21 @@ Page.Handlers.Index = React.createClass({
                 )}
                 >
                 <MenuItem value="remove">Delete</MenuItem>
-                <IconButton
-                  tooltip="Show In Navigation"
-                  tooltipPosition="bottom-right"
-                >
+                  <IconButton
+                    tooltip="Enter edit mode"
+                    tooltipPosition="top-right"
+                  >
+                    <Toggle
+                      name="editMode"
+                      value="editing"
+                      defaultToggled={isEditing}
+                      onToggle={() => Session.set({isEditingPage: !isEditing})}
+                    />
+                  </IconButton>
+                  <IconButton
+                    tooltip="Show In Navigation"
+                    tooltipPosition="top-right"
+                  >
                   <Toggle
                     name="showInNav"
                     value="showInNav"
