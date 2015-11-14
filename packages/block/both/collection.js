@@ -1,4 +1,5 @@
 /* global Block, Mongo, SimpleSchema */
+
 Block.Collection = new Mongo.Collection('blocks');
 
 const GridSchema = new SimpleSchema({

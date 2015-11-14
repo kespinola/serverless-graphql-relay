@@ -1,4 +1,4 @@
-/* global Meteor, Page, React, R, MUI, ReactMeteorData, Session */
+/* global Meteor, Page, React, R, MUI, ReactMeteorData, Session, Flexgrid */
 
 const {
   TextField,
@@ -11,17 +11,24 @@ const {
   IconMenu,
   MenuItem,
 } = MUI;
+const { Container } = Flexgrid;
+
+const { Components: { Block } } = Page;
+
+const { PropTypes } = React;
 
 Page.Handlers.Index = React.createClass({
 
   propTypes: {
-    location: React.PropTypes.object,
+    location: PropTypes.object,
+    history: PropTypes.object,
   },
 
   mixins: [ReactMeteorData],
 
   componentDidMount() {
     Session.set('isEditingPage', false);
+    Session.set('editingBlock', null);
   },
 
   getMeteorData() {
@@ -61,9 +68,7 @@ Page.Handlers.Index = React.createClass({
   render() {
     const { page, hasPage, isEditing } = this.data;
     const { _id, title, showInNav, blocks = [] } = page;
-    const {
-      location: { pathname },
-    } = this.props;
+    const { location: { pathname }, history } = this.props;
     return (
       <div>
         <Toolbar>
@@ -82,7 +87,6 @@ Page.Handlers.Index = React.createClass({
                   </IconButton>
                 )}
                 >
-                <MenuItem value="remove">Delete</MenuItem>
                   <IconButton
                     tooltip="Enter edit mode"
                     tooltipPosition="top-right"
@@ -105,6 +109,7 @@ Page.Handlers.Index = React.createClass({
                     onToggle={this._onToggleNav.bind(null, _id)}
                   />
                 </IconButton>
+                <MenuItem value="remove">Delete</MenuItem>
               </IconMenu>
             </ToolbarGroup>
           )}
@@ -124,9 +129,20 @@ Page.Handlers.Index = React.createClass({
             )}
           </ToolbarGroup>
         </Toolbar>
-        {blocks.map(({_id: blockId}) => {
-          return <h1>{blockId}</h1>;
-        })}
+        {blocks && (
+          <Container fluid>
+            {blocks.map(block => {
+              return (
+                <Block
+                  key={block._id}
+                  {... block}
+                  history={history}
+                  onClick={isEditing && () => history.pushState({ modal: true }, `/block/${_id}/edit`)}
+                />
+              );
+            })}
+          </Container>
+        )}
       </div>
     );
   },

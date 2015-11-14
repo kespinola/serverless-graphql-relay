@@ -1,9 +1,11 @@
+/* global Package */
+
 Package.describe({
   name: 'site',
   description: 'manage sites',
 });
 
-Package.onUse(function(api){
+Package.onUse(function(api) {
 
   var both = ['server', 'client'];
 
@@ -14,16 +16,13 @@ Package.onUse(function(api){
     'grid',
   ], both);
 
-  var views = ['index', 'list', 'settings'];
-
-  views = views.map(function(view){
-    return 'both/views/' + view + '/handler.jsx'
-  });
-
   api.addFiles([
     'namespace.js',
     'both/collection.js',
-  ].concat(views), both);
+    'both/handlers/IndexHandler.jsx',
+    'both/handlers/ListHandler.jsx',
+    'both/handlers/SettingsHandler.jsx',
+  ], both);
 
   api.addFiles([
     'server/publish.js',
@@ -31,7 +30,6 @@ Package.onUse(function(api){
   ], 'server');
 
   api.export([
-    'Site'
+    'Site',
   ], both);
-
 });

@@ -1,26 +1,30 @@
+/* global Package */
 Package.describe({
   name: 'block',
   description: 'page blocks',
 });
 
 Package.onUse(function(api) {
-	var both = ['server', 'client'];
+  var both = ['server', 'client'];
 
-	api.use([
+  api.use([
     'core',
-	], both);
+    'form',
+    'grid',
+  ], both);
 
-	api.addFiles([
+  api.addFiles([
     'namespace.js',
     'both/collection.js',
-	], both);
+    'both/handlers/EditHandler.jsx',
+  ], both);
 
   api.addFiles([
     'server/publish.js',
     'server/methods.js',
   ], 'server');
 
-	api.export([
+  api.export([
     'Block',
-	], both);
+  ], both);
 });

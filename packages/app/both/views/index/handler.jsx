@@ -1,6 +1,18 @@
+/* global injectTapEventPlugin, Meteor, React, ReactRouter, MUI, Flexgrid, Roles, Role, User, Site, ReactMeteorData, App, Page, R */
+
+const { forEach, isNil } = R;
 injectTapEventPlugin();
 
-const { History, Link, } = ReactRouter;
+function areAllHandlersReady() {
+  let isReady = true;
+  forEach(arg => {
+    if (!isReady) return false;
+    if (!arg.ready()) isReady = false;
+  }, arguments);
+  return isReady;
+}
+
+const { History } = ReactRouter;
 
 const {
   AppCanvas,
@@ -18,10 +30,6 @@ const {
 
 const { ThemeManager, DarkRawTheme } = Styles;
 
-const { Container, Row, Col } = Flexgrid;
-
-const { isEmpty } = R;
-
 const barStyle = {
   top: 0,
   left: 0,
@@ -31,23 +39,19 @@ App.Handlers.Index = React.createClass({
 
   propTypes: {
     location: React.PropTypes.object,
+    children: React.PropTypes.node,
+  },
+
+  childContextTypes: {
+    muiTheme: React.PropTypes.object,
   },
 
   mixins: [History, ReactMeteorData],
 
-  previous: {
-    children: null,
-    path: null,
-  },
-
-  childContextTypes: {
-    muiTheme: React.PropTypes.object
-  },
-
   getInitialState() {
     return {
       muiTheme: DarkRawTheme,
-    }
+    };
   },
 
   getChildContext() {
@@ -59,22 +63,6 @@ App.Handlers.Index = React.createClass({
 
     return {
       muiTheme: ThemeManager.getMuiTheme(theme || muiTheme),
-    };
-  },
-
-  getMeteorData() {
-    const domain = Meteor.settings.public.domain;
-    const siteHandler = Meteor.subscribe('siteByDomain', domain);
-    const userHandler = Meteor.subscribe('user');
-    const rolesHandler = Meteor.subscribe('roles');
-    const navHandler = Meteor.subscribe('navFromPages');
-
-    return {
-      user: User.Collection.findOne(Meteor.userId()) || {},
-      site: Site.Collection.findOne({ domain }) || {},
-      nav: Page.Collection
-              .find({showInNav: true})
-              .map(({title: text, pathname: route}) => { return { text, route }; }),
     };
   },
 
@@ -91,7 +79,7 @@ App.Handlers.Index = React.createClass({
       this.previous = {
         children: this.props.children,
         path: this.props.location.pathname,
-      }
+      };
     }
   },
 
@@ -103,12 +91,39 @@ App.Handlers.Index = React.createClass({
     if (location.state && location.state.modal && !dialog.isOpen()) dialog.show();
   },
 
-  _onNavChange(e, i, {route, location = null}) {
-    this.history.pushState(location, route)
+  onDismiss() {
+    this.history.pushState(null, this.previous.path);
   },
 
-  onDismiss() {
-    this.history.pushState(null, this.previous.path)
+  getMeteorData() {
+    const domain = Meteor.settings.public.domain;
+    const siteHandler = Meteor.subscribe('siteByDomain', domain);
+    const userHandler = Meteor.subscribe('user');
+    const rolesHandler = Meteor.subscribe('roles');
+    const navHandler = Meteor.subscribe('navFromPages');
+    const isReady = areAllHandlersReady(
+      siteHandler,
+      userHandler,
+      rolesHandler,
+      navHandler
+    );
+    return {
+      isReady,
+      user: User.Collection.findOne(Meteor.userId()) || {},
+      site: Site.Collection.findOne({ domain }) || {},
+      nav: Page.Collection
+              .find({showInNav: true})
+              .map(({title: text, pathname: route}) => { return { text, route }; }),
+    };
+  },
+
+  previous: {
+    children: null,
+    path: null,
+  },
+
+  _onNavChange(event, index, {route, location = null}) {
+    this.history.pushState(location, route);
   },
 
   _onTap(event, {props}) {
@@ -123,30 +138,28 @@ App.Handlers.Index = React.createClass({
   },
 
   render() {
-    const { location = {} } = this.props;
+    const { location } = this.props;
     const {
       user: { fullName = '' },
       site,
       nav,
     } = this.data;
 
+
     const { domain, owner, title: siteTitle } = site;
-
-    const modal = location.state && location.state.modal;
-
-    let title;
-
-    if (modal) title = location.state.title;
+    let state = location.state;
+    if (isNil(state)) state = {};
+    const { title: modalTitle = '', modal = false } = state;
 
     const userId = Meteor.userId();
 
     let iconSet;
 
-    let menuItems = [
+    const menuItems = [
       {
-        leftIcon: (<FontIcon className='material-icons'>smartphone</FontIcon>),
+        leftIcon: (<FontIcon className="material-icons">smartphone</FontIcon>),
         route: '/blog',
-        text: 'Blog'
+        text: 'Blog',
       },
       ... nav,
     ];
@@ -156,7 +169,7 @@ App.Handlers.Index = React.createClass({
         route: '/configure',
         location: {
           modal: true,
-          title: `Configure ${domain} Settings`
+          title: `Configure ${domain} Settings`,
         },
         text: 'Site Configure',
       });
@@ -164,24 +177,24 @@ App.Handlers.Index = React.createClass({
 
     if (Roles.userIsInRole(userId, Role.WEBMASTER)) {
       menuItems.push({
-        leftIcon: (<FontIcon className='material-icons'>lock</FontIcon>),
+        leftIcon: (<FontIcon className="material-icons">lock</FontIcon>),
         type: MenuItem.Types.NESTED,
         text: 'Manage',
         items: [
           {
-            leftIcon: (<FontIcon className='material-icons'>people</FontIcon>),
+            leftIcon: (<FontIcon className="material-icons">people</FontIcon>),
             route: '/roles',
-            text: 'Role'
+            text: 'Role',
           },
           {
             route: '/users',
-            text: 'Users'
+            text: 'Users',
           },
           {
             route: '/sites',
             text: 'Sites',
-          }
-        ]
+          },
+        ],
       });
     }
 
@@ -189,20 +202,24 @@ App.Handlers.Index = React.createClass({
       iconSet = (
         <IconMenu
           onItemTouchTap={this._onTap}
-          iconButtonElement={<IconButton><Avatar>{fullName.charAt(0).toUpperCase()}</Avatar></IconButton>}
+          iconButtonElement={(
+            <IconButton>
+              <Avatar>{fullName.charAt(0).toUpperCase()}</Avatar>
+            </IconButton>
+          )}
           >
-          <MenuItem index={0} to='/account'>Account</MenuItem>
-          <FlatButton index={1} logout={true} primary={true} label='Logout' />
+          <MenuItem index={0} to="/account">Account</MenuItem>
+          <FlatButton index={1} logout primary label="Logout" />
         </IconMenu>
       );
-    }else{
+    }else {
       iconSet = (
         <IconMenu
           onItemTouchTap={this._onTap}
           iconButtonElement={<FlatButton>Register</FlatButton>}
         >
-          <MenuItem index={0} to='/sign-up'>Sign Up</MenuItem>
-          <FlatButton index={1} label='Log in' to='/login' />
+          <MenuItem index={0} to="/sign-up">Sign Up</MenuItem>
+          <FlatButton index={1} label="Log in" to="/login" />
         </IconMenu>
       );
     }
@@ -223,8 +240,8 @@ App.Handlers.Index = React.createClass({
         />
         {modal ? this.previous.children : this.props.children}
         <Dialog
-          ref='dialog'
-          title={title}
+          ref="dialog"
+          title={modalTitle}
           onDismiss={this.onDismiss}
           >
           {modal ? this.props.children : null}

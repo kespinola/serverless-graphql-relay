@@ -35,6 +35,7 @@ Package.onUse(function (api) {
     'user',
     'post',
     'page',
+    'block',
   ], both);
 
   api.export([
