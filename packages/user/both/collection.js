@@ -1,4 +1,4 @@
-const { compose } = R;
+/* global R, SimpleSchema, User, Meteor,*/
 
 function getFullName(firstName = '', lastName = '') {
   return `${firstName}${lastName ? ` ${lastName}` : ''}`;
@@ -32,6 +32,7 @@ User.Schema = new SimpleSchema({
         this.unset();
       }
     },
+    optional: true,
   },
   firstName: {
     type: String,
@@ -48,7 +49,7 @@ User.Schema = new SimpleSchema({
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
-    optional: true
+    optional: true,
   },
   bio: {
     type: String,

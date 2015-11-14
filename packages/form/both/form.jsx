@@ -45,9 +45,7 @@ AutoForm.Form = React.createClass({
 
     if (immutableIs(Value, this.state.value)) return false;
 
-    this.setState({value: this.state.value.merge(fromJS(value))}, () => {
-      if (autoSave) this._onSubmit();
-    });
+    this.setState({value: this.state.value.merge(Value)});
   },
 
   _onChange(name, response) {

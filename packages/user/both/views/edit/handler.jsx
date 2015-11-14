@@ -1,3 +1,4 @@
+/* global MUI, AutoForm, R, User, React, Meteor, SimpleSchema */
 const { Card, CardHeader, TextField, Avatar } = MUI;
 const { Form, Field } = AutoForm;
 const { reduce, values } = R;
@@ -7,29 +8,20 @@ const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
     label: 'First Name',
-    defaultValue: ''
+    defaultValue: '',
   },
   'lastName': {
     type: String,
     optional: true,
     label: 'Last Name',
-    defaultValue: ''
+    defaultValue: '',
   },
 });
 
 User.Handlers.Edit = React.createClass({
 
-  getInitialState() {
-    const {
-      user = {},
-    } = this.props;
-    return {
-      user,
-    };
-  },
-
-  componentWillReceiveProps({user = {}}) {
-    if (user) this.setState({ user });
+  propTypes: {
+    user: React.PropTypes.object,
   },
 
   _onSubmit(user) {
@@ -37,7 +29,7 @@ User.Handlers.Edit = React.createClass({
     const userValues = values(user);
     let index = 0;
 
-    let update = reduce((memo, value) => {
+    const update = reduce((memo, value) => {
       memo[`${keys[index]}`] = value;
       index++;
       return memo;
@@ -48,9 +40,11 @@ User.Handlers.Edit = React.createClass({
 
   render() {
     const {
-      user: { fullName = '' },
-    } = this.state;
-    
+      user: {
+        fullName = ''
+      } = {},
+    } = this.props;
+
     return (
       <Card>
         <CardHeader
@@ -59,12 +53,11 @@ User.Handlers.Edit = React.createClass({
           />
         <Form
           autoSave
-          value={this.state.user}
-          onChange={user => this.setState({ user })}
-          schema={UserSchema}
+          value={this.props.user}
+          schema={User.Schema}
           onSubmit={this._onSubmit}>
-          <Field name='firstName' component={TextField} floatingLabelText='First Name' fullWidth />
-          <Field name='lastName' component={TextField} floatingLabelText='Last Name' fullWidth />
+          <Field name="firstName" component={TextField} floatingLabelText="First Name" fullWidth />
+          <Field name="lastName" component={TextField} floatingLabelText="Last Name" fullWidth />
         </Form>
       </Card>
     );

@@ -21,24 +21,12 @@ Site.Handlers.Settings = React.createClass({
     site: PropTypes.object,
   },
 
-  getInitialState() {
-    const { site } = this.props;
-
-    return {
-      site,
-    };
-  },
-
-  componentWillReceiveProps({site}) {
-    site && this.setState({site});
-  },
-
   _onPaletteChange(palette) {
     const {
       site,
     } = this.props;
 
-    Collection.update(site._id, {$set:{'theme.palette': palette}})
+    Collection.update(site._id, {$set: {'theme.palette': palette}});
   },
 
   _onSubmit(site) {
@@ -48,7 +36,7 @@ Site.Handlers.Settings = React.createClass({
   },
 
   render() {
-    const { site } = this.state;
+    const { site } = this.props;
 
     if (!site) return null;
 
@@ -64,7 +52,6 @@ Site.Handlers.Settings = React.createClass({
           <Form
             autoSave
             value={site}
-            onChange={site => this.setState({site})}
             schema={Site.Schema}
             onSubmit={this._onSubmit}
             >
