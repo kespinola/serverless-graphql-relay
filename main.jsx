@@ -29,7 +29,9 @@ Meteor.startup(() => {
           <Route path="configure" component={Site.Handlers.Settings}/>
           <Route path="sites" component={Site.Handlers.List}/>
         </Route>
-        <Route path="block/:blockId/edit" component={Block.Handlers.Edit}/>
+        <Route path="block" component={Block.Handlers.Index}>
+          <Route path=":blockId/edit" component={Block.Handlers.Edit}/>
+        </Route>
         <Route path="*" component={Page.Handlers.Index}/>
         <IndexRoute component={Page.Handlers.Index}/>
       </Route>

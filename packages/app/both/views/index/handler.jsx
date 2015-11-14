@@ -25,6 +25,7 @@ const {
   LeftNav,
   FontIcon,
   FlatButton,
+  CircularProgress,
   Dialog,
 } = MUI;
 
@@ -143,15 +144,16 @@ App.Handlers.Index = React.createClass({
       user: { fullName = '' },
       site,
       nav,
+      isReady,
     } = this.data;
-
-
     const { domain, owner, title: siteTitle } = site;
     let state = location.state;
     if (isNil(state)) state = {};
     const { title: modalTitle = '', modal = false } = state;
 
     const userId = Meteor.userId();
+
+    if(!isReady) return <CircularProgress mode="determinate" value={60} size={2} />
 
     let iconSet;
 

@@ -2,10 +2,14 @@
 
 Block.Collection = new Mongo.Collection('blocks');
 
-const GridSchema = new SimpleSchema({
+Block.Schema.Grid = new SimpleSchema({
+  xs: {
+    type: Number,
+    defaultValue: 12,
+  },
 });
 
-Block.Schema = new SimpleSchema({
+Block.Schema.Base = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
@@ -14,7 +18,7 @@ Block.Schema = new SimpleSchema({
     type: String,
   },
   grid: {
-    type: GridSchema,
+    type: Block.Schema.Grid,
     optional: true,
   },
 });
@@ -31,4 +35,4 @@ Block.Collection.allow({
   },
 });
 
-Block.Collection.attachSchema(Block.Schema);
+Block.Collection.attachSchema(Block.Schema.Base);

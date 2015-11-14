@@ -3,4 +3,5 @@
 Block = {
   Collection: null,
   Handlers: {},
+  Schema: {},
 };

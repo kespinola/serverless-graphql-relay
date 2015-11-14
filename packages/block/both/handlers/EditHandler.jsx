@@ -1,9 +1,10 @@
-/* global React, MUI, AutoForm, Block */
+/* global React, MUI, AutoForm, Block, ReactMeteorData */
 
 const { Tabs, Tab, Slider } = MUI;
 const { Form, Field } = AutoForm;
 
 Block.Handlers.Edit = React.createClass({
+
   _onSubmitGrid(grid) {
 
   },
@@ -14,9 +15,9 @@ Block.Handlers.Edit = React.createClass({
         <Tab label="Grid">
           <Form
             autoSave
-            value={null}
+            value={{}}
             onChange={null}
-            schema={null}
+            schema={Block.Schema.Grid}
             onSubmit={null}
             >
             <Field name="title" component={Slider} fullWidth/>
