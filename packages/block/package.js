@@ -14,16 +14,16 @@ Package.onUse(function(api) {
   ], both);
 
   api.addFiles([
+    'server/publish.js',
+    'server/methods.js',
+  ], 'server');
+
+  api.addFiles([
     'namespace.js',
     'both/collection.js',
     'both/handlers/IndexHandler.jsx',
     'both/handlers/EditHandler.jsx',
   ], both);
-
-  api.addFiles([
-    'server/publish.js',
-    'server/methods.js',
-  ], 'server');
 
   api.export([
     'Block',

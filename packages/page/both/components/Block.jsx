@@ -1,6 +1,6 @@
 /* global Page, React, Session */
 
-function PageBlock(props) {
+function Block(props) {
   const {
     _id,
     onClick,
@@ -13,4 +13,4 @@ function PageBlock(props) {
   );
 }
 
-Page.Components.Block = PageBlock;
+Page.Components.Block = Block;

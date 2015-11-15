@@ -132,12 +132,13 @@ Page.Handlers.Index = React.createClass({
         {blocks && (
           <Container fluid>
             {blocks.map(block => {
+              const blockId = block._id;
               return (
                 <Block
-                  key={block._id}
+                  key={blockId}
                   {... block}
                   history={history}
-                  onClick={isEditing && () => history.pushState({ modal: true }, `/block/${_id}/edit`)}
+                  onClick={isEditing && () => history.pushState({ modal: true }, `/block/${blockId}/edit`)}
                 />
               );
             })}
