@@ -1,10 +1,6 @@
 /* global R, SimpleSchema, Mongo, Meteor, Page, Block */
 const { compose } = R;
-
-function joinBlocks(doc) {
-  doc.blocks = Block.Collection.find({ parentId: doc._id }).fetch();
-  return doc;
-}
+const { Methods: { joinBlocks } } = Block;
 
 Page.Collection = new Mongo.Collection('pages');
 

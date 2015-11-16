@@ -19,7 +19,7 @@ Package.onUse(function (api) {
   api.addFiles([
     'namespace.js',
     'index.js',
-    'both/views/index/handler.jsx',
+    'both/handlers/IndexHandler.jsx',
   ], both);
 
   api.addFiles([

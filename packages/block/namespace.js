@@ -4,4 +4,5 @@ Block = {
   Collection: null,
   Handlers: {},
   Schema: {},
+  Methods: {},
 };

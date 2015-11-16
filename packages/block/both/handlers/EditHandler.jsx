@@ -25,12 +25,46 @@ Block.Handlers.Edit = React.createClass({
             schema={Block.Schema.Grid}
             onSubmit={this._onSubmitGrid.bind(null, _id)}
             >
-            <label>Small Grid Width
-              <Field name="xs" component={Slider} step={1} min={0} max={12} mapValue={(e, value) => value} fullWidth/>
-            </label>
+            <Field
+              name="xs"
+              component={Slider}
+              step={1}
+              min={0}
+              max={12}
+              description="Extra Small Grid"
+              mapValue={(e, value) => value} fullWidth
+            />
+            <Field
+              name="sm"
+              component={Slider}
+              step={1}
+              min={0}
+              max={12}
+              description="Small Grid"
+              mapValue={(e, value) => value} fullWidth
+            />
+            <Field
+              name="md"
+              component={Slider}
+              step={1}
+              min={0}
+              max={12}
+              description="Medium Grid"
+              mapValue={(e, value) => value} fullWidth
+            />
+            <Field
+              name="lg"
+              component={Slider}
+              step={1}
+              min={0}
+              max={12}
+              description="Large Value"
+              mapValue={(e, value) => value} fullWidth
+            />
           </Form>
         </Tab>
         <Tab label="Content"></Tab>
+        <Tab label="Styles"></Tab>
       </Tabs>
     );
   },

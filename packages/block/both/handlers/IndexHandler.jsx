@@ -12,6 +12,7 @@ Block.Handlers.Index = React.createClass({
     const {
       params: {blockId: _id},
     } = this.props;
+    const blockHandler = Meteor.subscribe('blockByParentId', _id);
     const docHandler = Meteor.subscribe('blockById', _id);
     return {
       docReady: docHandler.ready(),

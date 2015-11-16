@@ -1,4 +1,4 @@
-/* global Package*/
+/* global Package */
 Package.describe({
   name: 'page',
   description: 'page management for site',

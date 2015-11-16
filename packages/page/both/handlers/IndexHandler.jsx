@@ -10,12 +10,24 @@ const {
   IconButton,
   IconMenu,
   MenuItem,
+  DropDownMenu,
+  ToolbarSeparator,
 } = MUI;
-const { Container } = Flexgrid;
+const { Container, Row, Col } = Flexgrid;
 
 const { Components: { Block } } = Page;
 
 const { PropTypes } = React;
+
+function gatherBlockOptions(blocks = []){
+  let menu = [];
+  blocks.forEach(({_id, blocks: children = []}) => {
+    menu.push({payload: _id, text: _id});
+    debugger;
+    if (children.length) menu = menu.concat(... gatherBlockOptions(children));
+  });
+  return menu;
+}
 
 Page.Handlers.Index = React.createClass({
 
@@ -36,8 +48,8 @@ Page.Handlers.Index = React.createClass({
       location: { pathname },
     } = this.props;
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
-    const blockHandler = Meteor.subscribe('blocks');
     const page = Page.Collection.findOne({ pathname }) || {};
+    const blockHandler = Meteor.subscribe('blockByParentId', page._id);
 
     return {
       page,
@@ -45,6 +57,7 @@ Page.Handlers.Index = React.createClass({
       blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
+      blockDropdown: gatherBlockOptions(page.blocks)
     };
   },
 
@@ -66,7 +79,7 @@ Page.Handlers.Index = React.createClass({
   },
 
   render() {
-    const { page, hasPage, isEditing } = this.data;
+    const { page, hasPage, isEditing, blockDropdown } = this.data;
     const { _id, title, showInNav, blocks = [] } = page;
     const { location: { pathname }, history } = this.props;
     return (
@@ -127,18 +140,22 @@ Page.Handlers.Index = React.createClass({
                 onClick={Meteor.call.bind(null, 'insertPage', { pathname })}
               />
             )}
+            <ToolbarSeparator />
+            <DropDownMenu menuItems={blockDropdown} />
           </ToolbarGroup>
         </Toolbar>
         {blocks && (
           <Container fluid>
-            {blocks.map(block => {
-              const blockId = block._id;
+            {blocks.map(({_id: blockId, blocks = [], ... blockProps}) => {
               return (
                 <Block
                   key={blockId}
-                  {... block}
+                  {... blockProps}
+                  _id={blockId}
+                  blocks={blocks}
+                  hasChildren={blocks.length > 0}
                   history={history}
-                  onClick={isEditing && () => history.pushState({ modal: true }, `/block/${blockId}/edit`)}
+                  isEditing={isEditing}
                 />
               );
             })}
