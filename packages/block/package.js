@@ -20,7 +20,6 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'namespace.js',
-    'both/utils.js',
     'both/collection.js',
     'both/handlers/IndexHandler.jsx',
     'both/handlers/EditHandler.jsx',

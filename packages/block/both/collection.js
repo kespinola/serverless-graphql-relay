@@ -1,6 +1,4 @@
 /* global Block, Mongo, SimpleSchema, R */
-
-const { Methods: { joinBlocks } } = Block;
 const { compose } = R;
 
 Block.Collection = new Mongo.Collection('blocks');
@@ -68,23 +66,6 @@ Block.Collection.allow({
   remove() {
     return true;
   },
-});
-
-
-
-Block.Collection.after.find((userId, selector, options, cursor) => {
-  return cursor.map(doc => {
-    return compose(
-      joinBlocks
-    )(doc);
-  });
-});
-
-Block.Collection.after.findOne((userId, selector, options, doc) => {
-  if (!doc) return doc;
-  compose(
-    joinBlocks
-  )(doc);
 });
 
 Block.Collection.attachSchema(Block.Schema.Base);

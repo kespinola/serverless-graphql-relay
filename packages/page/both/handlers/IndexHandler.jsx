@@ -19,12 +19,11 @@ const { Components: { Block } } = Page;
 
 const { PropTypes } = React;
 
-function gatherBlockOptions(blocks = []){
+function gatherSectionOptions(sections = []) {
   let menu = [];
-  blocks.forEach(({_id, blocks: children = []}) => {
+  sections.forEach(({_id, sections: children = []}) => {
     menu.push({payload: _id, text: _id});
-    debugger;
-    if (children.length) menu = menu.concat(... gatherBlockOptions(children));
+    if (children.length) menu = menu.concat(... gatherSectionOptions(children));
   });
   return menu;
 }
@@ -40,7 +39,7 @@ Page.Handlers.Index = React.createClass({
 
   componentDidMount() {
     Session.set('isEditingPage', false);
-    Session.set('editingBlock', null);
+    Session.set('editingSection', null);
   },
 
   getMeteorData() {
@@ -50,14 +49,13 @@ Page.Handlers.Index = React.createClass({
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
     const page = Page.Collection.findOne({ pathname }) || {};
     const blockHandler = Meteor.subscribe('blockByParentId', page._id);
-
     return {
       page,
       pageReady: pageHandler.ready(),
       blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
-      blockDropdown: gatherBlockOptions(page.blocks)
+      blockDropdown: gatherSectionOptions(page.section),
     };
   },
 
@@ -70,6 +68,9 @@ Page.Handlers.Index = React.createClass({
     case 'remove':
       Meteor.call('removePage', _id);
       break;
+    case 'add_section':
+      Meteor.call('addPageSection', _id);
+      break;
     default:
     }
   },
@@ -78,9 +79,30 @@ Page.Handlers.Index = React.createClass({
     Meteor.call('updatePage', _id, { showInNav });
   },
 
+  _onChangeSectionDropdown(event, selectedIndex, {payload}) {
+    const { history } = this.props;
+    history.pushState({
+      modal: true,
+      modalActions: [
+        {
+          text: 'Cancel',
+          onTouchTap() {
+            history.goBack();
+          },
+        },
+        {
+          text: 'Add Section',
+          onTouchTap() {
+            Meteor.call('addSection', {parentId: payload});
+          },
+        },
+      ],
+    }, `/block/${payload}/edit`);
+  },
+
   render() {
     const { page, hasPage, isEditing, blockDropdown } = this.data;
-    const { _id, title, showInNav, blocks = [] } = page;
+    const { _id, title, showInNav, sections = [] } = page;
     const { location: { pathname }, history } = this.props;
     return (
       <div>
@@ -122,17 +144,14 @@ Page.Handlers.Index = React.createClass({
                     onToggle={this._onToggleNav.bind(null, _id)}
                   />
                 </IconButton>
+                <MenuItem primary value="add_section">Add Section</MenuItem>
                 <MenuItem value="remove">Delete</MenuItem>
               </IconMenu>
             </ToolbarGroup>
           )}
           <ToolbarGroup key={1} float="right">
             {hasPage ? (
-              <FlatButton
-                primary
-                label="Add Block"
-                onClick={Meteor.call.bind(null, 'addBlock', {parentId: _id})}
-              />
+              <DropDownMenu menuItems={blockDropdown} onChange={this._onChangeSectionDropdown}/>
             ) : (
               <RaisedButton
                 primary
@@ -140,22 +159,16 @@ Page.Handlers.Index = React.createClass({
                 onClick={Meteor.call.bind(null, 'insertPage', { pathname })}
               />
             )}
-            <ToolbarSeparator />
-            <DropDownMenu menuItems={blockDropdown} />
           </ToolbarGroup>
         </Toolbar>
-        {blocks && (
+        {sections && (
           <Container fluid>
-            {blocks.map(({_id: blockId, blocks = [], ... blockProps}) => {
+            {sections.map(({_id: blockId, ... blockProps}) => {
               return (
                 <Block
                   key={blockId}
                   {... blockProps}
                   _id={blockId}
-                  blocks={blocks}
-                  hasChildren={blocks.length > 0}
-                  history={history}
-                  isEditing={isEditing}
                 />
               );
             })}

@@ -133,7 +133,7 @@ App.Handlers.Index = React.createClass({
       Meteor.logout(() => {
         this.history.pushState(null, '/login');
       });
-    }else if (to) {
+    } else if (to) {
       this.history.pushState(null, to);
     }
   },
