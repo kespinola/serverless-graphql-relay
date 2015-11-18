@@ -39,7 +39,7 @@ Block.Schema.Grid = new SimpleSchema({
   centerLg: {
     type: Boolean,
     defaultValue: true,
-  }
+  },
 });
 
 Block.Schema.Base = new SimpleSchema({
@@ -48,6 +48,9 @@ Block.Schema.Base = new SimpleSchema({
     optional: true,
   },
   parentId: {
+    type: String,
+  },
+  pageId: {
     type: String,
   },
   grid: {

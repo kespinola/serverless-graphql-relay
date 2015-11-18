@@ -11,22 +11,12 @@ const {
   IconMenu,
   MenuItem,
   DropDownMenu,
-  ToolbarSeparator,
 } = MUI;
-const { Container, Row, Col } = Flexgrid;
+const { Container } = Flexgrid;
 
-const { Components: { Block } } = Page;
+const { Components: { Block: PageBlock } } = Page;
 
 const { PropTypes } = React;
-
-function gatherSectionOptions(sections = []) {
-  let menu = [];
-  sections.forEach(({_id, sections: children = []}) => {
-    menu.push({payload: _id, text: _id});
-    if (children.length) menu = menu.concat(... gatherSectionOptions(children));
-  });
-  return menu;
-}
 
 Page.Handlers.Index = React.createClass({
 
@@ -43,19 +33,19 @@ Page.Handlers.Index = React.createClass({
   },
 
   getMeteorData() {
-    const {
-      location: { pathname },
-    } = this.props;
+    const { location: { pathname } } = this.props;
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
     const page = Page.Collection.findOne({ pathname }) || {};
-    const blockHandler = Meteor.subscribe('blockByParentId', page._id);
+    const pageId = page._id;
+    const blockHandler = Meteor.subscribe('blockByPageId', pageId);
+
     return {
       page,
       pageReady: pageHandler.ready(),
       blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
-      blockDropdown: gatherSectionOptions(page.section),
+      blocksForPage: Block.Collection.find({ pageId }, {sort: {parentId: 1}}).fetch(),
     };
   },
 
@@ -81,6 +71,7 @@ Page.Handlers.Index = React.createClass({
 
   _onChangeSectionDropdown(event, selectedIndex, {payload}) {
     const { history } = this.props;
+    const { page: { _id } } = this.data;
     history.pushState({
       modal: true,
       modalActions: [
@@ -91,9 +82,15 @@ Page.Handlers.Index = React.createClass({
           },
         },
         {
-          text: 'Add Section',
+          text: 'Delete',
           onTouchTap() {
-            Meteor.call('addSection', {parentId: payload});
+            Meteor.call('removeBlock', payload);
+          },
+        },
+        {
+          text: 'Add Block',
+          onTouchTap() {
+            Meteor.call('addBlock', {parentId: payload, pageId: _id });
           },
         },
       ],
@@ -101,9 +98,9 @@ Page.Handlers.Index = React.createClass({
   },
 
   render() {
-    const { page, hasPage, isEditing, blockDropdown } = this.data;
-    const { _id, title, showInNav, sections = [] } = page;
-    const { location: { pathname }, history } = this.props;
+    const { page, hasPage, isEditing, blocksForPage = [] } = this.data;
+    const { _id, title, showInNav, sections } = page;
+    const { location: { pathname } } = this.props;
     return (
       <div>
         <Toolbar>
@@ -151,7 +148,11 @@ Page.Handlers.Index = React.createClass({
           )}
           <ToolbarGroup key={1} float="right">
             {hasPage ? (
-              <DropDownMenu menuItems={blockDropdown} onChange={this._onChangeSectionDropdown}/>
+              <DropDownMenu
+                displayMember="_id"
+                valueMember="_id"
+                menuItems={blocksForPage}
+                onChange={this._onChangeSectionDropdown}/>
             ) : (
               <RaisedButton
                 primary
@@ -165,7 +166,7 @@ Page.Handlers.Index = React.createClass({
           <Container fluid>
             {sections.map(({_id: blockId, ... blockProps}) => {
               return (
-                <Block
+                <PageBlock
                   key={blockId}
                   {... blockProps}
                   _id={blockId}

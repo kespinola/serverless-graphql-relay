@@ -11,7 +11,7 @@ Meteor.methods({
     return Page.Collection.remove(_id);
   },
   addPageSection(_id) {
-    const blockParentId = Block.Collection.insert({parentId: _id});
-    return Block.Collection.insert({ parentId: blockParentId });
+    const blockParentId = Block.Collection.insert({parentId: _id, pageId: _id });
+    return Block.Collection.insert({ parentId: blockParentId, pageId: _id });
   },
 });
