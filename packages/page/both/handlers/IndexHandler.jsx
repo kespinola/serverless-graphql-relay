@@ -12,6 +12,7 @@ const {
   MenuItem,
   DropDownMenu,
 } = MUI;
+const { filter } = R;
 const { Container } = Flexgrid;
 
 const { Components: { Block: PageBlock } } = Page;
@@ -59,7 +60,7 @@ Page.Handlers.Index = React.createClass({
       Meteor.call('removePage', _id);
       break;
     case 'add_section':
-      Meteor.call('addPageSection', _id);
+      Meteor.call('addBlockSection', {parentId: _id, pageId: _id});
       break;
     default:
     }
@@ -69,9 +70,12 @@ Page.Handlers.Index = React.createClass({
     Meteor.call('updatePage', _id, { showInNav });
   },
 
-  _onChangeSectionDropdown(event, selectedIndex, {payload}) {
+  _onChangeSectionDropdown(event, selectedIndex, { payload }) {
     const { history } = this.props;
-    const { page: { _id } } = this.data;
+    const { page: { _id }, blocksForPage } = this.data;
+    const hasChildren = filter(({parentId}) => parentId === payload, blocksForPage).length > 0;
+    const meta = { parentId: payload, pageId: _id };
+
     history.pushState({
       modal: true,
       modalActions: [
@@ -88,9 +92,12 @@ Page.Handlers.Index = React.createClass({
           },
         },
         {
-          text: 'Add Block',
+          text: hasChildren ? '+ Add Block' : '+ Add Section',
           onTouchTap() {
-            Meteor.call('addBlock', {parentId: payload, pageId: _id });
+            Meteor.call(
+              hasChildren ? 'addBlock' : 'addBlockSection',
+              meta
+            );
           },
         },
       ],
