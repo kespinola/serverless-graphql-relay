@@ -5,6 +5,7 @@
   "main": "main.jsx",
   "scripts": {
     "dev": "meteor --settings settings.json",
+    "test": "meteor test-packages --port 3333",
     "production": "meteor --settings settings-production.json"
   },
   "repository": {
