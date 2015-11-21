@@ -1,4 +1,4 @@
-/* global Meteor, Page, React, R, MUI, ReactMeteorData, Session, Flexgrid */
+/* global Meteor, Page, Row, React, R, MUI, ReactMeteorData, Session, Flexgrid */
 
 const {
   TextField,
@@ -6,18 +6,14 @@ const {
   ToolbarGroup,
   Toggle,
   RaisedButton,
-  FlatButton,
   IconButton,
   IconMenu,
   MenuItem,
   DropDownMenu,
 } = MUI;
-const { filter } = R;
-const { Container } = Flexgrid;
-
-const { Components: { Block: PageBlock } } = Page;
-
 const { PropTypes } = React;
+const { Container } = Flexgrid;
+const { Component: { Row: PageRow } } = Page;
 
 Page.Handlers.Index = React.createClass({
 
@@ -38,15 +34,13 @@ Page.Handlers.Index = React.createClass({
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
     const page = Page.Collection.findOne({ pathname }) || {};
     const pageId = page._id;
-    const blockHandler = Meteor.subscribe('blockByPageId', pageId);
 
     return {
       page,
       pageReady: pageHandler.ready(),
-      blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
-      blocksForPage: Block.Collection.find({ pageId }, {sort: {parentId: 1}}).fetch(),
+      rows: Row.Collection.find({ parentId: pageId }).fetch(),
     };
   },
 
@@ -59,8 +53,8 @@ Page.Handlers.Index = React.createClass({
     case 'remove':
       Meteor.call('removePage', _id);
       break;
-    case 'add_section':
-      Meteor.call('addBlockSection', {parentId: _id, pageId: _id});
+    case 'add_row':
+      Meteor.call('addRow', { pageId: _id });
       break;
     default:
     }
@@ -72,9 +66,6 @@ Page.Handlers.Index = React.createClass({
 
   _onChangeSectionDropdown(event, selectedIndex, { payload }) {
     const { history } = this.props;
-    const { page: { _id }, blocksForPage } = this.data;
-    const hasChildren = filter(({parentId}) => parentId === payload, blocksForPage).length > 0;
-    const meta = { parentId: payload, pageId: _id };
 
     history.pushState({
       modal: true,
@@ -88,16 +79,13 @@ Page.Handlers.Index = React.createClass({
         {
           text: 'Delete',
           onTouchTap() {
-            Meteor.call('removeBlock', payload);
+            Meteor.call('removeRow', payload);
           },
         },
         {
-          text: hasChildren ? '+ Add Block' : '+ Add Section',
+          text: '+ Add Row',
           onTouchTap() {
-            Meteor.call(
-              hasChildren ? 'addBlock' : 'addBlockSection',
-              meta
-            );
+            Meteor.call('addRow', { parentId: payload });
           },
         },
       ],
@@ -105,8 +93,8 @@ Page.Handlers.Index = React.createClass({
   },
 
   render() {
-    const { page, hasPage, isEditing, blocksForPage = [] } = this.data;
-    const { _id, title, showInNav, sections } = page;
+    const { page, hasPage, isEditing, blocksForPage = [], rows } = this.data;
+    const { _id, title, showInNav } = page;
     const { location: { pathname } } = this.props;
     return (
       <div>
@@ -148,7 +136,7 @@ Page.Handlers.Index = React.createClass({
                     onToggle={this._onToggleNav.bind(null, _id)}
                   />
                 </IconButton>
-                <MenuItem primary value="add_section">Add Section</MenuItem>
+                <MenuItem primary value="add_row">New</MenuItem>
                 <MenuItem value="remove">Delete</MenuItem>
               </IconMenu>
             </ToolbarGroup>
@@ -169,14 +157,14 @@ Page.Handlers.Index = React.createClass({
             )}
           </ToolbarGroup>
         </Toolbar>
-        {sections && (
+        {rows && (
           <Container fluid>
-            {sections.map(({_id: blockId, ... blockProps}) => {
+            {rows && rows.map(({_id: rowId, ... props}) => {
               return (
-                <PageBlock
-                  key={blockId}
-                  {... blockProps}
-                  _id={blockId}
+                <PageRow
+                  {... props}
+                  key={rowId}
+                  _id={rowId}
                 />
               );
             })}

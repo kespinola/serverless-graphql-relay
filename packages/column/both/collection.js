@@ -1,9 +1,8 @@
-/* global Block, Mongo, SimpleSchema, R */
-const { compose } = R;
+/* global Column, Mongo, SimpleSchema, R */
 
-Block.Collection = new Mongo.Collection('blocks');
+Column.Collection = new Mongo.Collection('columns');
 
-Block.Schema.Grid = new SimpleSchema({
+Column.Schema.Grid = new SimpleSchema({
   xs: {
     type: Number,
     defaultValue: 12,
@@ -42,24 +41,25 @@ Block.Schema.Grid = new SimpleSchema({
   },
 });
 
-Block.Schema.Base = new SimpleSchema({
+Column.Schema.Base = new SimpleSchema({
   _id: {
     type: String,
     optional: true,
   },
   parentId: {
     type: String,
+    defaultValue: null,
   },
   pageId: {
     type: String,
   },
   grid: {
-    type: Block.Schema.Grid,
+    type: Column.Schema.Grid,
     optional: true,
   },
 });
 
-Block.Collection.allow({
+Column.Collection.allow({
   insert() {
     return true;
   },
@@ -71,4 +71,4 @@ Block.Collection.allow({
   },
 });
 
-Block.Collection.attachSchema(Block.Schema.Base);
+Column.Collection.attachSchema(Column.Schema.Base);

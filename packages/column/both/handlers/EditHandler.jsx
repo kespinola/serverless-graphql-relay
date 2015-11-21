@@ -1,15 +1,15 @@
-/* global React, MUI, AutoForm, Block, ReactMeteorData, Meteor */
+/* global React, MUI, AutoForm, Column, ReactMeteorData, Meteor */
 
 const { Tabs, Tab, Slider } = MUI;
 const { Form, Field } = AutoForm;
 
-Block.Handlers.Edit = React.createClass({
+Column.Handlers.Edit = React.createClass({
   propTypes: {
     doc: React.PropTypes.object,
   },
 
   _onSubmitGrid(_id, grid) {
-    Meteor.call('updateBlock', _id, { grid });
+    Meteor.call('updateColumn', _id, { grid });
   },
 
   render() {
@@ -22,7 +22,7 @@ Block.Handlers.Edit = React.createClass({
           <Form
             autoSave
             value={grid}
-            schema={Block.Schema.Grid}
+            schema={Column.Schema.Grid}
             onSubmit={this._onSubmitGrid.bind(null, _id)}
             >
             <Field

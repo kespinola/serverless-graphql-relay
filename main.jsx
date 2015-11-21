@@ -1,4 +1,4 @@
-/* global Meteor, React, ReactRouter, Meteor, App, Site, Role, Page, Block, Post, User */
+/* global Meteor, React, ReactRouter, Meteor, App, Site, Role, Page, Row, Column, Post, User */
 const { IndexRoute, Route, Router } = ReactRouter;
 
 function onEnterSignUp(state, newState) {
@@ -29,8 +29,11 @@ Meteor.startup(() => {
           <Route path="configure" component={Site.Handlers.Settings}/>
           <Route path="sites" component={Site.Handlers.List}/>
         </Route>
-        <Route path="block" component={Block.Handlers.Index}>
-          <Route path=":blockId/edit" component={Block.Handlers.Edit}/>
+        <Route path="row" component={Row.Handlers.Index}>
+          <Route path=":rowId/edit" component={Row.Handlers.Edit}/>
+        </Route>
+        <Route path="column" component={Column.Handlers.Index}>
+          <Route path=":columnId/edit" component={Column.Handlers.Edit}/>
         </Route>
         <Route path="*" component={Page.Handlers.Index}/>
         <IndexRoute component={Page.Handlers.Index}/>
