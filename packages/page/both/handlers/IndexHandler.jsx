@@ -1,4 +1,4 @@
-/* global Meteor, Page, React, R, MUI, ReactMeteorData, Session, Flexgrid */
+/* global Meteor, Page, Row, React, R, MUI, ReactMeteorData, Session, Flexgrid */
 
 const {
   TextField,
@@ -6,16 +6,14 @@ const {
   ToolbarGroup,
   Toggle,
   RaisedButton,
-  FlatButton,
   IconButton,
   IconMenu,
   MenuItem,
+  DropDownMenu,
 } = MUI;
-const { Container } = Flexgrid;
-
-const { Components: { Block } } = Page;
-
 const { PropTypes } = React;
+const { Container } = Flexgrid;
+const { Component: { Row: PageRow } } = Page;
 
 Page.Handlers.Index = React.createClass({
 
@@ -28,23 +26,21 @@ Page.Handlers.Index = React.createClass({
 
   componentDidMount() {
     Session.set('isEditingPage', false);
-    Session.set('editingBlock', null);
+    Session.set('editingSection', null);
   },
 
   getMeteorData() {
-    const {
-      location: { pathname },
-    } = this.props;
+    const { location: { pathname } } = this.props;
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
-    const blockHandler = Meteor.subscribe('blocks');
     const page = Page.Collection.findOne({ pathname }) || {};
+    const pageId = page._id;
 
     return {
       page,
       pageReady: pageHandler.ready(),
-      blocksReady: blockHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
+      rows: Row.Collection.find({ parentId: pageId }).fetch(),
     };
   },
 
@@ -57,6 +53,9 @@ Page.Handlers.Index = React.createClass({
     case 'remove':
       Meteor.call('removePage', _id);
       break;
+    case 'add_row':
+      Meteor.call('addRow', { pageId: _id });
+      break;
     default:
     }
   },
@@ -65,10 +64,38 @@ Page.Handlers.Index = React.createClass({
     Meteor.call('updatePage', _id, { showInNav });
   },
 
+  _onChangeSectionDropdown(event, selectedIndex, { payload }) {
+    const { history } = this.props;
+
+    history.pushState({
+      modal: true,
+      modalActions: [
+        {
+          text: 'Cancel',
+          onTouchTap() {
+            history.goBack();
+          },
+        },
+        {
+          text: 'Delete',
+          onTouchTap() {
+            Meteor.call('removeRow', payload);
+          },
+        },
+        {
+          text: '+ Add Row',
+          onTouchTap() {
+            Meteor.call('addRow', { parentId: payload });
+          },
+        },
+      ],
+    }, `/block/${payload}/edit`);
+  },
+
   render() {
-    const { page, hasPage, isEditing } = this.data;
-    const { _id, title, showInNav, blocks = [] } = page;
-    const { location: { pathname }, history } = this.props;
+    const { page, hasPage, isEditing, blocksForPage = [], rows } = this.data;
+    const { _id, title, showInNav } = page;
+    const { location: { pathname } } = this.props;
     return (
       <div>
         <Toolbar>
@@ -109,17 +136,18 @@ Page.Handlers.Index = React.createClass({
                     onToggle={this._onToggleNav.bind(null, _id)}
                   />
                 </IconButton>
+                <MenuItem primary value="add_row">New</MenuItem>
                 <MenuItem value="remove">Delete</MenuItem>
               </IconMenu>
             </ToolbarGroup>
           )}
           <ToolbarGroup key={1} float="right">
             {hasPage ? (
-              <FlatButton
-                primary
-                label="Add Block"
-                onClick={Meteor.call.bind(null, 'addBlock', {parentId: _id})}
-              />
+              <DropDownMenu
+                displayMember="_id"
+                valueMember="_id"
+                menuItems={blocksForPage}
+                onChange={this._onChangeSectionDropdown}/>
             ) : (
               <RaisedButton
                 primary
@@ -129,16 +157,14 @@ Page.Handlers.Index = React.createClass({
             )}
           </ToolbarGroup>
         </Toolbar>
-        {blocks && (
+        {rows && (
           <Container fluid>
-            {blocks.map(block => {
-              const blockId = block._id;
+            {rows && rows.map(({_id: rowId, ... props}) => {
               return (
-                <Block
-                  key={blockId}
-                  {... block}
-                  history={history}
-                  onClick={isEditing && () => history.pushState({ modal: true }, `/block/${blockId}/edit`)}
+                <PageRow
+                  {... props}
+                  key={rowId}
+                  _id={rowId}
                 />
               );
             })}

@@ -1,12 +1,11 @@
 /* global R, Immutable, React, AutoForm SimpleSchema, */
-const { reduce, valuesIn, is, curry } = R;
-
+const { curry } = R;
 const { fromJS, is: immutableIs } = Immutable;
 
 const getValueFromMap = curry((defaultValue = null, map, name) => {
   const keys = name.split('.');
   return map[keys.length ? 'getIn' : 'get'](keys, defaultValue);
-})
+});
 
 AutoForm.Form = React.createClass({
 
@@ -16,6 +15,7 @@ AutoForm.Form = React.createClass({
     onSubmit: React.PropTypes.func,
     value: React.PropTypes.object,
     autoSave: React.PropTypes.bool,
+    children: React.PropTypes.node,
   },
 
   childContextTypes: {
@@ -26,20 +26,6 @@ AutoForm.Form = React.createClass({
       getErrorMsg: React.PropTypes.func,
       getValue: React.PropTypes.func,
     }),
-  },
-
-  getChildContext() {
-    const { value } = this.state;
-    const { schema } = this.props;
-    return {
-      autoFormContext: {
-        schema,
-        onChange: this._onChange,
-        onBlur: this._onBlur,
-        getErrorMsg: this._getErrorMsg,
-        getValue: getValueFromMap(null, value),
-      }
-    }
   },
 
   getDefaultProps() {
@@ -58,6 +44,20 @@ AutoForm.Form = React.createClass({
     schema.namedContext('init_state');
     schema.clean(value);
     return { value: fromJS(value) };
+  },
+
+  getChildContext() {
+    const { value } = this.state;
+    const { schema } = this.props;
+    return {
+      autoFormContext: {
+        schema,
+        onChange: this._onChange,
+        onBlur: this._onBlur,
+        getErrorMsg: this._getErrorMsg,
+        getValue: getValueFromMap(null, value),
+      },
+    };
   },
 
   componentWillReceiveProps(props) {
@@ -133,7 +133,7 @@ AutoForm.Form = React.createClass({
     const { value: form } = this.state;
 
     return (
-      <form novalidate onSubmit={this._onSubmit} autoComplete={'off'}>
+      <form noValidate onSubmit={this._onSubmit} autoComplete="off">
         {this.props.children}
       </form>
     );

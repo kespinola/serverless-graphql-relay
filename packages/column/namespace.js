@@ -1,6 +1,4 @@
-/* global Block, Session */
-
-Block = {
+Column = {
   Collection: null,
   Handlers: {},
   Schema: {},

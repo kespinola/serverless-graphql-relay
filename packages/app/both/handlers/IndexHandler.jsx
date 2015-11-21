@@ -133,7 +133,7 @@ App.Handlers.Index = React.createClass({
       Meteor.logout(() => {
         this.history.pushState(null, '/login');
       });
-    }else if (to) {
+    } else if (to) {
       this.history.pushState(null, to);
     }
   },
@@ -149,11 +149,11 @@ App.Handlers.Index = React.createClass({
     const { domain, owner, title: siteTitle } = site;
     let state = location.state;
     if (isNil(state)) state = {};
-    const { title: modalTitle = '', modal = false } = state;
+    const { title: modalTitle = '', modal = false, modalActions = [] } = state;
 
     const userId = Meteor.userId();
 
-    if(!isReady) return <CircularProgress mode="determinate" value={60} size={2} />
+    if(!isReady) return <CircularProgress mode="determinate" value={60} size={2} />;
 
     let iconSet;
 
@@ -244,6 +244,7 @@ App.Handlers.Index = React.createClass({
         <Dialog
           ref="dialog"
           title={modalTitle}
+          actions={modalActions}
           onDismiss={this.onDismiss}
           >
           {modal ? this.props.children : null}

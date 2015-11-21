@@ -1,6 +1,6 @@
-/* global Meteor, React, Block, ReactMeteorData, */
+/* global Meteor, React, Column, ReactMeteorData, */
 
-Block.Handlers.Index = React.createClass({
+Column.Handlers.Index = React.createClass({
   propTypes: {
     children: React.PropTypes.node,
     params: React.PropTypes.object,
@@ -10,12 +10,12 @@ Block.Handlers.Index = React.createClass({
 
   getMeteorData() {
     const {
-      params: {blockId: _id},
+      params: {columnId: _id},
     } = this.props;
-    const docHandler = Meteor.subscribe('blockById', _id);
+    const docHandler = Meteor.subscribe('columnById', _id);
     return {
       docReady: docHandler.ready(),
-      doc: Block.Collection.findOne({_id}),
+      doc: Column.Collection.findOne({ _id }),
     };
   },
   render() {

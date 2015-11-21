@@ -43,7 +43,7 @@ User.Handlers.List = React.createClass({
 
               const deleteActions = [
                 { text: 'Cancel', onTapTouch: this.setState.bind(null, {show: false}) },
-                { text: 'Confirm', onTouchTap: this._handleDelete.bind(null, parentId), ref: 'submit' }
+                { text: 'Confirm', onTapTouch: this._handleDelete.bind(null, parentId), ref: 'submit' }
               ];
               const dialog = `dialog_${parentId}`;
 

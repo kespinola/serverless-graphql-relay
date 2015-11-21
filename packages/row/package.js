@@ -1,12 +1,12 @@
 /* global Package */
+var both = ['server', 'client'];
+
 Package.describe({
-  name: 'block',
-  description: 'page blocks',
+  name: 'row',
+  description: 'page rows',
 });
 
-Package.onUse(function(api) {
-  var both = ['server', 'client'];
-
+function onUse(api) {
   api.use([
     'core',
     'form',
@@ -26,6 +26,16 @@ Package.onUse(function(api) {
   ], both);
 
   api.export([
-    'Block',
+    'Row',
   ], both);
-});
+}
+
+function onTest(api) {
+  api.use([
+    'ecmascript',
+    'peterellisjones:describe',
+  ], both);
+}
+
+Package.onTest(onTest);
+Package.onUse(onUse);

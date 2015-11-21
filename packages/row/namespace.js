@@ -1,5 +1,5 @@
-Page = {
+Row = {
   Collection: null,
-  Component: {},
   Handlers: {},
+  Schema: {},
 };
