@@ -48,10 +48,11 @@ Column.Schema.Base = new SimpleSchema({
   },
   parentId: {
     type: String,
-    defaultValue: null,
+    optional: true,
   },
   pageId: {
     type: String,
+    optional: true,
   },
   grid: {
     type: Column.Schema.Grid,

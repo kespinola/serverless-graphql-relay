@@ -27,16 +27,18 @@ Row.Schema.Base = new SimpleSchema({
   },
   parentId: {
     type: String,
-    defaultValue: null,
+    optional: true,
   },
   pageId: {
     type: String,
+    optional: true,
   },
   grid: {
     type: Row.Schema.Grid,
     optional: true,
   },
 });
+
 
 Row.Collection.allow({
   insert() {

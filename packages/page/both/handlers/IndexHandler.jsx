@@ -34,10 +34,12 @@ Page.Handlers.Index = React.createClass({
     const pageHandler = Meteor.subscribe('pageByPath', pathname);
     const page = Page.Collection.findOne({ pathname }) || {};
     const pageId = page._id;
+    const elementHandler = Meteor.subscribe('elementsByPageId', pageId);
 
     return {
       page,
       pageReady: pageHandler.ready(),
+      elementReady: elementHandler.ready(),
       hasPage: Object.keys(page).length,
       isEditing: Session.get('isEditingPage'),
       rows: Row.Collection.find({ parentId: pageId }).fetch(),
@@ -54,7 +56,7 @@ Page.Handlers.Index = React.createClass({
       Meteor.call('removePage', _id);
       break;
     case 'add_row':
-      Meteor.call('addRow', { pageId: _id });
+      Meteor.call('addSection', _id, _id);
       break;
     default:
     }
@@ -85,7 +87,7 @@ Page.Handlers.Index = React.createClass({
         {
           text: '+ Add Row',
           onTouchTap() {
-            Meteor.call('addRow', { parentId: payload });
+            Meteor.call('addSection', payload);
           },
         },
       ],

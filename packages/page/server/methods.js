@@ -10,4 +10,9 @@ Meteor.methods({
   removePage(_id) {
     return Page.Collection.remove(_id);
   },
+  addSection(parentId, pageId) {
+    const rowId = Meteor.call('addRow', { parentId, pageId });
+    Meteor.call('addColumn', { parentId: rowId, pageId });
+    return rowId;
+  }
 });
