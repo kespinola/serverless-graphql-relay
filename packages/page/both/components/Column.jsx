@@ -1,6 +1,6 @@
 /* global Meteor, React, Flexgrid, Column, Row, Page, ReactMeteorData */
-const { Row: FlexRow } = Flexgrid;
-const { Component: PageRow } = Row;
+const { Col } = Flexgrid;
+const { Component: PageRow } = Page;
 
 const PageCol = React.createClass({
 
@@ -24,14 +24,15 @@ const PageCol = React.createClass({
 
   render() {
     const { rows } = this.data;
-    const { grid, styles } = this.props;
+    const { grid, styles, _id } = this.props;
     return (
-      <FlexRow {... grid} style={styles}>
+      <Col {... grid} style={styles}>
+        {_id}
         {this.props.children}
         {rows && rows.map(({ _id, ... restRow }) => {
           return <PageRow key={_id} _id={_id} {... restRow} />;
         })}
-      </FlexRow>
+      </Col>
     );
   },
 });

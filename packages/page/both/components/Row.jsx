@@ -16,7 +16,7 @@ Page.Component.Row = React.createClass({
   getMeteorData() {
     const rowId = this.props._id;
     const columnHandler = Meteor.subscribe('columnByParentId', rowId);
-    debugger;
+
     return {
       isReady: columnHandler.ready(),
       columns: Column.Collection.find({ parentId: rowId }).fetch(),
