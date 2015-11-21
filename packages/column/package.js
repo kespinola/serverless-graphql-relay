@@ -33,8 +33,15 @@ function onUse(api) {
 function onTest(api) {
   api.use([
     'ecmascript',
+    'monogo',
     'peterellisjones:describe',
   ], both);
+
+  api.addFiles([
+    'server/stub.js',
+    'server/methods.js',
+    'server/tests.js',
+  ], 'server');
 }
 
 Package.onTest(onTest);

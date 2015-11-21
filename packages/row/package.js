@@ -35,6 +35,11 @@ function onTest(api) {
     'ecmascript',
     'peterellisjones:describe',
   ], both);
+
+  api.addFiles([
+    'server/stub.js',
+    'server/tests.js',
+  ], 'server');
 }
 
 Package.onTest(onTest);
