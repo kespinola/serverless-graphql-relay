@@ -1,5 +1,5 @@
 # Prism
-[![Circle CI](https://circleci.com/gh/ksespinola/prism/tree/master.svg?style=svg&circle-token=71d24ca9a009fb6f020a171db03119cd94ada988)](https://circleci.com/gh/ksespinola/prism/tree/master)
+[![Circle CI](https://circleci.com/gh/ksespinola/prism/tree/develop.svg?style=svg&circle-token=71d24ca9a009fb6f020a171db03119cd94ada988)](https://circleci.com/gh/ksespinola/prism/tree/master)
 
 ## Getting Started
 Initial database seeding coming soon...
