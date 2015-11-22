@@ -33,7 +33,6 @@ function onUse(api) {
 function onTest(api) {
   api.use([
     'ecmascript',
-    'monogo',
     'peterellisjones:describe',
   ], both);
 

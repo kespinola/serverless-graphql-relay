@@ -1,6 +1,7 @@
 /* global Meteor, Row */
 Meteor.methods({
   addRow(insert) {
+    if (!insert.pageId) throw new Meteor.Error('pageId is required');
     return Row.Collection.insert(insert);
   },
   updateRow(id, update) {

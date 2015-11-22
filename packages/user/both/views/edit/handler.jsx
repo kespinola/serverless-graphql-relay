@@ -2,6 +2,7 @@
 const { Card, CardHeader, TextField, Avatar } = MUI;
 const { Form, Field } = AutoForm;
 const { reduce, values } = R;
+const { Container, Row, Col } = Flexgrid;
 
 const UserSchema = new SimpleSchema({
   'firstName': {
@@ -46,20 +47,26 @@ User.Handlers.Edit = React.createClass({
     } = this.props;
 
     return (
-      <Card>
-        <CardHeader
-          title={fullName}
-          avatar={<Avatar>{fullName.charAt(0).toUpperCase()}</Avatar>}
-          />
-        <Form
-          autoSave
-          value={this.props.user}
-          schema={User.Schema}
-          onSubmit={this._onSubmit}>
-          <Field name="firstName" component={TextField} floatingLabelText="First Name" fullWidth />
-          <Field name="lastName" component={TextField} floatingLabelText="Last Name" fullWidth />
-        </Form>
-      </Card>
+      <Container>
+      <Row centerXs>
+        <Col xs={10} sm={8} md={6}>
+        <Card>
+          <CardHeader
+            title={fullName}
+            avatar={<Avatar>{fullName.charAt(0).toUpperCase()}</Avatar>}
+            />
+          <Form
+            autoSave
+            value={this.props.user}
+            schema={User.Schema}
+            onSubmit={this._onSubmit}>
+            <Field name="firstName" component={TextField} floatingLabelText="First Name" fullWidth />
+            <Field name="lastName" component={TextField} floatingLabelText="Last Name" fullWidth />
+          </Form>
+        </Card>
+        </Col>
+      </Row>
+      </Container>
     );
   },
 

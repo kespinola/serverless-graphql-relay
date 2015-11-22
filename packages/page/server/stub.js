@@ -1,4 +1,4 @@
-/* global Mongo, */
+/* global Meteor, */
 Page = {
-  Collection: new Mongo.Collection('test_pages'),
+  Collection: new Meteor.Collection('test_pages'),
 };

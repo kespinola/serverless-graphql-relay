@@ -38,6 +38,7 @@ function onTest(api) {
 
   api.addFiles([
     'server/stub.js',
+    'server/methods.js',
     'server/tests.js',
   ], 'server');
 }

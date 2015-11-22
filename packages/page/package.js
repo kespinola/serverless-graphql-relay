@@ -19,8 +19,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'namespace.js',
     'both/collection.js',
-    'both/components/Column.jsx',
-    'both/components/Row.jsx',
+    'both/components/main.jsx',
     'both/handlers/IndexHandler.jsx',
   ], both);
 

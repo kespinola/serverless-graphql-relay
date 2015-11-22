@@ -1,3 +1,4 @@
+/* global Meteor */
 Column = {
-  Collection: new Mongo.Collection('test_columns'),
+  Collection: new Meteor.Collection('test_columns'),
 }

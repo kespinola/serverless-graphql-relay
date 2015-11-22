@@ -1,4 +1,4 @@
-/* global Meteor, Page, Row, React, R, MUI, ReactMeteorData, Session, Flexgrid */
+/* global Meteor, Page, Row, Column, React, R, MUI, ReactMeteorData, Session, Flexgrid */
 
 const {
   TextField,
@@ -13,7 +13,7 @@ const {
 } = MUI;
 const { PropTypes } = React;
 const { Container } = Flexgrid;
-const { Component: { Row: PageRow } } = Page;
+const { Component: { PageRow } } = Page;
 
 Page.Handlers.Index = React.createClass({
 
@@ -24,10 +24,6 @@ Page.Handlers.Index = React.createClass({
 
   mixins: [ReactMeteorData],
 
-  componentDidMount() {
-    Session.set('isEditingPage', false);
-    Session.set('editingSection', null);
-  },
 
   getMeteorData() {
     const { location: { pathname } } = this.props;
@@ -41,8 +37,9 @@ Page.Handlers.Index = React.createClass({
       pageReady: pageHandler.ready(),
       elementReady: elementHandler.ready(),
       hasPage: Object.keys(page).length,
-      isEditing: Session.get('isEditingPage'),
       rows: Row.Collection.find({ parentId: pageId }).fetch(),
+      rowsForPage: Row.Collection.find({ pageId }).fetch(),
+      columnsForPage: Column.Collection.find({ pageId }).fetch(),
     };
   },
 
@@ -66,18 +63,12 @@ Page.Handlers.Index = React.createClass({
     Meteor.call('updatePage', _id, { showInNav });
   },
 
-  _onChangeSectionDropdown(event, selectedIndex, { payload }) {
+  _onChangeRowDropdown(event, selectedIndex, { payload }) {
     const { history } = this.props;
-
+    const { page: { _id: pageId } } = this.data;
     history.pushState({
       modal: true,
       modalActions: [
-        {
-          text: 'Cancel',
-          onTouchTap() {
-            history.goBack();
-          },
-        },
         {
           text: 'Delete',
           onTouchTap() {
@@ -85,17 +76,39 @@ Page.Handlers.Index = React.createClass({
           },
         },
         {
-          text: '+ Add Row',
+          text: 'Add Column',
           onTouchTap() {
-            Meteor.call('addSection', payload);
+            Meteor.call('addColumn', { parentId: payload, pageId });
           },
         },
       ],
-    }, `/block/${payload}/edit`);
+    }, `/row/${payload}/edit`);
+  },
+
+  _onChangeColumnDropdown(event, selectedIndex, { payload }) {
+    const { history } = this.props;
+    const { page: { _id: pageId } } = this.data;
+    history.pushState({
+      modal: true,
+      modalActions: [
+        {
+          text: 'Delete',
+          onTouchTap() {
+            Meteor.call('removeColumn', payload);
+          },
+        },
+        {
+          text: 'Add Section',
+          onTouchTap() {
+            Meteor.call('addSection', payload, pageId);
+          },
+        },
+      ],
+    }, `/column/${payload}/edit`);
   },
 
   render() {
-    const { page, hasPage, isEditing, blocksForPage = [], rows } = this.data;
+    const { page, hasPage, isEditing, rows, rowsForPage, columnsForPage } = this.data;
     const { _id, title, showInNav } = page;
     const { location: { pathname } } = this.props;
     return (
@@ -143,21 +156,31 @@ Page.Handlers.Index = React.createClass({
               </IconMenu>
             </ToolbarGroup>
           )}
-          <ToolbarGroup key={1} float="right">
-            {hasPage ? (
+          {hasPage ? (
+            <ToolbarGroup key={1} float="right">
               <DropDownMenu
                 displayMember="_id"
                 valueMember="_id"
-                menuItems={blocksForPage}
-                onChange={this._onChangeSectionDropdown}/>
-            ) : (
+                menuItems={rowsForPage}
+                onChange={this._onChangeRowDropdown}
+                />
+                <DropDownMenu
+                  displayMember="_id"
+                  valueMember="_id"
+                  menuItems={columnsForPage}
+                  onChange={this._onChangeColumnDropdown}
+                  />
+            </ToolbarGroup>
+          ) : (
+            <ToolbarGroup key={1} float="right">
               <RaisedButton
                 primary
                 label="Create Page"
                 onClick={Meteor.call.bind(null, 'insertPage', { pathname })}
               />
-            )}
-          </ToolbarGroup>
+            </ToolbarGroup>
+          )}
+
         </Toolbar>
         {rows && (
           <Container fluid>
