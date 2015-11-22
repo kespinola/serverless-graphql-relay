@@ -1,12 +1,11 @@
 /* global Package */
+const both = ['server', 'client'];
 Package.describe({
   name: 'page',
   description: 'page management for site',
 });
 
-Package.onUse(function(api) {
-	const both = ['server', 'client'];
-
+function onUse(api) {
   api.use([
     'core',
     'site',
@@ -36,4 +35,20 @@ Package.onUse(function(api) {
   api.export([
     'Page',
   ], both);
-});
+}
+
+function onTest(api) {
+  api.use([
+    'ecmascript',
+    'peterellisjones:describe',
+  ], both);
+
+  api.addFiles([
+    'server/stub.js',
+    'server/methods.js',
+    'server/tests.js',
+  ], 'server');
+}
+
+Package.onTest(onTest);
+Package.onUse(onUse);

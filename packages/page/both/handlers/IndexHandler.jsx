@@ -100,7 +100,7 @@ Page.Handlers.Index = React.createClass({
         {
           text: 'Add Section',
           onTouchTap() {
-            Meteor.call('addSection', payload, pageId);
+            Meteor.call('addSection', pageId, payload);
           },
         },
       ],

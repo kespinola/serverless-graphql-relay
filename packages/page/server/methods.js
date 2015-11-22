@@ -10,9 +10,10 @@ Meteor.methods({
   removePage(_id) {
     return Page.Collection.remove(_id);
   },
-  addSection(parentId, pageId) {
+  addSection(pageId, parentId) {
+    if (!parentId || !pageId) throw new Meteor.Error('parentId and pageId are required');
     const rowId = Meteor.call('addRow', { parentId, pageId });
-    Meteor.call('addColumn', { parentId: rowId, pageId });
-    return rowId;
-  }
+    const columnId = Meteor.call('addColumn', { parentId: rowId, pageId });
+    return { rowId, columnId };
+  },
 });
