@@ -1,5 +1,7 @@
+/* global ServiceConfiguration, Meteor */
+
 ServiceConfiguration.configurations.remove({
-  service: 'facebook'
+  service: 'facebook',
 });
 
 ServiceConfiguration.configurations.insert({
@@ -9,7 +11,7 @@ ServiceConfiguration.configurations.insert({
 });
 
 ServiceConfiguration.configurations.remove({
-  service: 'google'
+  service: 'google',
 });
 
 ServiceConfiguration.configurations.insert({

@@ -1,9 +1,11 @@
+/* global Package */
+
 Package.describe({
   name: 'app',
-  description: 'application foundation.'
+  description: 'application foundation.',
 });
 
-Package.onUse(function (api) {
+function onUse(api) {
   var both = ['server', 'client'];
 
   api.use([
@@ -38,6 +40,8 @@ Package.onUse(function (api) {
   ], both);
 
   api.export([
-    'App'
+    'App',
   ], both);
-});
+}
+
+Package.onUse(onUse);

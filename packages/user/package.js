@@ -1,16 +1,18 @@
+/* global Package, */
+
 Package.describe({
-	name:'user',
-	description:'user extension',
+	name: 'user',
+	description: 'user extension',
 });
 
-Package.onUse(function(api){
-
+function onUse(api) {
 	var both = ['server', 'client'];
 
 	api.use([
-	  'core',
+		'core',
 		'grid',
 		'form',
+		'role',
 		'accounts-base',
 		'accounts-password',
 		'accounts-google',
@@ -18,26 +20,28 @@ Package.onUse(function(api){
 		'service-configuration',
 	], both);
 
-  var views = ['index', 'list', 'edit', 'new', 'session'];
+	var views = ['index', 'list', 'edit', 'new', 'session'];
 
-  views = views.map(function(view){
-    return 'both/views/' + view + '/handler.jsx'
-  });
+	views = views.map(function(view) {
+		return 'both/views/' + view + '/handler.jsx'
+	});
 
 	api.addFiles([
 		'namespace.js',
-    'both/collection.js',
-    'both/components/userSessionForm.jsx'
+		'both/collection.js',
+		'both/components/userSessionForm.jsx'
 	].concat(views), both);
 
 	api.addFiles([
-    'server/publish.js',
+		'server/publish.js',
 		'server/configure.js',
 		'server/methods.js',
+		'server/seed.js',
 	], 'server');
 
 	api.export([
 		'User',
 	], both);
+}
 
-});
+Package.onUse(onUse);

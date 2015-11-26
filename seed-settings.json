@@ -1,0 +1,16 @@
+{
+  "public": {
+    "environment": "development",
+    "domain": "espiwebdev"
+  },
+  "seed": {
+    "email": "seed@prism.com",
+    "pw": "pw"
+  },
+  "private" : {
+    "facebookAppId": "",
+    "facebookSecret": "",
+    "googleId": "",
+    "googleSecret": ""
+  }
+}

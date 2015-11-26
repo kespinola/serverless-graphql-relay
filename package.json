@@ -4,6 +4,7 @@
   "description": "App starter built using meteor.",
   "main": "main.jsx",
   "scripts": {
+    "seed": "meteor --settings seed-settings.json",
     "dev": "meteor --settings settings.json",
     "test": "meteor test-packages --port 3333",
     "production": "meteor --settings settings-production.json"
