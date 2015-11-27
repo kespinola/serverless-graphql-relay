@@ -2,3 +2,4 @@ settings-production.json
 node_modules
 .npm
 .idea
+npm-debug.log
