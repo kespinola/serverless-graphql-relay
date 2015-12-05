@@ -39,7 +39,6 @@ Row.Schema.Base = new SimpleSchema({
   },
 });
 
-
 Row.Collection.allow({
   insert() {
     return true;

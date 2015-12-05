@@ -10,7 +10,7 @@ Row.Handlers.Index = React.createClass({
 
   getMeteorData() {
     const {
-      params: {blockId: _id},
+      params: { rowId: _id },
     } = this.props;
     const docHandler = Meteor.subscribe('rowById', _id);
     return {

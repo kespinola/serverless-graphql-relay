@@ -1,7 +1,7 @@
 /* global React, MUI, AutoForm, Row, ReactMeteorData, Meteor */
 
 const { Tabs, Tab, Slider } = MUI;
-const { Form, Field } = AutoForm;
+const { Form, Field, Toggle } = AutoForm;
 
 Row.Handlers.Edit = React.createClass({
   propTypes: {
@@ -26,40 +26,28 @@ Row.Handlers.Edit = React.createClass({
             onSubmit={this._onSubmitGrid.bind(null, _id)}
             >
             <Field
-              name="xs"
-              component={Slider}
-              step={1}
-              min={0}
-              max={12}
-              description="Extra Small Grid"
-              mapValue={(e, value) => value} fullWidth
+              fullWidth
+              name="centerXs"
+              component={Toggle}
+              label="Center Exta Small"
             />
             <Field
-              name="sm"
-              component={Slider}
-              step={1}
-              min={0}
-              max={12}
-              description="Small Grid"
-              mapValue={(e, value) => value} fullWidth
+              fullWidth
+              name="centerSm"
+              component={Toggle}
+              label="Center Small"
             />
             <Field
-              name="md"
-              component={Slider}
-              step={1}
-              min={0}
-              max={12}
-              description="Medium Grid"
-              mapValue={(e, value) => value} fullWidth
+              fullWidth
+              name="centerMd"
+              component={Toggle}
+              label="Center Medium"
             />
             <Field
-              name="lg"
-              component={Slider}
-              step={1}
-              min={0}
-              max={12}
-              description="Large Value"
-              mapValue={(e, value) => value} fullWidth
+              fullWidth
+              name="centerLg"
+              component={Toggle}
+              label="Center Large"
             />
           </Form>
         </Tab>

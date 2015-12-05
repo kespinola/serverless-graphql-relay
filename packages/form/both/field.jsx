@@ -23,13 +23,13 @@ const AutoFormField = React.createClass({
 
   getDefaultProps() {
     return {
-      mapValue: eventValue,
+      mapValue: (value) => value,
       errorLabelProp: 'errorText',
     }
   },
 
   _onChangeField(... args) {
-    const { mapValue, name, } = this.props;
+    const { mapValue, name } = this.props;
     const { autoFormContext: { onChange } } = this.context;
     return compose(
       onChange.bind(null, name),
