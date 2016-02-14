@@ -1,6 +1,6 @@
 import React from 'react';
 
-class CatchAll extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <div>Hello World!</div>
@@ -8,4 +8,4 @@ class CatchAll extends React.Component {
   }
 }
 
-export default CatchAll;
+export default Home;
