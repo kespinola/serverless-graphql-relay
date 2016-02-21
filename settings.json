@@ -1,0 +1,12 @@
+{
+  "public": {
+    "environment": "development",
+    "domain": "espiwebdev"
+  },
+  "private" : {
+    "facebookAppId": "",
+    "facebookSecret": "",
+    "googleId": "",
+    "googleSecret": ""
+  }
+}
