@@ -1,9 +1,11 @@
 import React from 'react';
-import authControl from './../../decorators/authControl';
+import { compose } from 'ramda';
 import { Grid, Row, Col } from 'react-flexgrid';
+import authControl from './../../decorators/authControl';
+import userInfo from './../../decorators/userInfo';
 import UserForm from './../UserForm';
 
-function SignUp({ auth: { actions: { signUpRequest } } }) {
+const SignUp = ({ auth: { actions: { signUpRequest } } }) => {
   return (
     <Grid fluid>
       <Row>
@@ -13,6 +15,9 @@ function SignUp({ auth: { actions: { signUpRequest } } }) {
       </Row>
     </Grid>
   );
-}
+};
 
-export default authControl(SignUp);
+export default compose(
+  authControl,
+  userInfo,
+)(SignUp);

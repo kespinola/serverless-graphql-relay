@@ -1,19 +1,16 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { ReactMeteorMixin } from 'meteor/react-meteor-data';
+import meteorData from './../meteorData';
 
 export default Component => {
-  return React.createClass({
-
-    mixins: [ReactMeteorMixin],
-
-    getMeteorData() {
-      return {
-        user: { id: 'test', name: 'Test' },
-      };
-    },
-
+  class UserInfoComponent extends React.Component {
     render() {
-      return <Component {...this.data} />;
-    },
-  });
+      return <Component {...this.props} />;
+    }
+  }
+
+  return meteorData(
+    () => ({ user: Meteor.user() }),
+    UserInfoComponent
+  );
 };

@@ -1,4 +1,4 @@
-/* global Meteor, Tracker */
+/* global Meteor */
 
 import React from 'react';
 import { render } from 'react-dom';
@@ -25,7 +25,7 @@ const store = createStore(
   reducer,
   {},
   applyMiddleware(
-    createLogger(),
+    createLogger({ collapsed: true }),
     reduxRouterMiddleware,
     sagaMiddleware,
   )
@@ -36,10 +36,6 @@ reduxRouterMiddleware.listenForReplays(store);
 injectTapEventPlugin();
 
 Meteor.startup(() => {
-  Tracker.autorun(() => {
-
-  });
-
   render(
     <Provider store={store}>
       <Router />
