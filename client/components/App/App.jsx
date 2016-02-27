@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { compose } from 'ramda';
+import { compose, isEmpty } from 'ramda';
 import navControl from './../../decorators/navControl';
 import authControl from './../../decorators/authControl';
 import userInfo from './../../decorators/userInfo';
@@ -31,17 +31,17 @@ function App(props) {
   const goSignIn = push.bind(null, '/sign-in');
   const goSignUp = push.bind(null, '/sign-up');
   const goAccount = push.bind(null, '/account');
-
+  const { initials } = user;
   return (
     <AppCanvas>
       <AppBar
         title="Prism"
         onLeftIconButtonTouchTap={toggleNav}
-        iconElementRight={user ? (
+        iconElementRight={!isEmpty(user) ? (
           <ToolbarGroup>
             <IconMenu
               iconButtonElement={
-                <Avatar>
+                <Avatar>{initials && initials}
                 </Avatar>
               }
               anchorOrigin={{ horizontal: 'left', vertical: 'top' }}

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import Profiles from './../../../both/collections/profiles';
 import React from 'react';
 import meteorData from './../meteorData';
 
@@ -10,7 +11,7 @@ export default Component => {
   }
 
   return meteorData(
-    () => ({ user: Meteor.user() }),
+    () => ({ user: Profiles.findOne({ userId: Meteor.userId() }) || {} }),
     UserInfoComponent
   );
 };
