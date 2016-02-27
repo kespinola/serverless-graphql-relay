@@ -9,7 +9,7 @@ const validate = ({email, password}) => {
   return errors;
 };
 
-function UserForm({submitLabel, fields: { email, password }, handleSubmit }) {
+function UserForm({ submitLabel, fields: { email, password }, handleSubmit }) {
   return (
     <form className="basic-form" autoComplete="off" onSubmit={handleSubmit}>
       <TextField

@@ -5,6 +5,7 @@ import App from './components/App';
 import Home from './components/Home';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+import Account from './components/Account';
 
 export default () => (
   <Router history={browserHistory}>
@@ -12,6 +13,7 @@ export default () => (
       <IndexRoute component={Home} />
       <Route path="sign-in" component={SignIn} />
       <Route path="sign-up" component={SignUp} />
+      <Route path="account" component={Account} />
     </Route>
   </Router>
 );

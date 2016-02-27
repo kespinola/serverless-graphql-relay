@@ -1,6 +1,9 @@
-import authSaga from './auth';
+import { watchSignUpSaga, watchSignOutSaga } from './auth';
 import { fork } from 'redux-saga/effects';
 
 export default function* () {
-  yield fork(authSaga);
+  yield [
+    fork(watchSignUpSaga),
+    fork(watchSignOutSaga),
+  ];
 }

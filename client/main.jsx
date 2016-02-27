@@ -21,7 +21,7 @@ const sagaMiddleware = createSagaMiddleware(appSaga);
 
 const reduxRouterMiddleware = syncHistory(browserHistory);
 
-const store = createStore(
+const store = window.store = createStore(
   reducer,
   {},
   applyMiddleware(
