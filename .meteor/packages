@@ -19,3 +19,8 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 mrt:normalize.css
+fourseven:scss
+accounts-password
+aldeed:collection2
+aldeed:simple-schema
+ultimatejs:tracker-react

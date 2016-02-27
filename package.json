@@ -1,23 +1,51 @@
 {
-  "name": "prism-corporate",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "name": "prism",
+  "version": "0.0.0",
+  "description": "App starter built using meteor.",
+  "main": "main.jsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "package:update": "ncu -u"
+    "dev": "meteor --settings settings.json",
+    "production": "meteor --settings settings-production.json"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksespinola/meteor-app-starter.git"
+  },
+  "keywords": [
+    "meteor",
+    "react"
+  ],
+  "author": "Kyle Espinola",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ksespinola/meteor-app-starter/issues"
+  },
+  "homepage": "https://github.com/ksespinola/meteor-app-starter#readme",
   "dependencies": {
+    "classnames": "^2.2.3",
+    "immutable": "^3.7.6",
     "material-ui": "^0.14.4",
+    "ramda": "^0.19.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-flexgrid": "^0.7.0",
+    "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
-    "redux": "^3.3.1"
+    "react-router-redux": "^3.0.0",
+    "react-tap-event-plugin": "^0.2.2",
+    "redux": "^3.3.1",
+    "redux-actions": "^0.9.1",
+    "redux-form": "^4.2.0",
+    "redux-saga": "^0.8.2",
+    "reselect": "^2.0.3"
   },
   "devDependencies": {
+    "babel-eslint": "^5.0.0",
+    "eslint-config-airbnb": "^5.0.1",
+    "eslint-plugin-react": "^3.16.1",
     "eslint": "^2.0.0",
-    "eslint-config-airbnb": "^5.0.1"
+    "flat-cache": "^1.0.10",
+    "js-yaml": "^3.5.3",
+    "redux-logger": "^2.5.2"
   }
 }
