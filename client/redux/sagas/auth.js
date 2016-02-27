@@ -1,8 +1,9 @@
-import { put, fork, take, call } from 'redux-saga/effects';
+import { put, fork } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 import { push } from 'react-router-redux';
-import { SIGN_UP_REQUEST, SIGN_OUT_REQUEST } from './../ducks/auth';
+import { SIGN_UP_REQUEST, SIGN_OUT_REQUEST, SIGN_IN_REQUEST } from './../ducks/auth';
 
 function* signUp({ payload }) {
   yield Accounts.createUser(payload);
@@ -14,16 +15,34 @@ function* signOut() {
   yield put(push('/'));
 }
 
-export function* watchSignUpSaga() {
+function* signIn({ payload: { email, password } }) {
+  yield Meteor.loginWithPassword(email, password);
+  yield put(push('/'));
+}
+
+function* watchSignUpSaga() {
   while(true) {
-    yield take(SIGN_UP_REQUEST);
-    yield call(signUp);
+    yield takeLatest(SIGN_UP_REQUEST, signUp);
   }
 }
 
-export function* watchSignOutSaga() {
+function* watchSignOutSaga() {
   while(true) {
-    yield take(SIGN_OUT_REQUEST);
-    yield call(signOut);
+    yield takeLatest(SIGN_OUT_REQUEST, signOut);
   }
 }
+
+function* watchSignInSaga() {
+  while(true) {
+    yield takeLatest(SIGN_IN_REQUEST, signIn);
+  }
+}
+
+function* authSaga() {
+  yield [
+    fork(watchSignUpSaga),
+    fork(watchSignInSaga),
+    fork(watchSignOutSaga),
+  ];
+}
+export default authSaga;
