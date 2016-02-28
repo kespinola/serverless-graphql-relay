@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
-import navigation from './navigation';
+import navigationReducer from './navigation';
+import dialogReducer from './dialog';
 import { reducer as formReducer } from 'redux-form';
 import { routeReducer } from 'react-router-redux';
 
 import authReducer from './auth';
 
 export default combineReducers({
-  navigation: navigation,
+  dialog: dialogReducer,
+  navigation: navigationReducer,
   auth: authReducer,
   routing: routeReducer,
   form: formReducer,

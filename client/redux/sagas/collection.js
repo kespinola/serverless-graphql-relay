@@ -14,10 +14,10 @@ function* watchUpdateCollection() {
   }
 }
 
-function* collectionSage() {
+function* collectionSaga() {
   yield [
     fork(watchUpdateCollection),
   ];
 }
 
-export default collectionSage;
+export default collectionSaga;

@@ -1,6 +1,7 @@
 import authSaga from './auth';
 import collectionSaga from './collection';
 import navigationSaga from './navigation';
+import roleSaga from './role';
 import { fork } from 'redux-saga/effects';
 
 export default function* () {
@@ -8,5 +9,6 @@ export default function* () {
     fork(navigationSaga),
     fork(authSaga),
     fork(collectionSaga),
+    fork(roleSaga),
   ];
 }
