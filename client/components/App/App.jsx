@@ -33,6 +33,7 @@ function App(props) {
   const goSignUp = push.bind(null, '/sign-up');
   const goAccount = push.bind(null, '/account');
   const goUsers = changeRoute.bind(null, '/users');
+  const goRoles = changeRoute.bind(null, '/roles');
 
   const { initials } = user;
   return (
@@ -74,7 +75,8 @@ function App(props) {
       open={open}
       onRequestChange={toggleNav}
     >
-        <MenuItem onClick={goUsers}>users</MenuItem>
+        <MenuItem onClick={goUsers}>Users</MenuItem>
+        <MenuItem onClick={goRoles}>Roles</MenuItem>
       </LeftNav>
       <div className="app-container">
         {children}
