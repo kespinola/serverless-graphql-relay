@@ -1,6 +1,15 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { compose } from 'ramda';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHeaderColumn,
+  TableRowColumn,
+  TableBody,
+} from 'material-ui';
+import { Grid, Row, Col } from 'react-flexgrid';
 import RoleForm from './../RoleForm';
 import userInfo from './../../decorators/userInfo';
 import dialogControl from './../../decorators/dialogControl';
@@ -19,6 +28,7 @@ const Roles = ({
   dialog: { open, actions: { showDialog, hideDialog } },
   role: { actions: { createRole } },
   user: { userId },
+  roles,
 }) => {
   const onSubmit = ({ name }) => {
     hideDialog();
@@ -41,6 +51,27 @@ const Roles = ({
           <RaisedButton primary label="Create Role" onClick={showDialog} />
         </ToolbarGroup>
       </Toolbar>
+      <Grid fluid>
+        <Row>
+          <Col xs={12} sm={10} smOffset={1}>
+            <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderColumn>Role Name</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {roles.map(({ _id, name }) => (
+                  <TableRow key={_id}>
+                    <TableRowColumn>{name}</TableRowColumn>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+            </Table>
+          </Col>
+        </Row>
+      </Grid>
     </div>
   );
 };
