@@ -18,6 +18,26 @@ const ProfileSchema = new SimpleSchema({
     max: 50,
     optional: true,
   },
+  fullName: {
+    type: String,
+    autoValue() {
+      const firstName = this.field('firstName').value;
+      const lastName = this.field('lastName').value;
+      let fullName = '';
+
+      if (_hasStringField(firstName)) {
+        fullName = firstName;
+      } else {
+        return fullName;
+      }
+
+      if (_hasStringField(lastName)) {
+        fullName = `${fullName} ${lastName}`;
+      }
+
+      return fullName;
+    },
+  },
   initials: {
     type: String,
     autoValue() {

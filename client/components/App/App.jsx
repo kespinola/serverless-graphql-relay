@@ -19,7 +19,7 @@ function App(props) {
   const {
     children,
     navControls: {
-      actions: { toggleNav },
+      actions: { toggleNav, changeRoute },
       open,
     },
     auth: {
@@ -28,21 +28,24 @@ function App(props) {
     history: { push },
     user,
   } = props;
+  const goHome = push.bind(null, '/');
   const goSignIn = push.bind(null, '/sign-in');
   const goSignUp = push.bind(null, '/sign-up');
   const goAccount = push.bind(null, '/account');
+  const goUsers = changeRoute.bind(null, '/users');
+
   const { initials } = user;
   return (
     <AppCanvas>
       <AppBar
+        onTitleTouchTap={goHome}
         title="Prism"
         onLeftIconButtonTouchTap={toggleNav}
         iconElementRight={!isEmpty(user) ? (
           <ToolbarGroup>
             <IconMenu
               iconButtonElement={
-                <Avatar>{initials && initials}
-                </Avatar>
+                <Avatar>{initials && initials}</Avatar>
               }
               anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
               targetOrigin={{ horizontal: 'left', vertical: 'top' }}
@@ -71,7 +74,7 @@ function App(props) {
       open={open}
       onRequestChange={toggleNav}
     >
-        <MenuItem>Solution</MenuItem>
+        <MenuItem onClick={goUsers}>users</MenuItem>
       </LeftNav>
       <div className="app-container">
         {children}

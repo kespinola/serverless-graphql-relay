@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux';
-import navControlReducer from './navControl';
+import navigation from './navigation';
 import { reducer as formReducer } from 'redux-form';
 import { routeReducer } from 'react-router-redux';
 
 import authReducer from './auth';
-export watchSignUpSaga from './auth';
 
 export default combineReducers({
-  navControl: navControlReducer,
+  navigation: navigation,
   auth: authReducer,
   routing: routeReducer,
   form: formReducer,
