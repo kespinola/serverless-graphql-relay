@@ -6,6 +6,8 @@ import Home from './components/Home';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Account from './components/Account';
+import Users from './components/Users';
+import Roles from './components/Roles';
 
 export default () => (
   <Router history={browserHistory}>
@@ -14,6 +16,8 @@ export default () => (
       <Route path="sign-in" component={SignIn} />
       <Route path="sign-up" component={SignUp} />
       <Route path="account" component={Account} />
+      <Route path="users" component={Users} />
+      <Route path="roles" component={Roles} />
     </Route>
   </Router>
 );

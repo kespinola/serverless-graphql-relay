@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import navControlDispatch from './../../redux/dispatch/navControl';
-import navControlSelector from './../../redux/selectors/navControl';
+import navControlDispatch from './../../redux/dispatch/navigation';
+import navControlSelector from './../../redux/selectors/navigation';
 
 const navControlMergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,

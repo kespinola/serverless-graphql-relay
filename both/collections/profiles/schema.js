@@ -1,10 +1,10 @@
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { isEmpty } from 'ramda';
 
-SimpleSchema.debug = true;
-
 const _hasStringField = value => value && !isEmpty(value);
-const _getCapFirstLetter = value => value.split('')[0].toUpperCase();
+
+const _firstLetter = value => value.split('')[0].toUpperCase();
+
 const ProfileSchema = new SimpleSchema({
   userId: {
     type: String,
@@ -18,6 +18,26 @@ const ProfileSchema = new SimpleSchema({
     max: 50,
     optional: true,
   },
+  fullName: {
+    type: String,
+    autoValue() {
+      const firstName = this.field('firstName').value;
+      const lastName = this.field('lastName').value;
+      let fullName = '';
+
+      if (_hasStringField(firstName)) {
+        fullName = firstName;
+      } else {
+        return fullName;
+      }
+
+      if (_hasStringField(lastName)) {
+        fullName = `${fullName} ${lastName}`;
+      }
+
+      return fullName;
+    },
+  },
   initials: {
     type: String,
     autoValue() {
@@ -26,13 +46,13 @@ const ProfileSchema = new SimpleSchema({
       let initials = '';
 
       if (_hasStringField(firstName)) {
-        initials = _getCapFirstLetter(firstName);
+        initials = _firstLetter(firstName);
       } else {
         return initials;
       }
 
       if (_hasStringField(lastName)) {
-        initials = `${initials} ${_getCapFirstLetter(lastName)}`;
+        initials = `${initials} ${_firstLetter(lastName)}`;
       }
 
       return initials;

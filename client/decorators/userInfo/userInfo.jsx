@@ -3,6 +3,13 @@ import Profiles from './../../../both/collections/profiles';
 import React from 'react';
 import meteorData from './../meteorData';
 
+const currentUser = () => {
+  const userId = Meteor.userId();
+  Meteor.subscribe('profile', userId);
+
+  return { user: Profiles.findOne({ userId }) || {} };
+};
+
 export default Component => {
   class UserInfoComponent extends React.Component {
     render() {
@@ -11,7 +18,7 @@ export default Component => {
   }
 
   return meteorData(
-    () => ({ user: Profiles.findOne({ userId: Meteor.userId() }) || {} }),
+    currentUser,
     UserInfoComponent
   );
 };

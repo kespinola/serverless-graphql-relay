@@ -1,10 +1,10 @@
 import { createSelector, createStructuredSelector } from 'reselect';
 
-const navControlRootSelector = state => state.navControl;
+const navigationRootSelector = state => state.navigation;
 
 const navOpenSelector = createSelector(
- navControlRootSelector,
- navControl => navControl.get('open')
+ navigationRootSelector,
+ navigation => navigation.get('open')
 );
 
 export default createStructuredSelector({
