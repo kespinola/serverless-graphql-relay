@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute, Router, browserHistory } from 'react-router';
 
+import PassThrough from './components/PassThrough';
 import App from './components/App';
 import Home from './components/Home';
 import SignUp from './components/SignUp';
@@ -16,8 +17,10 @@ export default () => (
       <Route path="sign-in" component={SignIn} />
       <Route path="sign-up" component={SignUp} />
       <Route path="account" component={Account} />
-      <Route path="users" component={Users} />
-      <Route path="roles" component={Roles} />
+      <Route path="admin" component={PassThrough}>
+        <IndexRoute component={Users} />
+        <Route path="roles" component={Roles} />
+      </Route>
     </Route>
   </Router>
 );

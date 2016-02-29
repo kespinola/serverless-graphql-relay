@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose } from 'ramda';
 import { Meteor } from 'meteor/meteor';
+import { is } from 'ramda';
 import { Roles } from 'meteor/alanning:roles';
 import {
   Table,
@@ -33,7 +34,7 @@ const getUserSubscribe = ({ role: { changeRole } }) => {
   };
 };
 
-const users = ({
+const Users = ({
    profiles,
    roles,
    role: { changeRole, actions: { updateRoles, cancelRoleUpdate, toggleInRole } },
@@ -50,7 +51,7 @@ const users = ({
     <Grid fluid>
       <Dialog
         title={`Update Roles for ${fullName}`}
-        open={changeRole}
+        open={is(String, changeRole)}
         actions={roleActions}
         onRequestClose={cancelRoleUpdate}
       >
@@ -98,7 +99,7 @@ const users = ({
       </Row>
     </Grid>
   );
-}
+};
 
 export default compose(
   roleControl,
@@ -106,4 +107,4 @@ export default compose(
   meteorData(
     getUserSubscribe,
   )
-)(users);
+)(Users);

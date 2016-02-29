@@ -3,6 +3,7 @@ import { compose, isEmpty } from 'ramda';
 import navControl from './../../decorators/navControl';
 import authControl from './../../decorators/authControl';
 import userInfo from './../../decorators/userInfo';
+import { SelectableContainerEnhance } from 'material-ui/lib/hoc/selectable-enhance';
 import {
   AppCanvas,
   AppBar,
@@ -13,7 +14,11 @@ import {
   FlatButton,
   IconMenu,
   Avatar,
+  List,
+  ListItem,
 } from 'material-ui';
+
+const SelectableList = SelectableContainerEnhance(List);
 
 function App(props) {
   const {
@@ -26,14 +31,16 @@ function App(props) {
       actions: { signOutRequest },
     },
     history: { push },
+    location: { pathname },
     user,
   } = props;
   const goHome = push.bind(null, '/');
   const goSignIn = push.bind(null, '/sign-in');
   const goSignUp = push.bind(null, '/sign-up');
   const goAccount = push.bind(null, '/account');
-  const goUsers = changeRoute.bind(null, '/users');
-  const goRoles = changeRoute.bind(null, '/roles');
+  const onRequestChangeList = (e, value) => {
+    if (value) { changeRoute(value); }
+  };
 
   const { initials } = user;
   return (
@@ -75,8 +82,15 @@ function App(props) {
       open={open}
       onRequestChange={toggleNav}
     >
-        <MenuItem onClick={goUsers}>Users</MenuItem>
-        <MenuItem onClick={goRoles}>Roles</MenuItem>
+      <SelectableList valueLink={{ value: pathname, requestChange: onRequestChangeList }} >
+        <ListItem
+          primaryText="Admin"
+          nestedItems={[
+            <ListItem primaryText="Users" value="/admin" />,
+            <ListItem primaryText="Roles" value="/admin/roles" />,
+          ]}
+        />
+      </SelectableList>
       </LeftNav>
       <div className="app-container">
         {children}
@@ -93,6 +107,7 @@ App.propTypes = {
   }),
   children: PropTypes.node,
   user: PropTypes.object,
+  location: PropTypes.object,
 };
 
 export default compose(
