@@ -10,6 +10,7 @@ import {
   TableBody,
   FlatButton,
 } from 'material-ui';
+import { getCollection } from './../../utils/subscriptions';
 import { Grid, Row, Col } from 'react-flexgrid';
 import RoleForm from './../RoleForm';
 import userInfo from './../../decorators/userInfo';
@@ -17,13 +18,6 @@ import dialogControl from './../../decorators/dialogControl';
 import roleControl from './../../decorators/roleControl';
 import meteorData from './../../decorators/meteorData';
 import { Toolbar, ToolbarGroup, RaisedButton, Dialog } from 'material-ui';
-
-const getRoles = () => {
-  Meteor.subscribe('roles');
-
-  return { roles: Meteor.roles.find({ }) };
-};
-
 
 const Roles = ({
   dialog: { open, actions: { showDialog, hideDialog } },
@@ -86,5 +80,7 @@ export default compose(
   dialogControl('roles'),
   userInfo,
   roleControl,
-  meteorData(getRoles),
+  meteorData(
+    getCollection('roles', Meteor.roles),
+),
 )(Roles);

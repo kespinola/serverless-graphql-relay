@@ -25,7 +25,9 @@ const store = window.store = createStore(
   reducer,
   {},
   applyMiddleware(
-    createLogger({ collapsed: true }),
+    createLogger({
+      collapsed: true,
+    }),
     reduxRouterMiddleware,
     sagaMiddleware,
   )

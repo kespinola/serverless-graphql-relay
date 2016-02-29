@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import roleSelector from './../../redux/selectors/role';
 import roleDispatch from './../../redux/dispatch/role';
 
 export default Component => {
@@ -15,7 +16,7 @@ export default Component => {
   }
 
   return connect(
-    () => ({}),
+    roleSelector,
     roleDispatch,
     roleMergeProps,
   )(RoleControlComponent);
