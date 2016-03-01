@@ -33,6 +33,7 @@ function App(props) {
     history: { push },
     location: { pathname },
     user,
+    isAdmin,
   } = props;
   const goHome = push.bind(null, '/');
   const goSignIn = push.bind(null, '/sign-in');
@@ -83,13 +84,15 @@ function App(props) {
       onRequestChange={toggleNav}
     >
       <SelectableList valueLink={{ value: pathname, requestChange: onRequestChangeList }} >
-        <ListItem
-          primaryText="Admin"
-          nestedItems={[
-            <ListItem primaryText="Users" value="/admin" />,
-            <ListItem primaryText="Roles" value="/admin/roles" />,
-          ]}
-        />
+        {isAdmin && (
+          <ListItem
+            primaryText="Admin"
+            nestedItems={[
+              <ListItem primaryText="Users" value="/admin" />,
+              <ListItem primaryText="Roles" value="/admin/roles" />,
+            ]}
+          />
+        )}
       </SelectableList>
       </LeftNav>
       <div className="app-container">
@@ -108,6 +111,7 @@ App.propTypes = {
   children: PropTypes.node,
   user: PropTypes.object,
   location: PropTypes.object,
+  isAdmin: PropTypes.bool,
 };
 
 export default compose(
