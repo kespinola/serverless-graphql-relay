@@ -5,7 +5,7 @@ export default ({ query }) => runGraphQL(query);
 /*
 // create user
  {
- "query": "{ createUser (first_name: \"Kyle\", last_name: \"Espinola\", email: \"ksespinola@gmail.com\", password: \"test\"){ id first_name email token } }"
+ "query": "{ createUser (email: \"ksespinola@gmail.com\", password: \"test\"){ id email token } }"
  }
  // get users
  {
@@ -17,7 +17,7 @@ export default ({ query }) => runGraphQL(query);
  }
  // login
  {
- "query": "mutation { loginTestUser { loginUser (email: \"john.doe@gmail.com\", password: \"letmein123\"){ email token id  } } }"
+ "query": "{ loginUser (email: \"john.doe@gmail.com\", password: \"letmein123\"){ email token id  } }"
  }
  // update user
  {
