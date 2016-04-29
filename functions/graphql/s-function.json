@@ -1,0 +1,86 @@
+{
+  "name": "graphql",
+  "runtime": "babel",
+  "description": "Serverless Lambda function for project: prism-serverless",
+  "customName": false,
+  "customRole": false,
+  "handler": "functions/graphql/handler.default",
+  "timeout": 6,
+  "memorySize": 128,
+  "authorizer": {},
+  "custom": {
+    "cors": {
+      "allowOrigin": "*",
+      "allowHeaders": ["Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key"]
+    }
+  },
+  "endpoints": [
+    {
+      "path": "graphql",
+      "method": "POST",
+      "type": "AWS",
+      "authorizationType": "none",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestTemplates": {
+        "application/json": "{ \"query\" : $input.json(\"$.query\") }"
+      },
+      "responses": {
+        "400": {
+          "statusCode": "400"
+        },
+        "default": {
+          "statusCode": "200",
+          "responseParameters": {},
+          "responseModels": {},
+          "responseTemplates": {
+            "application/json": ""
+          }
+        }
+      }
+    },
+    {
+      "path": "graphql",
+      "method": "GET",
+      "type": "AWS",
+      "authorizationType": "none",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestParameters": {
+        "integration.request.querystring.query": "method.request.querystring.query"
+      },
+      "requestTemplates": {
+        "application/json": "{\"query\" : \"$util.urlDecode($input.params('query'))\"}"
+      },
+      "cacheKeyParameters": ["method.request.querystring.query"],
+      "responses": {
+        "400": {
+          "statusCode": "400"
+        },
+        "default": {
+          "statusCode": "200",
+          "responseParameters": {},
+          "responseModels": {},
+          "responseTemplates": {
+            "application/json": ""
+          }
+        }
+      }
+    }
+  ],
+  "events": [],
+  "environment": {
+    "SERVERLESS_PROJECT": "prism-serverless",
+    "SERVERLESS_STAGE": "${stage}",
+    "SERVERLESS_REGION": "${region}",
+    "MYSQL_USER": "${mysql_user}",
+    "MYSQL_PASSWORD": "${mysql_password}",
+    "MYSQL_HOST": "${mysql_host}",
+    "MYSQL_PORT": "${mysql_port}",
+    "MYSQL_DATABASE_NAME": "${mysql_database_name}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}
