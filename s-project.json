@@ -2,7 +2,8 @@
   "name": "serverless-prism",
   "custom": {},
   "plugins": [
+    "serverless-runtime-babel",
     "serverless-cors-plugin",
-    "serverless-runtime-babel"
+    "serverless-offline"
   ]
 }
