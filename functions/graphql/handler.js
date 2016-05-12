@@ -1,6 +1,6 @@
 import runGraphQL from './../../lib/services/graphql';
 
-export default ({ query }) => runGraphQL(query);
+export default ({ query, variables }) => runGraphQL(query, variables);
 
 /*
 // create user

@@ -18,7 +18,7 @@
       "authorizerFunction": false,
       "apiKeyRequired": false,
       "requestTemplates": {
-        "application/json": "{ \"query\" : $input.json(\"$.query\") }"
+        "application/json": "{ \"query\" : $input.json(\"$.query\"), \"variables\": $input.json(\"$.variables\") }"
       },
       "responses": {
         "400": {
@@ -42,12 +42,13 @@
       "authorizerFunction": false,
       "apiKeyRequired": false,
       "requestParameters": {
-        "integration.request.querystring.query": "method.request.querystring.query"
+        "integration.request.querystring.query": "method.request.querystring.query",
+        "integration.request.querystring.variables": "method.request.querystring.variables"
       },
       "requestTemplates": {
-        "application/json": "{\"query\" : \"$util.urlDecode($input.params('query'))\"}"
+        "application/json": "{\"query\" : \"$util.urlDecode($input.params('query'))\", \"variables\" : \"$util.urlDecode($input.params('variables'))\"}"
       },
-      "cacheKeyParameters": ["method.request.querystring.query"],
+      "cacheKeyParameters": ["method.request.querystring.query", "method.request.querystring.variables"],
       "responses": {
         "400": {
           "statusCode": "400"
