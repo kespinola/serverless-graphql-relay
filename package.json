@@ -5,6 +5,9 @@
   "author": "me",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "test": "mocha $(find . -type d -name '__tests__' -not -path '*/node_modules/*') --opts .mocha.opts"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/"

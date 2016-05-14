@@ -5,7 +5,7 @@
   "customName": false,
   "customRole": false,
   "handler": "functions/graphql/handler.default",
-  "timeout": 6,
+  "timeout": 5,
   "memorySize": 128,
   "authorizer": {},
   "custom": {},
@@ -73,7 +73,8 @@
     "MYSQL_PASSWORD": "${mysql_password}",
     "MYSQL_HOST": "${mysql_host}",
     "MYSQL_PORT": "${mysql_port}",
-    "MYSQL_DATABASE_NAME": "${mysql_database_name}"
+    "MYSQL_DATABASE_NAME": "${mysql_database_name}",
+    "SIGNUP_TOKEN": "${signup_token}"
   },
   "vpc": {
     "securityGroupIds": [],

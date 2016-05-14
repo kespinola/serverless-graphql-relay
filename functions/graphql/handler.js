@@ -5,7 +5,7 @@ export default ({ query, variables }) => runGraphQL(query, variables);
 /*
 // create user
  {
- "query": "{ createUser (email: \"ksespinola@gmail.com\", password: \"test\"){ id email token } }"
+ "query": "{ createUser (email: \"ksespinola@gmail.com\", password: \"test\") }"
  }
  // get users
  {
