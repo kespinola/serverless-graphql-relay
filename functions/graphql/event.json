@@ -1,9 +1,9 @@
 {
-  "query": "mutation AddUserQuery($input: CreateLoginInput!) { createLogin(input: $input) { token{ value }, clientMutationId } }",
+  "query": "mutation LoginUserQuery($input: LoginUserInput!) { login(input: $input) { token{ value, message }, user{ id, first_name }, clientMutationId } }",
     "variables": {
       "input": {
         "email": "ksespinola@gmail.com",
-        "password": "letmein123",
+        "password": "pw",
         "clientMutationId": "test_123"
       }
     }
