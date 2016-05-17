@@ -1,6 +1,6 @@
 # Serverless Prism
 
-Collection of endpoints used to power a prism app.
+Collection of endpoints used to power a prism app. Test serverless-gitflow.
 
 - Graphql
 
